@@ -416,9 +416,8 @@
     var score = 0;
     var reasons = [];
 
-    // First pick safety is lane-agnostic: focus on hero attributes (self-sufficient, low counter-risk).
-    // Lane tabs still filter heroes by lane, but the safety scoring itself uses the same weights.
-    var w = FIRST_PICK_WEIGHTS.default;
+    var lane = normalizeRole(laneContext) || normalizeRole(hero.role);
+    var w = firstPickWeightsForLane(lane);
 
     var frontlineRating = getFrontlineRating(hero);
     if (frontlineRating !== null && frontlineRating >= 2) {
@@ -515,25 +514,6 @@
     } else if (teamNeedsCount === 2) {
       score -= weightedPoints(1, w.setupPenalty);
       reasons.push('Butuh setup tim');
-    }
-
-    // Counter-risk (blind): avoid heroes that are too easy to punish when enemy draft is still unknown.
-    var mobilityLow = (mobilityRating === null || mobilityRating === 0);
-    var disengageLow = (disengageRating === null || disengageRating === 0);
-    var peelLow = (peelRating === null || peelRating === 0);
-
-    if (mobilityLow && disengageLow && peelLow) {
-      score -= 2;
-      reasons.push('Risk: mudah dipunish');
-    }
-
-    var heroLane = normalizeRole(hero && hero.role);
-    if (heroLane === 'Farm Lane') {
-      var isCoreDps = dpsRating !== null && dpsRating >= 1;
-      if (isCoreDps && mobilityLow && disengageLow && peelLow) {
-        score -= 2;
-        reasons.push('Risk: carry statis');
-      }
     }
 
     if (reasons.length === 0) {
@@ -1263,6 +1243,91 @@
           if (penaltySetup > 0) {
             score -= penaltySetup;
             reasons.push('Counter F2B: butuh setup');
+          }
+        }
+      } else if (enemySignals && enemySignals.primary === 'pick' && enemySignals.pick > 0) {
+        var hasProtectionBaseline = summary.hasFrontline && (((summary.maxPeel || 0) >= 1) || ((summary.maxDisengage || 0) >= 1));
+
+        var antiCatchBase = 0;
+
+        if (frontlineRating !== null && frontlineRating >= 2) antiCatchBase += 2;
+        else if (frontlineRating !== null && frontlineRating >= 1) antiCatchBase += 1;
+
+        var peelRatingPick = getPeelRating(hero);
+        if (peelRatingPick !== null && peelRatingPick >= 2) antiCatchBase += 2;
+        else if (peelRatingPick !== null && peelRatingPick >= 1) antiCatchBase += 1;
+
+        var disengageRatingPick = getDisengageRating(hero);
+        if (disengageRatingPick !== null && disengageRatingPick >= 2) antiCatchBase += 2;
+        else if (disengageRatingPick !== null && disengageRatingPick >= 1) antiCatchBase += 1;
+
+        var mobilityRatingPick = getMobilityRating(hero);
+        if (mobilityRatingPick !== null && mobilityRatingPick >= 1) antiCatchBase += 1;
+
+        if (ccRating !== null && ccRating >= 2) antiCatchBase += 2;
+        else if (ccRating !== null && ccRating >= 1) antiCatchBase += 1;
+
+        var sustainRatingPick = getSustainRating(hero);
+        if (sustainRatingPick !== null && sustainRatingPick >= 1) antiCatchBase += 1;
+
+        var antiCatchScore = Math.round(antiCatchBase * enemyInfoFactor);
+
+        var punishBase = 0;
+        if (hasProtectionBaseline) {
+          if (engageRole === 'primary' && engageRating !== null && engageRating >= 1) punishBase += 2;
+          else if (engageRating !== null && engageRating >= 1) punishBase += 1;
+
+          if (mobilityRatingPick !== null && mobilityRatingPick >= 1) punishBase += 1;
+
+          if ((burstRating !== null && burstRating >= 2) || (dpsRating !== null && dpsRating >= 2)) {
+            punishBase += 2;
+          } else if ((burstRating !== null && burstRating >= 1) || (dpsRating !== null && dpsRating >= 1)) {
+            punishBase += 1;
+          }
+
+          if (pickRating !== null && pickRating >= 1) punishBase += 1;
+          if (ccRating !== null && ccRating >= 1) punishBase += 1;
+        }
+
+        var punishScore = Math.round(punishBase * enemyInfoFactor);
+        var pickCounterScore = antiCatchScore + punishScore;
+
+        if (pickCounterScore > 0) {
+          score += pickCounterScore;
+          reasons.push('Counter enemy Pick');
+
+          if (antiCatchScore > 0) reasons.push('Counter Pick: anti-catch');
+          if (punishScore > 0) reasons.push('Counter Pick: punish');
+        }
+
+        // Saat tim belum punya proteksi dasar: prioritaskan anti-catch dan hindari pick yang tidak punya tool proteksi.
+        if (!hasProtectionBaseline) {
+          var defensiveTools = 0;
+          if (frontlineRating !== null && frontlineRating >= 1) defensiveTools++;
+          if (peelRatingPick !== null && peelRatingPick >= 1) defensiveTools++;
+          if (disengageRatingPick !== null && disengageRatingPick >= 1) defensiveTools++;
+
+          if (defensiveTools === 0) {
+            var noDefensePenalty = Math.round(2 * enemyInfoFactor);
+            if (noDefensePenalty > 0) {
+              score -= noDefensePenalty;
+              reasons.push('Counter Pick: minim proteksi');
+            }
+          } else if (defensiveTools === 1) {
+            var lowDefensePenalty = Math.round(1 * enemyInfoFactor);
+            if (lowDefensePenalty > 0) {
+              score -= lowDefensePenalty;
+              reasons.push('Counter Pick: kurang proteksi');
+            }
+          }
+
+          var lowEscape = (mobilityRatingPick === null || mobilityRatingPick === 0) && ((disengageRatingPick === null || disengageRatingPick === 0));
+          if (lowEscape) {
+            var catchPenalty = Math.round(1 * enemyInfoFactor);
+            if (catchPenalty > 0) {
+              score -= catchPenalty;
+              reasons.push('Counter Pick: rentan');
+            }
           }
         }
       } else if (enemySignals && enemySignals.primary === 'dive' && enemySignals.dive > 0) {
