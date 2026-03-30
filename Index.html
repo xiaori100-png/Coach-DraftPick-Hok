@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coach Draft Pick</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="Desain.css" />
+  <script defer src="DatabaseHero.js"></script>
+  <script defer src="Daftarhero.js"></script>
+</head>
+<body>
+  <div class="tm-page" id="draft-app">
+    <header class="tm-topbar">
+      <div class="tm-topbar__brand">
+        <div class="tm-logo" aria-hidden="true">CD</div>
+        <div>
+          <h1 class="tm-topbar__title">Coach Draft Pick</h1>
+          <p class="tm-topbar__subtitle">Coach pribadi draft pick Honor of Kings (beta)</p>
+        </div>
+      </div>
+
+      <div class="tm-topbar__actions">
+        <div class="segmented tm-mode-switcher" role="tablist" aria-label="Mode party">
+          <button class="segmented__btn is-active" type="button" data-mode="solo">Solo</button>
+          <button class="segmented__btn" type="button" data-mode="duo" disabled aria-disabled="true">Duo</button>
+          <button class="segmented__btn" type="button" data-mode="trio" disabled aria-disabled="true">Trio</button>
+          <button class="segmented__btn" type="button" data-mode="party" disabled aria-disabled="true">Full Party</button>
+        </div>
+        <button class="tm-btn tm-btn--ghost" type="button" id="btn-reset">Reset</button>
+      </div>
+    </header>
+
+    <main class="tm-draft-shell">
+      <aside class="panel panel--team" id="team-kita">
+        <div class="panel__header">
+          <h2 class="panel__title panel__title--ally">Tim Biru</h2>
+        </div>
+
+        <div class="slot-list" id="kita-slots" aria-label="Slot Tim Kita">
+          <div class="slot" id="kita-slot-1" data-team="ally" data-slot-index="0">
+            <div class="slot__avatar" aria-hidden="true"></div>
+            <div class="slot__info">
+              <div class="slot__label"><span class="slot__label-text">Slot 1</span></div>
+              <div class="slot__value">Empty</div>
+              <span class="slot__badge" aria-hidden="true"></span>
+            </div>
+            <button class="slot__lane" type="button" aria-label="Atur lane Slot 1" data-action="set-lane">--</button>
+            <button class="slot__remove" type="button" aria-label="Hapus Tim Biru slot 1" data-action="remove-slot">Delete</button>
+          </div>
+          <div class="slot" id="kita-slot-2" data-team="ally" data-slot-index="1">
+            <div class="slot__avatar" aria-hidden="true"></div>
+            <div class="slot__info">
+              <div class="slot__label"><span class="slot__label-text">Slot 2</span></div>
+              <div class="slot__value">Empty</div>
+              <span class="slot__badge" aria-hidden="true"></span>
+            </div>
+            <button class="slot__lane" type="button" aria-label="Atur lane Slot 2" data-action="set-lane">--</button>
+            <button class="slot__remove" type="button" aria-label="Hapus Tim Biru slot 2" data-action="remove-slot">Delete</button>
+          </div>
+          <div class="slot" id="kita-slot-3" data-team="ally" data-slot-index="2">
+            <div class="slot__avatar" aria-hidden="true"></div>
+            <div class="slot__info">
+              <div class="slot__label"><span class="slot__label-text">Slot 3</span></div>
+              <div class="slot__value">Empty</div>
+              <span class="slot__badge" aria-hidden="true"></span>
+            </div>
+            <button class="slot__lane" type="button" aria-label="Atur lane Slot 3" data-action="set-lane">--</button>
+            <button class="slot__remove" type="button" aria-label="Hapus Tim Biru slot 3" data-action="remove-slot">Delete</button>
+          </div>
+          <div class="slot" id="kita-slot-4" data-team="ally" data-slot-index="3">
+            <div class="slot__avatar" aria-hidden="true"></div>
+            <div class="slot__info">
+              <div class="slot__label"><span class="slot__label-text">Slot 4</span></div>
+              <div class="slot__value">Empty</div>
+              <span class="slot__badge" aria-hidden="true"></span>
+            </div>
+            <button class="slot__lane" type="button" aria-label="Atur lane Slot 4" data-action="set-lane">--</button>
+            <button class="slot__remove" type="button" aria-label="Hapus Tim Biru slot 4" data-action="remove-slot">Delete</button>
+          </div>
+          <div class="slot" id="kita-slot-5" data-team="ally" data-slot-index="4">
+            <div class="slot__avatar" aria-hidden="true"></div>
+            <div class="slot__info">
+              <div class="slot__label"><span class="slot__label-text">Slot 5</span></div>
+              <div class="slot__value">Empty</div>
+              <span class="slot__badge" aria-hidden="true"></span>
+            </div>
+            <button class="slot__lane" type="button" aria-label="Atur lane Slot 5" data-action="set-lane">--</button>
+            <button class="slot__remove" type="button" aria-label="Hapus Tim Biru slot 5" data-action="remove-slot">Delete</button>
+          </div>
+        </div>
+
+        <div class="panel__footer">
+          <div class="mini-help">Tip: klik <code>Delete</code> kalau salah input.</div>
+        </div>
+      </aside>
+
+      <!-- Center column: Hero List -->
+      <section class="panel panel--heroes" id="hero-list">
+        <div class="panel__header panel__header--row">
+          <div>
+            <h2 class="panel__title">Daftar Hero</h2>
+            
+          </div>
+
+          <div class="hero-toolbar" aria-label="Draft controls">
+            <div class="lane-tabs" role="group" aria-label="Pick target + Auto Order">
+              <button class="lane-tab is-active" type="button" id="pick-target-ally" data-pick-target="ally">Tim Kita</button>
+              <button class="lane-tab" type="button" id="pick-target-enemy" data-pick-target="enemy">Tim Musuh</button>
+              <button class="lane-tab" type="button" id="btn-auto-order" aria-pressed="false" title="Auto pindah target pick sesuai urutan 1-2-2-2-2-1">Auto Order</button>
+            </div>
+
+            <div class="lane-tabs lane-tabs--role-filter" role="tablist" aria-label="Lane filter">
+              <button class="lane-tab is-active" type="button" data-role-filter="All">Semua</button>
+              <button class="lane-tab" type="button" data-role-filter="Clash Lane">Clash Lane</button>
+              <button class="lane-tab" type="button" data-role-filter="Jungling">Jungling</button>
+              <button class="lane-tab" type="button" data-role-filter="Mid Lane">Mid Lane</button>
+              <button class="lane-tab" type="button" data-role-filter="Farm Lane">Farm Lane</button>
+              <button class="lane-tab" type="button" data-role-filter="Roaming">Roaming</button>
+            </div>
+
+            <label class="hero-filter" for="hero-role">
+              <span class="sr-only">Filter role</span>
+              <select id="hero-role" aria-label="Filter role"></select>
+            </label>
+
+            <label class="hero-search" for="hero-search">
+              <span class="sr-only">Search hero</span>
+              <input id="hero-search" type="search" placeholder="Search hero..." autocomplete="off" />
+            </label>
+          </div>
+        </div>
+
+        <div class="hero-grid" id="hero-grid" aria-label="Hero grid"></div>
+
+      </section>
+
+      <!-- Right column: Tim Musuh -->
+      <aside class="panel panel--team" id="team-musuh">
+        <div class="panel__header">
+          <h2 class="panel__title panel__title--enemy">Tim Merah</h2>
+        </div>
+
+        <div class="slot-list" id="musuh-slots" aria-label="Slot Tim Musuh">
+          <div class="slot" id="musuh-slot-1" data-team="enemy" data-slot-index="0">
+            <div class="slot__avatar" aria-hidden="true"></div>
+            <div class="slot__info">
+              <div class="slot__label">Slot 1</div>
+              <div class="slot__value">Empty</div>
+            </div>
+            <button class="slot__remove" type="button" aria-label="Hapus Tim Merah slot 1" data-action="remove-slot">Delete</button>
+          </div>
+          <div class="slot" id="musuh-slot-2" data-team="enemy" data-slot-index="1">
+            <div class="slot__avatar" aria-hidden="true"></div>
+            <div class="slot__info">
+              <div class="slot__label">Slot 2</div>
+              <div class="slot__value">Empty</div>
+            </div>
+            <button class="slot__remove" type="button" aria-label="Hapus Tim Merah slot 2" data-action="remove-slot">Delete</button>
+          </div>
+          <div class="slot" id="musuh-slot-3" data-team="enemy" data-slot-index="2">
+            <div class="slot__avatar" aria-hidden="true"></div>
+            <div class="slot__info">
+              <div class="slot__label">Slot 3</div>
+              <div class="slot__value">Empty</div>
+            </div>
+            <button class="slot__remove" type="button" aria-label="Hapus Tim Merah slot 3" data-action="remove-slot">Delete</button>
+          </div>
+          <div class="slot" id="musuh-slot-4" data-team="enemy" data-slot-index="3">
+            <div class="slot__avatar" aria-hidden="true"></div>
+            <div class="slot__info">
+              <div class="slot__label">Slot 4</div>
+              <div class="slot__value">Empty</div>
+            </div>
+            <button class="slot__remove" type="button" aria-label="Hapus Tim Merah slot 4" data-action="remove-slot">Delete</button>
+          </div>
+          <div class="slot" id="musuh-slot-5" data-team="enemy" data-slot-index="4">
+            <div class="slot__avatar" aria-hidden="true"></div>
+            <div class="slot__info">
+              <div class="slot__label">Slot 5</div>
+              <div class="slot__value">Empty</div>
+            </div>
+            <button class="slot__remove" type="button" aria-label="Hapus Tim Merah slot 5" data-action="remove-slot">Delete</button>
+          </div>
+        </div>
+
+        <div class="panel__footer">
+          <div class="mini-help">Tip: isi musuh hanya untuk tracking komposisi lawan.</div>
+        </div>
+      </aside>
+
+      <section class="recommendations" id="recommendations">
+        <div class="recommendations__header">
+          <div class="recommendations__header-left">
+            <h3 class="recommendations__title" id="recommendations-title">Rekomendasi Pick</h3>
+            <span class="recommendations__badge" id="recommendations-archetype" aria-live="polite"></span>
+          </div>
+          <div class="recommendations__header-right">
+            <button class="tm-btn tm-btn--ghost recommendations__advanced" type="button" id="btn-advanced" aria-pressed="false">Advanced</button>
+            <p class="recommendations__hint" id="recommendations-hint">Klik rekomendasi untuk auto pick ke slot kosong berikutnya.</p>
+          </div>
+        </div>
+
+        <div class="recommendations__nav" id="recommendations-nav" role="tablist" aria-label="Filter jalur rekomendasi"></div>
+        <div class="recommendations__list" id="recommendations-list" aria-label="Recommended picks"></div>
+      </section>
+    </main>
+
+    <footer class="tm-footer">
+      <small id="draft-message" aria-live="polite"></small>
+    </footer>
+  </div>
+</body>
+</html>
