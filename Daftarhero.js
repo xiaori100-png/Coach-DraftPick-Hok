@@ -388,17 +388,17 @@
       setupPenalty: 1
     },
     'Farm Lane': {
-      frontline: 0.2,
-      cc: 0.75,
-      peel: 0.9,
-      disengage: 1.1,
-      mobility: 1.05,
-      pickPotential: 0.8,
-      engage: 0.55,
-      burst: 0.8,
-      dps: 1.2,
+      frontline: 0.15,
+      cc: 0.35,
+      peel: 1.2,
+      disengage: 1.4,
+      mobility: 1.3,
+      pickPotential: 0.45,
+      engage: 0.35,
+      burst: 0.4,
+      dps: 1.1,
       sustain: 0.85,
-      early: 0.95,
+      early: 0.85,
       setupPenalty: 1
     }
   };
@@ -447,7 +447,10 @@
     }
 
     var disengageRating = getDisengageRating(hero);
-    if (disengageRating !== null && disengageRating >= 1) {
+    if (disengageRating !== null && disengageRating >= 2) {
+      score += weightedPoints(2, w.disengage);
+      reasons.push('First pick: disengage');
+    } else if (disengageRating !== null && disengageRating >= 1) {
       score += weightedPoints(1, w.disengage);
       reasons.push('First pick: disengage');
     }
@@ -462,7 +465,10 @@
     }
 
     var pickRating = getPickPotentialRating(hero);
-    if (pickRating !== null && pickRating >= 1) {
+    if (pickRating !== null && pickRating >= 2) {
+      score += weightedPoints(2, w.pickPotential);
+      reasons.push('First pick: pick tool');
+    } else if (pickRating !== null && pickRating >= 1) {
       score += weightedPoints(1, w.pickPotential);
       reasons.push('First pick: pick tool');
     }
@@ -541,8 +547,9 @@
 
       // Prefer hero with the lane as primary role over flex (secondaryRoles).
       if (tab !== REC_TAB_SMART && normalizeRole(hero.role) === tab) {
-        score += 2;
+        score += 3;
       } else if (tab !== REC_TAB_SMART && heroIsSecondaryLane(hero, tab)) {
+        score -= 1;
         reasons = reasons.slice();
         reasons.push('Flex: bisa main ' + tab);
       }
