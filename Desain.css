@@ -1484,14 +1484,3 @@ body::after {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-
-  .hero-card,
-  .lane-tab,
-  .tm-btn,
-  .slot__remove,
-  .rec-chip,
-  .rec-card {
-    transition: none;
-  }
-}
