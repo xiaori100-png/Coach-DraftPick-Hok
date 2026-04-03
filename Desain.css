@@ -70,8 +70,10 @@ body::after {
 
 .tm-page {
   position: relative;
+  min-height: 100vh;
   height: 100vh;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   padding-left: max(var(--page-gutter), env(safe-area-inset-left, 0px));
@@ -600,8 +602,8 @@ body::after {
   backdrop-filter: blur(30px);
   box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.7);
   animation: slideUp 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-  height: 260px; /* Locked height to prevent shrinking */
-  min-height: 260px;
+  min-height: 0;
+  max-height: 260px;
 }
 
 @keyframes slideUp {
@@ -1415,24 +1417,7 @@ body::after {
   border: 0;
 }
 
-.tm-page {
-  position: relative;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
 
-.tm-draft-shell {
-  width: 100%;
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: 240px 1fr 240px;
-  gap: 2px;
-  /* Thin gap for a techy look */
-  background: var(--stroke);
-  /* Gap color */
-}
 
 @media (max-width: 1200px) {
   .tm-draft-shell {
@@ -1448,56 +1433,11 @@ body::after {
 
   .tm-draft-shell {
     grid-template-columns: 1fr;
-  }
-
-  #hero-list {
-    order: 1;
-  }
-
-  #team-kita {
-    order: 2;
-  }
-
-  #team-musuh {
-    order: 3;
-  }
-}
-
-@media (max-width: 600px) {
-  .hero-grid {
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-    padding: 12px;
-  }
-
-  .tm-topbar {
-    padding: 10px 16px;
-  }
-
-  .tm-topbar__title {
-    font-size: 16px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-  .hero-card,
-  .lane-tab,
-  .tm-btn,
-  .slot__remove,
-  .rec-chip,
-  .rec-card {
-    transition: none;
-  }
-}
-
-@media (max-width: 1000px) {
-  .tm-page {
-    height: auto;
-    overflow: visible;
-  }
-
-  .tm-draft-shell {
-    grid-template-columns: 1fr;
+    grid-template-areas:
+      "heroes"
+      "ally"
+      "enemy"
+      "recs";
   }
 
   #hero-list {
