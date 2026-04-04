@@ -2289,6 +2289,21 @@
 
     this.hideLanePopover();
     this.setMessage('Reset selesai.');
+
+    // Bersihkan inline styles yang dipasang saat insight mode
+    if (this.nodes && this.nodes.recommendationsList) {
+      this.nodes.recommendationsList.removeAttribute('style');
+    }
+    if (this.nodes && this.nodes.recommendationsNav) {
+      this.nodes.recommendationsNav.removeAttribute('style');
+    }
+    if (this.nodes && this.nodes.recommendationsHint) {
+      this.nodes.recommendationsHint.removeAttribute('style');
+    }
+    if (this.nodes && this.nodes.recommendationsTitle) {
+      this.nodes.recommendationsTitle.removeAttribute('style');
+    }
+
     var self = this;
     this.render();
     requestAnimationFrame(function () {
