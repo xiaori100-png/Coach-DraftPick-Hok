@@ -159,6 +159,18 @@
     if (r.indexOf('Sinergi') === 0) return 'Sinergi';
     if (r.indexOf('Deny') === 0 || r.indexOf('Watchlist deny') === 0) return 'Deny';
 
+    if (r.indexOf('Counter enemy Sustain') === 0) return 'Counter Sustain';
+    if (r.indexOf('Counter Sustain: burst') === 0) return 'Burst';
+    if (r.indexOf('Counter Sustain: pick') === 0) return 'Pick';
+    if (r.indexOf('Counter Sustain: cc') === 0) return 'CC';
+    if (r.indexOf('Counter Sustain: DPS lambat') === 0) return 'DPS Lambat';
+
+    if (r.indexOf('Counter enemy Poke') === 0) return 'Counter Poke';
+    if (r.indexOf('Counter Poke: engage') === 0) return 'Engage';
+    if (r.indexOf('Counter Poke: mobility') === 0) return 'Mobility';
+    if (r.indexOf('Counter Poke: frontline') === 0) return 'Frontline';
+    if (r.indexOf('Counter Poke: rentan poke') === 0) return 'Rentan Poke';
+
     if (r.length > 22) return r.slice(0, 22) + '…';
     return r;
   }
@@ -896,7 +908,9 @@
     var countPeelMedium = 0;
     var countDisengageMedium = 0;
     var countMobilityMedium = 0;
+    var countMobilityLow = 0;
     var countEngageMedium = 0;
+    var countEngagePrimary = 0;
 
     var maxSustain = 0;
     var maxPeel = 0;
@@ -979,6 +993,9 @@
       if (mobilityRating !== null && mobilityRating >= 1) {
         countMobilityMedium++;
       }
+      if (mobilityRating === null || mobilityRating === 0) {
+        countMobilityLow++;
+      }
 
       var engageRating = getEngageRating(hero);
       if (engageRating !== null && engageRating >= 1) {
@@ -988,6 +1005,7 @@
       var engageRole = getEngageRole(hero);
       if (engageRole === 'primary') {
         hasPrimaryEngage = true;
+        countEngagePrimary++;
       }
 
       var tags = heroTags(hero);
@@ -1010,22 +1028,42 @@
     if (hasPrimaryEngage || countEngageMedium >= 1) diveScore++;
     if (countBurstMedium >= 1) diveScore++;
 
-    var maxScore = Math.max(f2bScore, pickScore, diveScore);
+    var sustainScore = 0;
+    if (countSustainMedium >= 2) sustainScore++;
+    if (countSustainMedium >= 3) sustainScore++; // extra signal: sustain sangat dominan
+    if (countPeelMedium >= 2) sustainScore++;
+    if (hasFrontline && countSustainMedium >= 1) sustainScore++; // frontline + ada sustain = F2B dengan sustain layer
+
+    var pokeScore = 0;
+    if (countMobilityLow >= 2) pokeScore++;
+    if (countEngagePrimary === 0) pokeScore++;
+    if ((countBurstMedium + countDpsMedium) >= 2) pokeScore++;
+    if (!hasFrontline) pokeScore++;
+
+    var maxScore = Math.max(f2bScore, pickScore, diveScore, sustainScore, pokeScore);
     var primary = 'frontToBack';
     var primaryScore = f2bScore;
 
-    // Tie-break:
-    // - If signal is still weak (<= 1), keep default Front-to-Back to avoid overreacting.
-    // - If signal is strong (>= 2), prefer Dive > Pick > Front-to-Back on ties.
+    // Tie-break: Dive > Pick > Sustain > Poke > Front-to-Back
+    // Exception: sustainScore >= 3 overrides dive tie-break
     if (maxScore <= 1) {
       primary = 'frontToBack';
       primaryScore = f2bScore;
+    } else if (sustainScore >= 3 && sustainScore >= diveScore) {
+      primary = 'sustain';
+      primaryScore = sustainScore;
     } else if (diveScore === maxScore) {
       primary = 'dive';
       primaryScore = diveScore;
     } else if (pickScore === maxScore) {
       primary = 'pick';
       primaryScore = pickScore;
+    } else if (sustainScore === maxScore) {
+      primary = 'sustain';
+      primaryScore = sustainScore;
+    } else if (pokeScore === maxScore) {
+      primary = 'poke';
+      primaryScore = pokeScore;
     } else {
       primary = 'frontToBack';
       primaryScore = f2bScore;
@@ -1050,9 +1088,138 @@
         frontToBack: f2bScore,
         pick: pickScore,
         dive: diveScore,
+        sustain: sustainScore,
+        poke: pokeScore,
         primary: primary,
         primaryScore: primaryScore
       }
+    };
+  }
+
+
+
+  function getLiXinFormAdvice(allySummary, enemySummary) {
+    if (!allySummary || !enemySummary) return null;
+
+    var enemyPickedHeroes = enemySummary.pickedHeroes || [];
+    var mmCount = 0;
+    var mageCount = 0;
+    var tankCount = 0;
+    var fighterCount = 0;
+
+    for (var i = 0; i < enemyPickedHeroes.length; i++) {
+        var h = enemyPickedHeroes[i];
+        if (!h) continue;
+        var tags = (heroTags && typeof heroTags === 'function') ? heroTags(h) : (h.tags || []);
+        if (tags.indexOf('marksman') !== -1) mmCount++;
+        if (tags.indexOf('mage') !== -1) mageCount++;
+        if (tags.indexOf('tank') !== -1) tankCount++;
+        if (tags.indexOf('fighter') !== -1) fighterCount++;
+    }
+
+    var squishyScore = mmCount + mageCount;
+    var tankyScore = tankCount + fighterCount;
+
+    // Logic Priority:
+    // 1. If enemy has 3+ tanky heroes (Tank/Fighter), prioritize Dark Form.
+    // 2. If enemy is mostly squishy (Mage/MM), prioritize Light Form.
+    // 3. Otherwise, compare scores.
+
+    if (tankyScore >= 3) {
+      return {
+        form: 'Dark',
+        label: 'Form Gelap',
+        reason: 'Musuh memiliki barisan depan yang sangat keras. Butuh ketahanan dan duel jarak dekat.'
+      };
+    }
+
+    if (squishyScore > tankyScore && squishyScore >= 2) {
+      return {
+        form: 'Light',
+        label: 'Form Cahaya',
+        reason: 'Musuh banyak hero tipis (Mage/MM). Gunakan poke jangkauan jauh untuk burst.'
+      };
+    }
+
+    if (tankyScore > squishyScore) {
+      return {
+        form: 'Dark',
+        label: 'Form Gelap',
+        reason: 'Butuh ketahanan lebih untuk menghadapi musuh yang cukup tebal.'
+      };
+    }
+
+    return {
+      form: 'Light',
+      label: 'Form Cahaya',
+      reason: 'Saran: Form Cahaya untuk pola main poke/burst yang lebih fleksibel.'
+    };
+  }
+
+  function getHayaKidnapAdvice(enemyPickedHeroes) {
+    if (!enemyPickedHeroes || enemyPickedHeroes.length === 0) return null;
+
+    var junglerTarget = null;
+    var mmTarget = null;
+    var mageTarget = null;
+    var badTargets = [];
+
+    for (var i = 0; i < enemyPickedHeroes.length; i++) {
+        var h = enemyPickedHeroes[i];
+        if (!h) continue;
+        
+        var role = normalizeRole(h.role);
+        var tags = (heroTags && typeof heroTags === 'function') ? heroTags(h) : (h.tags || []);
+        
+        // Find Tank to avoid
+        if (role === 'Roaming' && tags.indexOf('tank') !== -1) {
+            badTargets.push(h.name);
+        } else if (tags.indexOf('tank') !== -1 && h.id !== 'haya') {
+            badTargets.push(h.name);
+        }
+        
+        // Find Jungler (High Priority for Objective)
+        if (role === 'Jungling' || tags.indexOf('assassin') !== -1) {
+            junglerTarget = h.name;
+        }
+        
+        // Find ADC/MM
+        if (role === 'Farm Lane' || tags.indexOf('marksman') !== -1) {
+            mmTarget = h.name;
+        }
+
+        // Find Mage
+        if (role === 'Mid Lane' || tags.indexOf('mage') !== -1) {
+            if (tags.indexOf('support') === -1) {
+               mageTarget = h.name;
+            }
+        }
+    }
+
+    var messages = [];
+    if (junglerTarget) {
+      messages.push('Prioritas 1: Culik [' + junglerTarget + '] saat perebutan objektif (Tyrant/Overlord) untuk menghilangkan Retribution musuh.');
+    }
+    
+    if (mmTarget) {
+      messages.push('Prioritas 2: Culik [' + mmTarget + '] di awal pertarungan untuk mematikan sumber damage utama (ADC) mereka.');
+    } else if (mageTarget) {
+      messages.push('Prioritas 2: Culik [' + mageTarget + '] untuk mencegah ia leluasa memberikan crowd control / damage area.');
+    }
+
+    if (badTargets.length > 0) {
+      // deduplicate names just in case
+      var uniqueBad = badTargets.filter(function(item, pos) { return badTargets.indexOf(item) == pos; });
+      messages.push('⚠️ PERINGATAN: Hindari menculik [' + uniqueBad.join(', ') + '] karena terlalu tebal dan hanya membuang durasi Ultimate Anda.');
+    }
+
+    if (messages.length === 0) {
+       messages.push('Incar hero musuh yang paling merepotkan atau memiliki escape skill mumpuni untuk diamankan.');
+    }
+
+    return {
+      label: 'Target Penculikan (Skill 3)',
+      reason: messages.join(' ')
     };
   }
 
@@ -1377,6 +1544,84 @@
             }
           }
         }
+      } else if (enemySignals && enemySignals.primary === 'sustain' && enemySignals.sustain > 0) {
+        var sustainCounterBase = 0;
+
+        // Burst adalah counter utama sustain — bunuh sebelum heal sempat kerja
+        if (burstRating !== null && burstRating >= 2) sustainCounterBase += 2;
+        else if (burstRating !== null && burstRating >= 1) sustainCounterBase += 1;
+
+        // Pick — isolate 1 target sebelum tim musuh bisa heal
+        if (pickRating !== null && pickRating >= 1) sustainCounterBase += 1;
+
+        // CC — memotong channel heal/skill sustain
+        if (ccRating !== null && ccRating >= 2) sustainCounterBase += 2;
+        else if (ccRating !== null && ccRating >= 1) sustainCounterBase += 1;
+
+        // Engage cepat — tidak kasih waktu musuh setup sustain
+        var engageRoleSustain = getEngageRole(hero);
+        if (engageRoleSustain === 'primary') sustainCounterBase += 1;
+
+        var sustainCounterScore = Math.round(sustainCounterBase * enemyInfoFactor);
+        if (sustainCounterScore > 0) {
+          score += sustainCounterScore;
+          reasons.push('Counter enemy Sustain');
+
+          if (burstRating !== null && burstRating >= 1) reasons.push('Counter Sustain: burst');
+          if (pickRating !== null && pickRating >= 1) reasons.push('Counter Sustain: pick');
+          if (ccRating !== null && ccRating >= 1) reasons.push('Counter Sustain: cc');
+        }
+
+        // Penalty: DPS lambat tidak efektif vs sustain tinggi
+        if ((dpsRating !== null && dpsRating >= 1) && (burstRating === null || burstRating === 0)) {
+          var slowDpsPenalty = Math.round(1 * enemyInfoFactor);
+          if (slowDpsPenalty > 0) {
+            score -= slowDpsPenalty;
+            reasons.push('Counter Sustain: DPS lambat');
+          }
+        }
+      } else if (enemySignals && enemySignals.primary === 'poke' && enemySignals.poke > 0) {
+        var pokeCounterBase = 0;
+
+        // Engage cepat = tutup jarak sebelum poke stack damage
+        var engageRolePoke = getEngageRole(hero);
+        var engageRatingPoke = getEngageRating(hero);
+        if (engageRolePoke === 'primary' && engageRatingPoke !== null && engageRatingPoke >= 1) {
+          pokeCounterBase += 2;
+        } else if (engageRatingPoke !== null && engageRatingPoke >= 1) {
+          pokeCounterBase += 1;
+        }
+
+        // Mobility untuk close gap
+        var mobilityRatingPoke = getMobilityRating(hero);
+        if (mobilityRatingPoke !== null && mobilityRatingPoke >= 1) pokeCounterBase += 1;
+
+        // Frontline absorb poke damage
+        if (frontlineRating !== null && frontlineRating >= 2) pokeCounterBase += 2;
+        else if (frontlineRating !== null && frontlineRating >= 1) pokeCounterBase += 1;
+
+        // CC untuk lock poke hero saat engage
+        if (ccRating !== null && ccRating >= 1) pokeCounterBase += 1;
+
+        var pokeCounterScore = Math.round(pokeCounterBase * enemyInfoFactor);
+        if (pokeCounterScore > 0) {
+          score += pokeCounterScore;
+          reasons.push('Counter enemy Poke');
+          if (engageRolePoke === 'primary' || (engageRatingPoke !== null && engageRatingPoke >= 1)) reasons.push('Counter Poke: engage');
+          if (mobilityRatingPoke !== null && mobilityRatingPoke >= 1) reasons.push('Counter Poke: mobility');
+          if (frontlineRating !== null && frontlineRating >= 1) reasons.push('Counter Poke: frontline');
+        }
+
+        // Penalty: hero immobile tanpa frontline mudah di-poke terus
+        var immobilePoke = (mobilityRatingPoke === null || mobilityRatingPoke === 0);
+        var noFrontlinePoke = (frontlineRating === null || frontlineRating === 0);
+        if (immobilePoke && noFrontlinePoke) {
+          var pokePenalty = Math.round(1 * enemyInfoFactor);
+          if (pokePenalty > 0) {
+            score -= pokePenalty;
+            reasons.push('Counter Poke: rentan poke');
+          }
+        }
       }
     }
 
@@ -1424,6 +1669,15 @@
     if (denyBonus) {
       score += denyBonus.score;
       reasons.push(denyBonus.reason);
+    }
+
+    // Special case for Li Xin form recommendation (Global V2)
+    if (hero.id === 'li_xin') {
+      var tempEnemySummary = computeTeamSummary(enemyPicks || [], null);
+      var advice = getLiXinFormAdvice(summary, tempEnemySummary);
+      if (advice) {
+        reasons.push('Saran: ' + advice.label);
+      }
     }
 
     if (reasons.length === 0) {
@@ -2035,7 +2289,11 @@
 
     this.hideLanePopover();
     this.setMessage('Reset selesai.');
+    var self = this;
     this.render();
+    requestAnimationFrame(function () {
+      self.renderRecommendations();
+    });
   };
 
   DraftPickApp.prototype.renderRoleOptions = function () {
@@ -2337,7 +2595,8 @@
       });
 
       var content = el('div', { className: 'rec-card__content' });
-      content.appendChild(el('div', { className: 'rec-card__name', text: item.hero.name }));
+      var displayName = item.hero.shortName || item.hero.name;
+      content.appendChild(el('div', { className: 'rec-card__name', text: displayName, title: item.hero.name }));
       content.appendChild(el('div', { className: 'rec-card__meta', text: item.hero.role }));
       content.appendChild(el('div', { className: 'rec-card__score', text: 'Skor ' + item.score }));
 
@@ -2354,6 +2613,92 @@
       card.appendChild(extra);
 
       this.nodes.recommendationsList.appendChild(card);
+    }
+
+
+    // --- TRANSFORM TO INSIGHT PANEL (When Draft is Finished) ---
+    var totalPickCount = 0;
+    for (var t in this.state.teams) {
+      totalPickCount += this.state.teams[t].filter(function(h) { return h !== null; }).length;
+    }
+
+    if (totalPickCount === 10) {
+      // 1. Hide unwanted elements
+      if (this.nodes.recommendationsNav) this.nodes.recommendationsNav.style.display = 'none';
+      if (this.nodes.recommendationsHint) this.nodes.recommendationsHint.style.display = 'none';
+      
+      // 2. Update Title
+      if (this.nodes.recommendationsTitle) {
+        this.nodes.recommendationsTitle.textContent = '💡 Analisis Strategi & Insight Coach';
+        this.nodes.recommendationsTitle.style.color = 'var(--accent-a)';
+      }
+
+      // 3. Clear and Render Insight only
+      this.nodes.recommendationsList.innerHTML = '';
+      this.nodes.recommendationsList.style.overflowX = 'hidden'; // No more slider
+      this.nodes.recommendationsList.style.flexDirection = 'row';
+      this.nodes.recommendationsList.style.flexWrap = 'wrap';
+      this.nodes.recommendationsList.style.alignItems = 'stretch';
+      this.nodes.recommendationsList.style.alignContent = 'flex-start';
+      this.nodes.recommendationsList.style.gap = '16px';
+      
+      var liXinOnTeam = false;
+      var allyHeroes = this.state.teams.ally;
+      for (var k = 0; k < allyHeroes.length; k++) {
+        if (allyHeroes[k] && allyHeroes[k].id === 'li_xin') {
+          liXinOnTeam = true;
+          break;
+        }
+      }
+
+      if (liXinOnTeam) {
+        var finalEnemySummary = computeTeamSummary(this.state.teams[enemyKey], null);
+        var finalAdvice = getLiXinFormAdvice(summary, finalEnemySummary);
+        if (finalAdvice) {
+          var insightBox = el('div', { className: 'tm-insight-box tm-insight-box--large' });
+          var insightTitle = el('div', { className: 'tm-insight-title', text: 'REKOMENDASI: LI XIN FORM' });
+          var insightText = el('div', { className: 'tm-insight-text', text: 'Berdasarkan analisis draf musuh, Li Xin disarankan menggunakan ' + finalAdvice.label + '. ' + finalAdvice.reason });
+          insightBox.appendChild(insightTitle);
+          insightBox.appendChild(insightText);
+          this.nodes.recommendationsList.appendChild(insightBox);
+        }
+      }
+
+      var hayaOnTeam = false;
+      for (var k = 0; k < allyHeroes.length; k++) {
+        if (allyHeroes[k] && allyHeroes[k].id === 'haya') {
+          hayaOnTeam = true;
+          break;
+        }
+      }
+
+      if (hayaOnTeam) {
+        var hayaAdvice = getHayaKidnapAdvice(this.state.teams[enemyKey]);
+        if (hayaAdvice) {
+          var insightBoxHaya = el('div', { className: 'tm-insight-box tm-insight-box--large', style: 'border-color: rgba(147, 112, 219, 0.5); background: linear-gradient(135deg, rgba(147, 112, 219, 0.15), rgba(0, 0, 0, 0.4));' });
+          var insightTitleHaya = el('div', { className: 'tm-insight-title', style: 'color: #c792ea; border-bottom: 1px solid rgba(147, 112, 219, 0.2);', text: '🔎 COACH INSIGHT: STRATEGI PENCULIKAN HAYA' });
+          var insightTextHaya = el('div', { className: 'tm-insight-text', text: hayaAdvice.reason });
+          
+          insightBoxHaya.appendChild(insightTitleHaya);
+          insightBoxHaya.appendChild(insightTextHaya);
+          this.nodes.recommendationsList.appendChild(insightBoxHaya);
+        }
+      }
+
+      if (!liXinOnTeam && !hayaOnTeam) {
+        // Fallback for complete draft with no specific hero insight
+        var defaultInsight = el('div', { className: 'tm-insight-box tm-insight-box--large', style: 'border-color: rgba(255,255,255,0.1)' });
+        defaultInsight.innerHTML = '<div class="tm-insight-title">DRAFT SELESAI</div><div class="tm-insight-text">Komposisi kedua tim sudah lengkap. Fokus pada eksekusi strategi ' + (summary.archetypeSignals.primary || 'Balanced') + ' untuk mendominasi pertandingan. Semangat!</div>';
+        this.nodes.recommendationsList.appendChild(defaultInsight);
+      }
+    } else {
+      // Ensure elements are visible if draft is reset or hero removed
+      if (this.nodes.recommendationsNav) this.nodes.recommendationsNav.style.display = 'flex';
+      if (this.nodes.recommendationsHint) this.nodes.recommendationsHint.style.display = 'block';
+      if (this.nodes.recommendationsTitle) this.nodes.recommendationsTitle.textContent = 'Rekomendasi Pick';
+      this.nodes.recommendationsList.style.overflowX = 'auto';
+      this.nodes.recommendationsList.style.flexDirection = 'row';
+      this.nodes.recommendationsList.style.alignItems = 'center';
     }
   };
 
