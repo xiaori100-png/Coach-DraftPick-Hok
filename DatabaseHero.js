@@ -186,9 +186,13 @@
       coachProfile: {
         draftIdentity: {
           archetype: 'Assassin',
-          playPattern: 'Burst assassin jungler yang scaling ke late game; fokus farming lalu mencari pick/backline saat item sudah jadi.',
-          engageRole: 'primary',
-          notes: ['Pasif & skill 1-3 sudah diinput. S3 adalah AoE launch 1 detik + 3 mark (bonus damage basic 270 non-crit) selama 7 detik.']
+          playPattern: 'Flanker/pick assassin: farming jungle lalu cari angle masuk dari sisi/belakang untuk one-shot satu target terisolasi. Pola: S2 dash masuk → S3 AoE launch + mark → pasif enhanced basic + S1 spell shield untuk block CC saat burst window. Bukan pembuka war untuk tim — masuk sendirian ke target spesifik, bukan ke kerumunan.',
+          engageRole: 'secondary',
+          notes: [
+            'Wukong masuk duluan secara fisik tapi bukan primary engager — dia flanker yang mencari target terisolasi, bukan tank yang membuka war untuk tim ikut masuk.',
+            'S1 spell shield adalah defensive tool saat burst window (block 1 skill musuh), bukan escape murni.',
+            'S3 AoE launch memberi window untuk tim follow-up, tapi Wukong sendiri tidak bisa sustain di tengah kerumunan tanpa setup.'
+          ]
         },
 
         powerCurve: {
@@ -271,10 +275,7 @@
         },
 
         needsValidation: {
-          questions: [
-            'Radius efektif Skill 3 (Golden Cudgel) belum dicatat.',
-            'Konsistensi menembus tembok tipis pada Skill 2 (Furious Advance) masih butuh verifikasi jarak/ketebalan tembok.'
-          ]
+          questions: []
         }
       }
     },
@@ -306,17 +307,17 @@
         passive: {
           name: 'Pasif',
           categories: ['sustain', 'dps', 'attack_speed', 'stance', 'cooldown_cut', 'range_scaling'],
-          rawDescription: 'Chicha bertempur sambil beralih di antara kelima senjatanya sesuai urutan (Polearm, Spear, Dagger-Axe, Halberd, dan Bow). Setiap Serangan Dasarnya memulihkan 20 (20+0,3% HP ekstra) HP dan membuatnya beralih ke senjata berikutnya yang juga meningkatkan jangkauan serangannya. Setiap hantaman Serangan Dasar atau Skill memberi 1 tumpuk Fighting Spirit (selama 4 Detik, maks 8 tumpukan). Setiap tumpukan meningkatkan Kecepatan Serangan sebesar 4% (Bisa melampaui batas Kecepatan Serangan). Polearm dan Spear memberikan Defense Form, Dagger-Axe dan Halbert memberikannya Offense Form, sedangkan Bow memberikannya Overkill Form. (Setiap Form memiliki efek Skill 1 dan Skill 2 yang berbeda. Memasuki Overkill Form akan langsung mempersingkat CD Skill 1 dan Skill 2 sebesar 50%).',
+          rawDescription: 'Chicha bertempur sambil beralih di antara kelima senjatanya sesuai urutan (Polearm, Spear, Dagger-Axe, Halberd, dan Bow). Setiap Serangan Dasarnya memulihkan 20 (20/40+0,3% HP ekstra) HP dan membuatnya beralih ke senjata berikutnya yang juga meningkatkan jangkauan serangannya. Setiap hantaman Serangan Dasar atau Skill memberi 1 tumpuk Fighting Spirit (selama 4 Detik, maks 8 tumpukan). Setiap tumpukan meningkatkan Kecepatan Serangan sebesar 4%/8% (Bisa melampaui batas Kecepatan Serangan). Polearm dan Spear memberikan Defense Form, Dagger-Axe dan Halbert memberikannya Offense Form, sedangkan Bow memberikannya Overkill Form. (Setiap Form memiliki efek Skill 1 dan Skill 2 yang berbeda. Memasuki Overkill Form akan langsung mempersingkat CD Skill 1 dan Skill 2 sebesar 50%).',
           mechanics: {
             weaponCycle: ['Polearm', 'Spear', 'Dagger-Axe', 'Halberd', 'Bow'],
             basicAttackHeal: {
-              flat: 20,
+              baseHealByLevel: { level1: 20, level15: 40 },
               bonusHpPct: 0.3
             },
             fightingSpirit: {
               durationSec: 4,
               maxStacks: 8,
-              attackSpeedPerStackPct: 4,
+              attackSpeedPerStackPctByLevel: { level1: 4, level15: 8 },
               canExceedCap: true,
               gainedBy: ['basic', 'skill-hit']
             },
@@ -336,15 +337,18 @@
           cdSec: 10,
           manaCost: 50,
           categories: ['cc', 'physical', 'movement'],
-          rawDescription: 'Skill 1: Peak-Crushing Polearm (CC, Damage Fisik, Gerakan) (CD 10 Detik) Konsumsi Mana 50\nDefense Form: Chicha mengayunkan senjatanya dan melompat ke arah target, menimbulkan 200 (200+65% Serangan Fisik ekstra) Damage Fisik sekaligus memukul mundur musuh yang dilewatinya ke lokasi tujuan bersamanya. Setelah sampai di tujuan, ia menghantam tanah, menimbulkan 200 (200+65% Serangan Fisik ekstra) Damage Fisik dan Launch (selama 0,75 Detik) pada musuh.\n\nSkill 1: Hell-Binding Dagger-Axe (CC, Damage Fisik, Gerakan) (CD 10 Detik) Konsumsi Mana 50\nOffense Form: Chicha mengaitkan senjatanya ke arah target, menimbulkan 225 (225+75% Serangan Fisik ekstra) Damage Fisik sekaligus menarik musuh yang dilewatinya ke lokasi tujuan bersamanya. Setelah sampai di tujuan ia menghantam ke tanah, menimbulkan 225 (225+75% Serangan Fisik ekstra) Damage Fisik dan Launch (selama 0,75 Detik) pada musuh.\n\nSkill 1: Sky-Shattering Bow (CC, Damage Fisik, Gerakan) (CD 10 Detik) Konsumsi Mana 50\nOverkill Form: Chicha melancarkan tendangan terbang ke arah target dan menembakkan panah yangg menembus, menimbulkan 250 (250+85% Serangan Fisik ekstra) Damage Fisik dan memukul mundur musuh (selama 0,75 Detik). Jika musuh terpental ke tembok, menimbulkan 250 (250+85% Serangan Fisik ekstra) Damage Fisik dan membatasi pergerakan mereka (selama 2 Detik.)',
+          rawDescription: 'Skill 1: Peak-Crushing Polearm (CC, Damage Fisik, Gerakan) (CD 10/9,6/9,2/8,8/8,4/8 Detik) Konsumsi Mana 50\nDefense Form: Chicha mengayunkan senjatanya dan melompat ke arah target, menimbulkan 200 (200/240/280/320/360/400+65% Serangan Fisik ekstra) Damage Fisik sekaligus memukul mundur musuh yang dilewatinya ke lokasi tujuan bersamanya. Setelah sampai di tujuan, ia menghantam tanah, menimbulkan 200 (200/240/280/320/360/400+65% Serangan Fisik ekstra) Damage Fisik dan Launch (selama 0,75 Detik) pada musuh.\n\nSkill 1: Hell-Binding Dagger-Axe (CC, Damage Fisik, Gerakan) (CD 10/9,6/9,2/8,8/8,4/8 Detik) Konsumsi Mana 50\nOffense Form: Chicha mengaitkan senjatanya ke arah target, menimbulkan 225 (225/270/315/360/405/450+75% Serangan Fisik ekstra) Damage Fisik sekaligus menarik musuh yang dilewatinya ke lokasi tujuan bersamanya. Setelah sampai di tujuan ia menghantam ke tanah, menimbulkan 225 (225/270/315/360/405/450+75% Serangan Fisik ekstra) Damage Fisik dan Launch (selama 0,75 Detik) pada musuh.\n\nSkill 1: Sky-Shattering Bow (CC, Damage Fisik, Gerakan) (CD 10/9,6/9,2/8,8/8,4/8 Detik) Konsumsi Mana 50\nOverkill Form: Chicha melancarkan tendangan terbang ke arah target dan menembakkan panah yang menembus, menimbulkan 250 (250/300/350/400/450/500+85% Serangan Fisik ekstra) Damage Fisik dan memukul mundur musuh (selama 0,75 Detik). Jika musuh terpental ke tembok, menimbulkan 250 (250/300/350/400/450/500+85% Serangan Fisik ekstra) Damage Fisik dan membatasi pergerakan mereka (selama 2 Detik.)',
+          mechanics: {
+            cooldownSecBySkillLevel: [10, 9.6, 9.2, 8.8, 8.4, 8]
+          },
           variants: {
             defenseForm: {
               name: 'Peak-Crushing Polearm',
               categories: ['cc', 'physical', 'movement'],
               mechanics: {
                 hits: {
-                  firstHit: { baseDamage: 200, bonusPhysicalAttackPct: 65 },
-                  secondHit: { baseDamage: 200, bonusPhysicalAttackPct: 65 }
+                  firstHit: { baseDamageBySkillLevel: [200, 240, 280, 320, 360, 400], bonusPhysicalAttackPct: 65 },
+                  secondHit: { baseDamageBySkillLevel: [200, 240, 280, 320, 360, 400], bonusPhysicalAttackPct: 65 }
                 },
                 displacement: {
                   type: 'push_along_path',
@@ -361,8 +365,8 @@
               categories: ['cc', 'physical', 'movement'],
               mechanics: {
                 hits: {
-                  firstHit: { baseDamage: 225, bonusPhysicalAttackPct: 75 },
-                  secondHit: { baseDamage: 225, bonusPhysicalAttackPct: 75 }
+                  firstHit: { baseDamageBySkillLevel: [225, 270, 315, 360, 405, 450], bonusPhysicalAttackPct: 75 },
+                  secondHit: { baseDamageBySkillLevel: [225, 270, 315, 360, 405, 450], bonusPhysicalAttackPct: 75 }
                 },
                 displacement: {
                   type: 'pull_along_path',
@@ -379,9 +383,9 @@
               categories: ['cc', 'physical', 'movement'],
               mechanics: {
                 hits: {
-                  hit: { baseDamage: 250, bonusPhysicalAttackPct: 85 },
+                  hit: { baseDamageBySkillLevel: [250, 300, 350, 400, 450, 500], bonusPhysicalAttackPct: 85 },
                   wallProc: {
-                    baseDamage: 250,
+                    baseDamageBySkillLevel: [250, 300, 350, 400, 450, 500],
                     bonusPhysicalAttackPct: 85,
                     restrictMovementDurationSec: 2
                   }
@@ -405,20 +409,23 @@
           cdSec: 10,
           manaCost: 50,
           categories: ['physical', 'sustain', 'knockback'],
-          rawDescription: 'Skill 2: World-Splitting Spear (Damage Fisik, Pemulihan, Pukul Mundur) (CD 10 Detik) Konsumsi Mana 50\nDefense Form: Chicha menusukkan senjatanya ke arah target, menimbulkan 450 (450+150% Serangan Fisik ekstra) Damage Fisik dan memukul mundur musuh (bukan CC). Dia memulihkan 180 (180+3% HP ekstra) HP untuk setiap target yang terhantam (hanya setengahnya jika menghantam Unit Non-Hero)\n\nSkill 2: Realm-Sweeping Halberd (Damage Fisik, Pemulihan, Pukul Mundur) (CD 10 Detik) Konsumsi Mana 50\nOffense Form: Chicha menebas ke arah target, menimbulkan 475 (475+160% Serangan Fisik ekstra) Damage Fisik dan memukul mundur musuh (bukan CC). Dia memulihkan 180 (180+3% HP ekstra) HP untuk setiap target yang terhantam (hanya setengahnya jika menghantam Unit Non-Hero).\n\nSkill 2: Star-Felling Arrow (True Damage, Pemulihan, Pukul Mundur) (CD 10 Detik) Konsumsi Mana 50\nOverkill Form: Chicha membidik ke arah traget dan mengincar semua musuh dalam Jangkauan (maks 5 target, dengan Hero musuh sebagai Prioritasnya). Setelah itu, dia menembakkan panah pada semua target yang diincar, menimbulkan 500 (500+170% Serangan Fisik ekstra) Damage Fisik plus True Damage sebesar 10% dari HP yang hilang dari target, serta memukul mundur musuh (bukan CC). Untuk setiap target yang terhantam, dia memulihkan 180 (180+3% HP ekstra) HP (hanya setengahnya jika menghantam Unit Non-Hero)\n(Selama Skill ini aktif, Chicha mendapatkan Kekebalan CC dan 15% Reduksi Damage).',
+          rawDescription: 'Skill 2: World-Splitting Spear (Damage Fisik, Pemulihan, Pukul Mundur) (CD 10/9,6/9,2/8,8/8,4/8 Detik) Konsumsi Mana 50\nDefense Form: Chicha menusukkan senjatanya ke arah target, menimbulkan 450 (450/540/630/720/810/900+150% Serangan Fisik ekstra) Damage Fisik dan memukul mundur musuh (bukan CC). Dia memulihkan 180 (180/216/252/288/324/360+3% HP ekstra) HP untuk setiap target yang terhantam (hanya setengahnya jika menghantam Unit Non-Hero)\n\nSkill 2: Realm-Sweeping Halberd (Damage Fisik, Pemulihan, Pukul Mundur) (CD 10/9,6/9,2/8,8/8,4/8 Detik) Konsumsi Mana 50\nOffense Form: Chicha menebas ke arah target, menimbulkan 475 (475/570/665/760/855/950+160% Serangan Fisik ekstra) Damage Fisik dan memukul mundur musuh (bukan CC). Dia memulihkan 180 (180/216/252/288/324/360+3% HP ekstra) HP untuk setiap target yang terhantam (hanya setengahnya jika menghantam Unit Non-Hero).\n\nSkill 2: Star-Felling Arrow (True Damage, Pemulihan, Pukul Mundur) (CD 10/9,6/9,2/8,8/8,4/8 Detik) Konsumsi Mana 50\nOverkill Form: Chicha membidik ke arah traget dan mengincar semua musuh dalam Jangkauan (maks 5 target, dengan Hero musuh sebagai Prioritasnya). Setelah itu, dia menembakkan panah pada semua target yang diincar, menimbulkan 500 (500/600/700/800/900/1000+170% Serangan Fisik ekstra) Damage Fisik plus True Damage sebesar 10% dari HP yang hilang dari target, serta memukul mundur musuh (bukan CC). Untuk setiap target yang terhantam, dia memulihkan 180 (180/216/252/288/324/360+3% HP ekstra) HP (hanya setengahnya jika menghantam Unit Non-Hero)\n(Selama Skill ini aktif, Chicha mendapatkan Kekebalan CC dan 15/18/21/24/27/30% Reduksi Damage).',
+          mechanics: {
+            cooldownSecBySkillLevel: [10, 9.6, 9.2, 8.8, 8.4, 8]
+          },
           variants: {
             defenseForm: {
               name: 'World-Splitting Spear',
               categories: ['physical', 'sustain', 'knockback'],
               mechanics: {
-                hit: { baseDamage: 450, bonusPhysicalAttackPct: 150 },
+                hit: { baseDamageBySkillLevel: [450, 540, 630, 720, 810, 900], bonusPhysicalAttackPct: 150 },
                 displacement: {
                   type: 'knockback',
                   isCrowdControl: false,
                   note: 'Memukul mundur musuh (bukan CC).'
                 },
                 healing: {
-                  perTarget: { flat: 180, bonusHpPct: 3 },
+                  perTarget: { baseHealBySkillLevel: [180, 216, 252, 288, 324, 360], bonusHpPct: 3 },
                   nonHeroMultiplier: 0.5
                 }
               }
@@ -428,14 +435,14 @@
               name: 'Realm-Sweeping Halberd',
               categories: ['physical', 'sustain', 'knockback'],
               mechanics: {
-                hit: { baseDamage: 475, bonusPhysicalAttackPct: 160 },
+                hit: { baseDamageBySkillLevel: [475, 570, 665, 760, 855, 950], bonusPhysicalAttackPct: 160 },
                 displacement: {
                   type: 'knockback',
                   isCrowdControl: false,
                   note: 'Memukul mundur musuh (bukan CC).'
                 },
                 healing: {
-                  perTarget: { flat: 180, bonusHpPct: 3 },
+                  perTarget: { baseHealBySkillLevel: [180, 216, 252, 288, 324, 360], bonusHpPct: 3 },
                   nonHeroMultiplier: 0.5
                 }
               }
@@ -450,7 +457,7 @@
                   priority: 'enemy_hero'
                 },
                 damage: {
-                  physical: { baseDamage: 500, bonusPhysicalAttackPct: 170 },
+                  physical: { baseDamageBySkillLevel: [500, 600, 700, 800, 900, 1000], bonusPhysicalAttackPct: 170 },
                   trueDamage: { type: 'missing_hp_pct', pct: 10 }
                 },
                 displacement: {
@@ -459,12 +466,12 @@
                   note: 'Memukul mundur musuh (bukan CC).'
                 },
                 healing: {
-                  perTarget: { flat: 180, bonusHpPct: 3 },
+                  perTarget: { baseHealBySkillLevel: [180, 216, 252, 288, 324, 360], bonusHpPct: 3 },
                   nonHeroMultiplier: 0.5
                 },
                 selfBuff: {
                   ccImmunity: true,
-                  damageReductionPct: 15
+                  damageReductionPctBySkillLevel: [15, 18, 21, 24, 27, 30]
                 }
               }
             }
@@ -476,16 +483,18 @@
           cdSec: 40,
           manaCost: 130,
           categories: ['enhance', 'physical', 'attack_speed', 'movement'],
-          rawDescription: 'Skill 3: Return Of The Armsmaster (Tingkatkan, Damage Fisik) (CD 40 Detik) Konsumsi Mana 130\nChicha mengeluarkan kelima senjatanya, mendapatkan peningkatan Kecepatan Gerakan (selama 2 Detik), 35% Kecepatan Serangan, serta melampaui batas tumpukan Fighting Spirit (selama 6 Detik).\nSelama mengeluarkan kelima senjatanya, setiap Serangan Dasar menimbulkan 36 (36+12% Serangan Fisik ekstra) Damage Fisik tambahan.\n(Selama Skill ini aktif, dia bisa menyerang dengan Serangan Dasar sambil terus bergerak, dan saat memasuki Overkill Form, dia akan tetap berada dalam Form tersebut).',
+          rawDescription: 'Skill 3: Return Of The Armsmaster (Tingkatkan, Damage Fisik) (CD 40/36/32 Detik) Konsumsi Mana 130\nChicha mengeluarkan kelima senjatanya, mendapatkan peningkatan 80/90/100% Kecepatan Gerakan (selama 2 Detik), 35/52,5/70% Kecepatan Serangan, serta melampaui batas tumpukan Fighting Spirit (selama 6 Detik).\nSelama mengeluarkan kelima senjatanya, setiap Serangan Dasar menimbulkan 36 (36/54/72+12% Serangan Fisik ekstra) Damage Fisik tambahan.\n(Selama Skill ini aktif, dia bisa menyerang dengan Serangan Dasar sambil terus bergerak, dan saat memasuki Overkill Form, dia akan tetap berada dalam Form tersebut).',
           mechanics: {
+            cooldownSecBySkillLevel: [40, 36, 32],
             durationSec: 6,
+            moveSpeedBonusPctBySkillLevel: [80, 90, 100],
             moveSpeedBuffDurationSec: 2,
-            attackSpeedBonusPct: 35,
+            attackSpeedBonusPctBySkillLevel: [35, 52.5, 70],
             fightingSpirit: {
               canExceedStackCap: true
             },
             basicAttackBonusDamage: {
-              baseDamage: 36,
+              baseDamageBySkillLevel: [36, 54, 72],
               bonusPhysicalAttackPct: 12
             },
             moveWhileAttacking: true,
@@ -529,11 +538,12 @@
       coachProfile: {
         draftIdentity: {
           archetype: 'Fighter',
-          playPattern: 'Follow-up diver/cleaner',
+          playPattern: 'Follow-up diver/cleaner: bangun stack Fighting Spirit lewat basic attack + skill hit, lalu cycle form (Defense → Offense → Overkill) untuk tempo extended fight. Masuk fight setelah primary engage membuka — S1 sebagai follow-up displacement, S3 untuk cleanup/chase dengan move-while-attacking. True damage S2 Overkill Form (10% missing HP) tetap relevan bahkan saat tertinggal item.',
           engageRole: 'secondary',
           notes: [
             'Chicha butuh pembuka war (primary engage) dari tim; ia lebih konsisten sebagai follow-up daripada membuka sendiri.',
-            'Win condition utama berasal dari timing: membangun stack Fighting Spirit + cycle form untuk tempo extended fight lalu cleanup.'
+            'Win condition utama: timing masuk fight saat stack Fighting Spirit sudah terbangun + cycle form optimal untuk all-in.',
+            'S2 Overkill Form punya CC immunity + damage reduction 15-30% — window all-in yang relatif aman meski tertinggal item.'
           ]
         },
 
@@ -631,7 +641,7 @@
           uses: ['engage', 'chase', 'reposition'],
           notes: [
             'Akses mobility sangat dipengaruhi cycle form; opsi keluar (escape) tidak selalu tersedia saat dibutuhkan.',
-            'Overkill Form punya batasan situasional (mis. interaksi tembok tipis) sehingga tidak bisa dianggap escape universal.'
+            'Mobility lebih ke engage/chase, bukan escape — S1 butuh posisi terbuka, S3 lebih ke cleanup/chase.'
           ],
           sources: [
             {
@@ -660,10 +670,7 @@
         },
 
         needsValidation: {
-          questions: [
-            'Value Chicha ketika tertinggal: apakah masih bisa berkontribusi secara konsisten atau harus bermain lebih defensif?',
-            'Seberapa sering mobility-nya bisa dipakai untuk keluar fight (escape) pada kondisi nyata match?'
-          ]
+          questions: []
         },
 
         synergy: {
@@ -714,7 +721,7 @@
       role: 'Mid Lane',
       secondaryRoles: [],
 
-      tags: ['mage', 'artillery', 'burst', 'late_game', 'magic', 'ranged', 'cc'],
+      tags: ['mage', 'artillery', 'burst', 'poke', 'late_game', 'magic', 'ranged', 'cc'],
 
       image: 'images/heroes/daji.png',
 
@@ -838,18 +845,20 @@
       coachProfile: {
         draftIdentity: {
           archetype: 'Mage',
-          playPattern: 'Artillery burst picker',
+          playPattern: 'Poke → Burst picker: spam S1 (CD 5 detik) dari jarak aman untuk stack pasif magic shred (maks 3 stack), lalu punish dengan S2 stun + S3 saat stack penuh. Efektif sebagai magic damage amplifier untuk tim dengan 2+ damage magis.',
           notes: [
-            'Daji adalah mage burst dengan pola main mencari pick: kunci 1 target dengan Stun lalu kombo damage.',
-            'Bukan pembuka war; lebih aman bermain dari belakang dan follow-up setelah ada setup/frontline.'
+            'Pola utama: stack Captivate lewat S1 poke → S2 stun lock → S3 burst untuk kill window.',
+            'Bukan pembuka war; lebih aman bermain dari belakang dan follow-up setelah ada setup/frontline.',
+            'Pasif magic shred sangat bernilai dalam komposisi double/triple magic damage.'
           ]
         },
 
         powerCurve: {
-          early: 'low',
+          early: 'medium',
           mid: 'medium',
           late: 'high',
           notes: [
+            'Early medium: S2 stun targeted reliable bahkan level 1, pasif magic shred aktif dari awal, musuh belum beli MR.',
             'Spike itemisasi (item ke-berapa) belum dimodelkan; sementara gunakan fase early/mid/late sebagai proxy.'
           ]
         },
@@ -934,10 +943,7 @@
         },
 
         needsValidation: {
-          questions: [
-            'PowerCurve early Daji: apakah benar low, atau lebih tepat medium karena punya pick tool (stun) bahkan sebelum late game?',
-            'Apakah output damage Daji lebih tepat dikategorikan burst murni, atau burst + poke (mis. memanfaatkan CD S1 yang pendek)?'
-          ]
+          questions: []
         }
       }
     },
@@ -1432,11 +1438,12 @@
       coachProfile: {
         draftIdentity: {
           archetype: 'Marksman',
-          playPattern: 'Late-game DPS marksman (free-hit) + long-range pick',
+          playPattern: 'Late-game DPS marksman (free-hit) + long-range pick tool: output DPS lewat pasif multi-shot (3 panah saat max stack) + S1 chain shot. S3 bukan reliable opener — lebih efektif sebagai follow-up CC jarak jauh (stun 0.75–3.5 detik scaling jarak) saat musuh sudah terkena setup tim atau tidak bergerak.',
           engageRole: 'secondary',
           notes: [
             'Hou Yi adalah marksman DPS dengan scaling late game; butuh ruang tembak dan perlindungan tim.',
-            'Inisiasi utama datang dari Skill 3 (stun jarak jauh) untuk pick/engage, lalu tim follow-up.'
+            'S3 paling efektif sebagai follow-up pick/CC jarak jauh, bukan pembuka fight — stun pendek di jarak dekat, susah kena saat musuh masih bebas bergerak.',
+            'Tidak punya dash/escape — sangat rentan dive; bergantung penuh pada frontline/peel tim.'
           ]
         },
 
@@ -1452,7 +1459,7 @@
           frontline: 'low',
           sustain: 'low',
 
-          engage: 'medium',
+          engage: 'low',
           disengage: 'low',
           peel: 'medium',
 
@@ -1552,10 +1559,7 @@
         },
 
         needsValidation: {
-          questions: [
-            'Radius area Skill 2 (Afterglow) dan radius ledakan Skill 3 (Burning Sun Arrow).',
-            'Kecepatan proyektil Skill 3 (mempengaruhi reliabilitas pick/engage pada jarak jauh).'
-          ]
+          questions: []
         }
       }
     },
@@ -1809,10 +1813,11 @@
         draftIdentity: {
           archetype: 'Mage',
           engageRole: 'secondary',
-          playPattern: 'Artillery mage yang menang lewat poke jarak jauh untuk pasang Mark, lalu punish re-hit (S1 true damage / S2 stun). Ultimate dipakai untuk isolate target priority (1v1) dan memaksa duel 7–8 detik tanpa intervensi pihak luar; selama dimensi Haya dapat 50% CDR untuk mempercepat cycle skill.',
+          playPattern: 'Artillery poke mage + counter-diver: spam S1/S2 dari jarak aman untuk stack Mark, lalu punish re-hit (S1 true damage / S2 stun). S3 dipakai untuk isolate diver yang masuk ke backline (culik musuh yang masuk, bukan masuk ke musuh) — tim bebas fight 4v4 selama dimensi 7–8 detik. Cocok berpasangan dengan Marksman karena S2 shield/MS + S3 counter-diver.',
           notes: [
             'Core pattern: apply Mark (S1/S2) → re-hit target ber-Mark untuk bonus (S1 true damage / S2 stun).',
             'Resource: Moon Crystal (3 stack) bikin Haya bisa spam S1/S2 sampai stack habis; refill full mengikuti cooldown skill dan dipercepat oleh CDR.',
+            'S3 paling efektif sebagai counter-engage: tunggu diver masuk ke backline, lalu isolate — bukan dipakai untuk masuk ke kerumunan musuh.',
             'S3 mengembalikan Haya ke posisi awal setelah dimensi selesai; plan positioning sebelum cast.'
           ]
         },
@@ -1833,9 +1838,9 @@
           frontline: 'low',
           sustain: 'low',
 
-          engage: 'medium',
+          engage: 'low',
           disengage: 'medium',
-          peel: 'low',
+          peel: 'medium',
 
           cc: 'medium',
           pickPotential: 'high',
@@ -1903,11 +1908,7 @@
         },
 
         needsValidation: {
-          questions: [
-            'Jika enhanced basic attack (1x) tidak dipakai, apakah hangus saat crystal kembali > 0 atau tetap bisa dipakai sampai digunakan?',
-            'Durasi Mark yang tepat: 4 atau 5 detik (atau scaling)?',
-            'Apakah diminishing stun Skill 2 bisa reset jika selingi Skill 1, atau hanya reset saat Mark habis?'
-          ]
+          questions: []
         }
       }
     },
@@ -2258,12 +2259,7 @@
         },
 
         needsValidation: {
-          questions: [
-            'Durasi channel Skill 3 (Celestial Melody).',
-            'Durasi knockback/stun (sekilas) dari Skill 1 saat berada di air.',
-            'Apakah slow reduction 50% (mode putri duyung) juga berlaku untuk rekan tim yang berada di kolam?',
-            'Berapa besar pengurangan CD Celestial Melody saat reset gagal.'
-          ]
+          questions: []
         }
       }
     },
@@ -2528,11 +2524,12 @@
       coachProfile: {
         draftIdentity: {
           archetype: 'Fighter/Assassin',
-          playPattern: 'Mobile diver: stack skill → empowered basic (Spear Will) untuk burst/execute, lalu reset posisi dengan dash.',
+          playPattern: 'Flexible diver: bisa war opener (S3 dash masuk ke kerumunan + launch + CC immunity) atau pick tool (S3 recast alternatif untuk isolate target lalu keluar). Stack Spear Will lewat skill → empowered basic untuk burst/execute. Pasif 3 stack (Zenith-Wildfire) memberi escape lewat terrain saat perlu keluar.',
           engageRole: 'primary',
           notes: [
-            'Ying bisa membuka fight lewat Ultimate (dash masuk + launch) namun bukan frontline tank; idealnya ada follow-up dan vision.',
-            'Tempo utama: masuk dengan CC singkat, keluarkan burst multi-hit, lalu gunakan dash/return untuk keluar atau re-engage.'
+            'Berbeda dari flanker murni — Ying bisa masuk ke kerumunan karena CC immunity + damage reduction S3, bukan hanya mencari target terisolasi.',
+            'Dua pola S3: (1) full combo masuk-return untuk war opener, (2) recast langsung setelah dash pertama untuk pick + fire zone tanpa return.',
+            'Tempo utama: masuk dengan CC singkat, keluarkan burst multi-hit Spear Will, lalu gunakan dash/return atau Zenith-Wildfire untuk reset posisi.'
           ]
         },
 
@@ -2633,11 +2630,7 @@
         },
 
         needsValidation: {
-          questions: [
-            'Durasi maksimum charge untuk Skill 2.',
-            'Radius/ukuran area Launch sepanjang lintasan Starburn.',
-            'Damage tick untuk zona api lingkaran (recast alternatif Starburn).'
-          ]
+          questions: []
         },
 
         synergy: {
@@ -2971,11 +2964,7 @@
         },
 
         needsValidation: {
-          questions: [
-            'Apakah "Serangan Dasar dari Skillnya" pada pasif berarti semua basic attack saat buff aktif, atau hanya basic attack tertentu yang enhanced oleh skill?',
-            'Nilai pengurangan cooldown pasif per level (ICD 25 detik turun menjadi berapa di level tinggi)?',
-            'Jarak maksimum dan lebar hitbox Unruly Blade (skill 3) untuk menilai reliabilitas engage.'
-          ]
+          questions: []
         }
       }
     },
@@ -3170,11 +3159,11 @@
         draftIdentity: {
           archetype: 'Mage',
           engageRole: 'secondary',
-          playPattern: 'Artillery mage yang menang lewat poke multi-hit + zone control, lalu all-in via channel beam dengan shield CC-immunity. Damage makin kuat jika target tetap berada di area (Burning stack).',
+          playPattern: 'Poke → Burst picker + zone control: spam S1 (CD 5 detik, 5 proyektil) dari jarak aman untuk stack Burning pasif (maks 10 stack = amplify damage signifikan), lalu punish dengan S2 stun + S3 channel beam saat target tidak bisa keluar. Bukan engager — tidak punya dash, S3 membuat Angela rooted.',
           notes: [
-            'S1: skillshot 5 proyektil simultan; damage follow-up ke target yang sama hanya 30% (tetap bagus untuk stack Burning).',
-            'S2: stun 1 detik pada unit pertama yang terkena (bisa diblok minion/monster), lalu vortex DoT + slow refresh.',
-            'S3: channel beam (Angela rooted), bisa diputar dan bisa dibatalkan setelah 0,5 detik.'
+            'Pick pattern: stack Burning lewat S1 poke → S2 stun/vortex slow → S3 beam untuk maximize damage window.',
+            'S3 situasional: shield CC immunity bisa dipecah burst, setelah itu channel bisa di-interrupt hard CC.',
+            'S2 sering ketahan minion/monster saat wave ramai — butuh positioning yang bersih untuk stun connect.'
           ]
         },
 
@@ -3192,7 +3181,7 @@
           frontline: 'low',
           sustain: 'low',
 
-          engage: 'medium',
+          engage: 'low',
           disengage: 'medium',
           peel: 'low',
 
@@ -3264,11 +3253,7 @@
         },
 
         needsValidation: {
-          questions: [
-            'Tick pertama vortex S2 terjadi instant saat terbentuk, atau setelah 0,5 detik pertama?',
-            'Cadence S3: interval 12 hit benar-benar konstan (~0,33 detik) atau ada variasi di in-game?',
-            'Model timer Burning di target: apakah refresh 3 detik setiap kali stack ditambah (shared timer), atau ada perilaku khusus lain?'
-          ]
+          questions: []
         }
       }
     },
@@ -3294,7 +3279,7 @@
         passive: {
           name: 'Chain Reaction',
           categories: ['true_damage', 'mark', 'stacking', 'energy_restore', 'anti_tank'],
-          rawDescription: 'Skill Pasif: Chain Reaction (True Damage, Mark)\nSetiap kali Marco Polo menimbulkan Damage pada Serangan Dasar atau Skill, dia menempatkan 1 tumpukan Destruction pada target (5 tumpukan pada Minion). Saat mencapai 10 tumpukan, tumpukan ini berubah menjadi Destroyed Defense selama 5 Detik, sedangkan dirinya memulihkan 30 Energi.\nSerangan Dasar dan Skillnya menimbulkan 100 (100+35% Serangan Fisik ekstra) True Damage tambahan pada musuh dengan Destroyed Defense.',
+          rawDescription: 'Skill Pasif: Chain Reaction (True Damage, Mark)\nSetiap kali Marco Polo menimbulkan Damage pada Serangan Dasar atau Skill, dia menempatkan 1 tumpukan Destruction pada target (5 tumpukan pada Minion). Saat mencapai 10 tumpukan, tumpukan ini berubah menjadi Destroyed Defense selama 5 Detik, sedangkan dirinya memulihkan 30 Energi.\nSerangan Dasar dan Skillnya menimbulkan 100 (100/200+35% Serangan Fisik ekstra) True Damage tambahan pada musuh dengan Destroyed Defense.',
           mechanics: {
             destruction: {
               maxStacks: 10,
@@ -3320,7 +3305,10 @@
               appliesTo: ['basic', 'skill_damage'],
               condition: 'target_has_destroyed_defense',
               perInstance: true,
-              trueDamage: { baseDamage: 100, bonusPhysicalAttackPct: 35 },
+              trueDamage: {
+                baseDamageByLevel: { level1: 100, level15: 200 },
+                bonusPhysicalAttackPct: 35
+              },
               notes: ['Selama Destroyed Defense aktif: setiap instance damage dari basic/skill memicu true damage tambahan.']
             }
           }
@@ -3331,12 +3319,12 @@
           cdSec: 5,
           manaCost: 75,
           categories: ['physical', 'damage', 'multi_hit', 'poke', 'movement', 'move_speed_buff', 'energy_restore'],
-          rawDescription: 'Skill 1: Resplendent Revolver (Damage Fisik, Gerak Cepat) (CD 5 Detik) Konsumsi Energi 75\nMarco Polo menembakkan 6 peluru ke arah target yang Kecepatan menembaknya di pengaruhi oleh Kecepatan Serangan. Selama menembak, dia mendapatkan 10% Kecepatan Gerakan. Setiap peluru menimbulkan 181 (150+18% Serangan Fisik) Damage Fisik pada musuh pertama yang terhantam dan memulihkan Marco Polo 10 Energi.\nSetiap 3 tembakkan peluru dihitung sebagai 1 Serangan Dasar.',
+          rawDescription: 'Skill 1: Resplendent Revolver (Damage Fisik, Gerak Cepat) (CD 5 Detik) Konsumsi Energi 75/69/63/57/51/45\nMarco Polo menembakkan 5/6/7/8/9/10 peluru ke arah target yang (Kecepatan menembaknya di pengaruhi oleh Kecepatan Serangan). Selama menembak, dia mendapatkan 10% Kecepatan Gerakan. Setiap peluru menimbulkan 151 (120/144/168/192/216/240+18% Serangan Fisik) Damage Fisik pada musuh pertama yang terhantam dan memulihkan Marco Polo 10 Energi.\nSetiap 3 tembakkan peluru dihitung sebagai 1 Serangan Dasar.',
           mechanics: {
             delivery: 'skillshot_line',
             firing: {
               projectiles: {
-                count: 6,
+                countBySkillLevel: [5, 6, 7, 8, 9, 10],
                 hits: 'first_unit_hit',
                 notes: ['Bisa ditahan minion/frontline. Dengan positioning/angle yang tepat, semua peluru bisa mengenai 1 target yang sama.']
               },
@@ -3348,10 +3336,13 @@
               }
             },
             damage: {
-              physicalPerProjectile: { baseDamage: 150, bonusPhysicalAttackPct: 18 }
+              physicalPerProjectile: {
+                baseDamageBySkillLevel: [120, 144, 168, 192, 216, 240],
+                bonusPhysicalAttackPct: 18
+              }
             },
             energy: {
-              cost: 75,
+              costBySkillLevel: [75, 69, 63, 57, 51, 45],
               restorePerProjectileHit: 10
             },
             basicAttackCounting: {
@@ -3371,9 +3362,12 @@
           cdSec: 5,
           manaCost: 75,
           categories: ['movement', 'enhance', 'move_speed', 'damage_amp'],
-          rawDescription: 'Skill 2: Roaming Gun (Gerakan, Tingkatkan, Gerak Cepat) (CD 5 Detik) Konsumsi Energi 75\nMarco Polo berteleportasi ke arah target.\nPasif: Saat ada Hero musuh di dekatnya, dia mendapatkan 15% Kecepatan Gerakan dan menimbulkan 20% Damage tambahan.',
+          rawDescription: 'Skill 2: Roaming Gun (Gerakan, Tingkatkan, Gerak Cepat) (CD 5 Detik) Konsumsi Energi 75/69/63/57/51/45\nMarco Polo berteleportasi ke arah target.\nPasif: Saat ada Hero musuh di dekatnya, dia mendapatkan 15/18/21/24/27/30% Kecepatan Gerakan dan menimbulkan 20% Damage tambahan.',
           mechanics: {
             delivery: 'blink_to_point',
+            energy: {
+              costBySkillLevel: [75, 69, 63, 57, 51, 45]
+            },
             blink: {
               target: 'point',
               type: 'directional',
@@ -3383,7 +3377,7 @@
             passiveAura: {
               condition: 'enemy_hero_nearby',
               approximateRange: 'sekitar jangkauan S1 (lebih jauh dari basic attack)',
-              selfMoveSpeedBonusPct: 15,
+              selfMoveSpeedBonusPctBySkillLevel: [15, 18, 21, 24, 27, 30],
               damageDealtBonusPct: 20,
               notes: ['Belum tervalidasi apakah bonus damage ini juga mengamplify proc true damage dari pasif Chain Reaction.']
             }
@@ -3395,9 +3389,13 @@
           cdSec: 50,
           manaCost: 75,
           categories: ['physical', 'damage', 'multi_hit', 'movement', 'blink', 'channel', 'teamfight'],
-          rawDescription: 'Skill 3: Fevered Barrage (Damage Fisik, Gerakan) (CD 50 Detik) Konsumsi Energi 75\nMarco Polo berteleportasi ke arah target, lalu bergerak perlahan ke arah yang sama sambil melancarkan rentetan tembakan pada musuh di sekitarnya selama 3 Detik (Kecepatan Tembakan meningkat sesuai dengan Kecepatan Serangan). Setiap Rentetan menimbulkan 213 (170+25% Serangan Fisik) Damage Fisik.\nSetiap 3 rentetan tembakan dihitung sebagai 1 Serangan Dasar.',
+          rawDescription: 'Skill 3: Fevered Barrage (Damage Fisik, Gerakan) (CD 50/45/40 Detik) Konsumsi Energi 75/60/45\nMarco Polo berteleportasi ke arah target, lalu bergerak perlahan ke arah yang sama sambil melancarkan (12/15/18) rentetan tembakan pada musuh di sekitarnya selama 3 Detik (Kecepatan Tembakan meningkat sesuai dengan Kecepatan Serangan). Setiap Rentetan menimbulkan 213 (170/235/300+25% Serangan Fisik) Damage Fisik.\nSetiap 3 rentetan tembakan dihitung sebagai 1 Serangan Dasar.',
           mechanics: {
             delivery: 'blink_to_point_then_channel',
+            cooldownSecBySkillLevel: [50, 45, 40],
+            energy: {
+              costBySkillLevel: [75, 60, 45]
+            },
             blink: {
               target: 'point',
               type: 'directional',
@@ -3414,6 +3412,7 @@
               firing: {
                 targeting: 'aoe_around_self',
                 hits: 'all_units_in_radius',
+                shotsCountBySkillLevel: [12, 15, 18],
                 fireRateScalesWithAttackSpeed: true,
                 notes: ['Selama unit berada di dalam radius, seharusnya terkena rentetan. Batas jumlah target belum tervalidasi.']
               },
@@ -3432,7 +3431,10 @@
               }
             },
             damage: {
-              physicalPerBarrage: { baseDamage: 170, bonusPhysicalAttackPct: 25 }
+              physicalPerBarrage: { 
+                baseDamageBySkillLevel: [170, 235, 300], 
+                bonusPhysicalAttackPct: 25 
+              }
             },
             basicAttackCounting: {
               barragesPerBasicAttack: 3,
@@ -6647,6 +6649,7 @@
     {
       id: 'ukyo_tachibana',
       name: 'Ukyo Tachibana',
+      shortName: 'Ukyo',
       role: 'Jungling',
       secondaryRoles: ['Clash Lane'],
 
