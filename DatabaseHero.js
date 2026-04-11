@@ -909,13 +909,13 @@
             { externalName: 'Kui', compatibilityPct: 2.51 },
             { externalName: 'Wuyan', compatibilityPct: 1.78 },
             { externalName: 'Zilong', compatibilityPct: 1.71 },
-            { externalName: 'Arthur', compatibilityPct: 1.62 },
+            { heroId: 'arthur', compatibilityPct: 1.62 },
             { externalName: 'Yang Jian', compatibilityPct: 1.38 }
           ],
           trio: [
             { externalNames: ['Hou Yi', 'Ming'], compatibilityPct: 9.39 },
             { externalNames: ['Lian Po', 'Han Xin'], compatibilityPct: 8.70 },
-            { externalNames: ['Hou Yi', 'Cai Yan'], compatibilityPct: 6.23 },
+            { heroIds: ['houyi', 'cai_yan'], compatibilityPct: 6.23 },
             { externalNames: ['Arthur', 'Kui'], compatibilityPct: 5.50 },
             { externalNames: ['Wukong', 'Donghuang'], compatibilityPct: 5.20 },
             { externalNames: ['Wuyan', 'Kui'], compatibilityPct: 3.93 },
@@ -1225,7 +1225,7 @@
             { externalNames: ['Athena', 'Ming'], compatibilityPct: 6.64 },
             { externalNames: ['Menki', 'Ming'], compatibilityPct: 6.47 },
             { externalNames: ['Liu Bei', 'Ming'], compatibilityPct: 6.22 },
-            { externalNames: ['Musashi', 'Dyadia'], compatibilityPct: 5.01 },
+            { heroIds: ['musashi', 'dyadia'], compatibilityPct: 5.01 },
             { externalNames: ['Sun Bin', 'Mayene'], compatibilityPct: 4.13 }
           ]
         },
@@ -1522,7 +1522,7 @@
           duo: [
             { externalName: 'Ming', compatibilityPct: 6.18 },
             { externalName: 'Zhuangzi', compatibilityPct: 3.17 },
-            { externalName: 'Cai Yan', compatibilityPct: 2.78 },
+            { heroId: 'cai_yan', compatibilityPct: 2.78 },
             { externalName: 'Liu Bang', compatibilityPct: 2.46 },
             { externalName: 'Athena', compatibilityPct: 1.79 }
           ],
@@ -1533,7 +1533,7 @@
             { externalNames: ['Daji', 'Ming'], compatibilityPct: 9.39 },
             { externalNames: ['Kongming', 'Ming'], compatibilityPct: 7.48 },
             { externalNames: ['Nakoruru', 'Ming'], compatibilityPct: 7.12 },
-            { externalNames: ['Daji', 'Cai Yan'], compatibilityPct: 6.23 },
+            { heroIds: ['daji', 'cai_yan'], compatibilityPct: 6.23 },
             { externalNames: ['Arthur', 'Ming'], compatibilityPct: 6.07 },
             { externalNames: ['Zilong', 'Cai Yan'], compatibilityPct: 5.96 },
             { externalNames: ['Dian Wei', 'Ming'], compatibilityPct: 5.95 },
@@ -2643,7 +2643,7 @@
             ]
           },
           duo: [
-            { externalName: 'Cai Yan', compatibilityPct: 1.62 },
+            { heroId: 'cai_yan', compatibilityPct: 1.62 },
             { externalName: 'Yaria', compatibilityPct: 1.60 },
             { externalName: 'Nezha', compatibilityPct: 1.53 }
           ],
@@ -4838,7 +4838,7 @@
           ],
           trio: [
             { externalNames: ['Luna', "Ao'yin"], compatibilityPct: 5.32 },
-            { externalNames: ['Lady Sun', 'Musashi'], compatibilityPct: 5.01 },
+            { heroIds: ['lady_sun', 'musashi'], compatibilityPct: 5.01 },
             { externalNames: ['Yixing', 'Feyd'], compatibilityPct: 3.6 },
             { externalNames: ['Yuan Ge', 'Pei'], compatibilityPct: 3.57 }
           ]
@@ -5199,6 +5199,23 @@
             'Radius AoE launch saat impact Skill 3 (Ultimate) belum tervalidasi; sementara dianggap radius kecil/melee.',
             'Heal yang ditunda selama duel: apakah benar-benar diterapkan setelah duel selesai atau hangus (misal jika target mati).',
             'Apakah heal delay juga menunda heal dari ally (support) secara konsisten.'
+          ]
+        },
+
+        synergy: {
+          source: {
+            name: 'hok_official',
+            metric: 'compatibility',
+            notes: ['Nilai adalah kompatibilitas resmi HoK (bukan win rate/pick rate).']
+          },
+          duo: [
+            { heroId: 'xiao_qiao', compatibilityPct: 1.65 }
+          ],
+          trio: [
+            { heroIds: ['arli', 'yaria'], compatibilityPct: 12.26 },
+            { externalNames: ['Da Qiao', 'Arli'], compatibilityPct: 8.04 },
+            { heroIds: ['lady_sun', 'dyadia'], compatibilityPct: 5.01 },
+            { externalNames: ['Dolia', 'Heino'], compatibilityPct: 3.48 }
           ]
         }
       }
@@ -6160,7 +6177,7 @@
           trio: [
             { externalNames: ['Menki', 'Yaria'], compatibilityPct: 13.16 },
             { externalNames: ['Wang Zhaojun', 'Yaria'], compatibilityPct: 12.53 },
-            { externalNames: ['Musashi', 'Yaria'], compatibilityPct: 12.26 },
+            { heroIds: ['musashi', 'yaria'], compatibilityPct: 12.26 },
             { externalNames: ['Yaria', 'Shi'], compatibilityPct: 11.11 },
             { externalNames: ['Musashi', 'Da Qiao'], compatibilityPct: 8.04 },
             { externalNames: ['Shi', 'Jing'], compatibilityPct: 7.72 },
@@ -6979,6 +6996,1582 @@
             'Konfirmasi apakah damage fase 2 Tsubame Gaeshi berbeda dengan fase 1 atau menggunakan formula yang sama.',
             'Konfirmasi ambang/radius "kembali dekat posisi awal fase 1" yang memicu upgrade fase 2.',
             'Ketebalan strip tepi (outer boundary band) Kami Okuri (unit) belum dicatat.'
+          ]
+        }
+      }
+    },
+    {
+      id: 'arthur',
+      name: 'Arthur',
+      role: 'Clash Lane',
+      secondaryRoles: ['Jungling'],
+
+      tags: ['fighter', 'tank', 'frontline', 'cc', 'engage', 'sustain', 'physical', 'melee', 'early_game'],
+
+      image: 'images/heroes/arthur.png',
+
+      profile: {
+        traits: ['CC', 'Versatile'],
+        type: 'Fighter/Tank',
+        subtype: 'Charger',
+        uniqueness: [],
+        power: 'Seimbang (Early, Mid, Late Game)',
+        lane: 'Clash Lane',
+        sub: 'Jungling'
+      },
+
+      skills: {
+        passive: {
+          name: 'Holy Vanguard',
+          categories: ['recovery', 'sustain', 'conditional'],
+          rawDescription: 'Skill Pasif: Holy Vanguard (Recovery)\nArthur menggunakan Holy Vanguard untuk memulihkan 120 (120/240 + 2,5% HP ekstra) HP setiap 2 Detik. Jika terkena efek pengurangan Kecepatan Gerakan, dia akan memulihkan 120 (120/240 + 2,5% HP ekstra) HP ekstra setiap 2 Detik.',
+          mechanics: {
+            baseHeal: {
+              hpPer2Sec: { level1: 120, level15: 240, bonusHpPct: 2.5 }
+            },
+            conditionalHeal: {
+              trigger: 'on_slow_or_movement_reduction',
+              bonusHpPer2Sec: { level1: 120, level15: 240, bonusHpPct: 2.5 },
+              notes: [
+                'Saat kena slow/movement reduction, total heal menjadi 2x lipat.',
+                'Arthur justru lebih susah dibunuh saat kena CC slow — counter-intuitive untuk musuh yang mengandalkan slow.'
+              ]
+            }
+          }
+        },
+
+        skill1: {
+          name: 'Valiant Charge',
+          cdSec: 8,
+          categories: ['cc', 'silence', 'physical', 'movement', 'dash', 'mark', 'enhance', 'basic_attack_amp'],
+          rawDescription: 'Skill 1: Valiant Charge (Silence, Gerak Cepat, Damage Fisik) (CD 8/7,4/6,8/6,2/5,6/5 Detik)\nArthur mendapatkan 30% Kecepatan Gerakan selama 3 Detik dan meningkatkan Serangan Dasar berikutnya, membuatnya bisa Dash ke depan, menimbulkan 350 (350/420/490/560/630/700 + 120% Serangan Fisik ekstra) Damage Fisik dan membuat target terkena Silence selama 1,25 Detik.\nSerangan Dasar Ditingkatkan juga memberikan Mark pada Hero musuh yang ditarget selama 5 Detik. Serangan Dasar dan Skill akan menimbulkan Damage Magis ekstra pada musuh yang memiliki Mark, sebesar 1% HP musuh.\nRekan di dekat musuh yang memiliki Mark mendapatkan 10% Kecepatan Gerakan.',
+          mechanics: {
+            cooldownSecBySkillLevel: [8, 7.4, 6.8, 6.2, 5.6, 5],
+            selfBuff: {
+              moveSpeedBonusPct: 30,
+              durationSec: 3
+            },
+            enhancedBasicAttack: {
+              delivery: 'targeted_dash',
+              damage: {
+                physical: {
+                  baseDamageBySkillLevel: [350, 420, 490, 560, 630, 700],
+                  bonusPhysicalAttackPct: 120
+                }
+              },
+              crowdControl: {
+                effect: 'silence',
+                durationSec: 1.25
+              },
+              appliesMark: {
+                target: 'enemy_hero',
+                durationSec: 5
+              }
+            },
+            mark: {
+              bonusMagicDamage: {
+                type: 'target_current_hp_pct',
+                pct: 1,
+                triggeredBy: ['basic_attack', 'skill'],
+                notes: ['Scaling HP musuh = efektif melawan tank HP tinggi.']
+              },
+              allyBuff: {
+                trigger: 'ally_near_marked_target',
+                moveSpeedBonusPct: 10,
+                notes: ['Rekan di dekat musuh ber-Mark dapat MS +10% — Arthur sebagai enabler follow-up tim.']
+              }
+            }
+          }
+        },
+        skill2: {
+          name: 'Whirling Strike',
+          cdSec: 12,
+          categories: ['physical', 'aoe', 'dot', 'zone'],
+          rawDescription: 'Skill 2: Whirling Strike (Damage Fisik) (CD 12/11,4/10,8/10,2/9,6/9 Detik)\nArthur memunculkan Holy Shield yang mengitarinya selama 5 Detik, menimbulkan 290 (150/180/210/240/270/300 + 80% Serangan Fisik) Damage Fisik per Detik pada musuh di sekitar.',
+          mechanics: {
+            cooldownSecBySkillLevel: [12, 11.4, 10.8, 10.2, 9.6, 9],
+            delivery: 'aoe_self',
+            durationSec: 5,
+            damagePerSec: {
+              physical: {
+                baseDamageBySkillLevel: [150, 180, 210, 240, 270, 300],
+                bonusPhysicalAttackPct: 80
+              }
+            },
+            notes: [
+              '"Holy Shield" adalah nama visual skill, bukan efek shield/damage reduction — murni AoE damage.',
+              'Total damage maks level 15: 300+80% PA × 5 detik = signifikan untuk teamfight jika Arthur bertahan di tengah.',
+              'Sinergi dengan S1: dash masuk + silence → S2 aktif untuk AoE DoT selama Arthur menahan posisi.'
+            ]
+          }
+        },
+        skill3: {
+          name: 'Might of Excalibur',
+          cdSec: 42,
+          categories: ['cc', 'magic', 'dash', 'launch', 'aoe', 'dot', 'zone', 'anti_tank'],
+          rawDescription: 'Skill 3: Might of Excalibur (CC, Damage Magis) (CD 42/35/28 Detik)\nArthur menghunus Excalibur dan melompat ke Hero musuh yang ditarget, menimbulkan Damage Magis sebesar 16/20/24% HP Maks mereka, memunculkan Holy Seal di tanah, dan mengakibatkan Launch selama 0,5 Detik pada musuh dalam jangkauan Seal ini.\nSeal aktif selama 5 Detik dan menimbulkan 85/105/125 Damage Magis setiap Detik pada musuh dalam jangkauan.',
+          mechanics: {
+            cooldownSecBySkillLevel: [42, 35, 28],
+            delivery: 'targeted_dash',
+            jumpDamage: {
+              magic: {
+                type: 'target_max_hp_pct',
+                pctBySkillLevel: [16, 20, 24],
+                notes: ['Scaling HP maks musuh — sangat efektif melawan tank/frontline tebal.']
+              }
+            },
+            crowdControl: {
+              effect: 'launch',
+              durationSec: 0.5,
+              delivery: 'aoe_ground',
+              notes: ['Launch AoE di area Holy Seal saat mendarat.']
+            },
+            holySeal: {
+              durationSec: 5,
+              damagePerSec: {
+                magicBySkillLevel: [85, 105, 125]
+              },
+              notes: ['Zone control 5 detik — sinergi dengan S2 AoE DoT untuk double layer damage.']
+            }
+          }
+        }
+      },
+
+      stats: {
+        level1: {
+          physicalAttack: { total: 175, base: 175, bonus: 0 },
+          maxHP: 3748,
+          maxMana: null,
+          physicalDefense: { value: 150 },
+          magicDefense: { value: 75 },
+          attackSpeedBonusPct: 0,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 385,
+          hpRegenPer5s: 55,
+          attackRange: 'Melee'
+        },
+
+        level15: {
+          physicalAttack: { total: 359, base: 359, bonus: 0 },
+          maxHP: 8184,
+          maxMana: null,
+          physicalDefense: { value: 423 },
+          magicDefense: { value: 187 },
+          attackSpeedBonusPct: 14,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 385,
+          hpRegenPer5s: 106,
+          attackRange: 'Melee'
+        }
+      },
+
+      coachProfile: {
+        draftIdentity: {
+          archetype: 'Fighter/Tank',
+          engageRole: 'secondary',
+          playPattern: 'Backline disruptor + anti-tank: tunggu war dimulai frontline tim, lalu flanking ke backline musuh via S3 (jump ke carry/mage) → S1 silence untuk interrupt escape skill → S2 AoE DoT selama bertahan di tengah. Bukan war opener — tidak punya escape tool setelah masuk.',
+          notes: [
+            'Pasif anti-slow: semakin musuh mencoba slow Arthur, semakin susah dibunuh (heal 2x lipat). Counter pick kuat vs heavy slow composition.',
+            'S1 Mark + S3 HP% damage = anti-tank specialist terbaik di roster — efektif melawan komposisi frontline tebal.',
+            'Situasional di rank tinggi: tanpa escape tool, Arthur bergantung penuh pada tim untuk follow-up setelah masuk backline.',
+            'Lebih cocok sebagai counter pick spesifik daripada first pick aman.'
+          ]
+        },
+
+        powerCurve: {
+          early: 'medium',
+          mid: 'medium',
+          late: 'medium',
+          notes: [
+            'Seimbang di semua fase karena sustain pasif + scaling HP% damage.',
+            'Tidak ada power spike yang jelas — konsisten tapi tidak dominan di fase tertentu.'
+          ]
+        },
+
+        draftValues: {
+          mobility: 'medium',
+          frontline: 'high',
+          sustain: 'high',
+
+          engage: 'medium',
+          disengage: 'low',
+          peel: 'low',
+
+          cc: 'medium',
+          pickPotential: 'medium',
+
+          burst: 'medium',
+          dps: 'medium'
+        },
+
+        crowdControl: [
+          {
+            source: 'skill1',
+            effect: 'silence',
+            delivery: 'targeted_dash',
+            reliability: 'high',
+            durationSec: 1.25,
+            notes: ['Silence via enhanced basic attack setelah S1 aktif. Mencegah escape skill musuh.']
+          },
+          {
+            source: 'skill3',
+            effect: 'launch',
+            delivery: 'aoe_ground',
+            reliability: 'medium',
+            durationSec: 0.5,
+            notes: ['Launch AoE di area Holy Seal saat S3 mendarat.']
+          }
+        ],
+
+        mobilityProfile: {
+          level: 'medium',
+          uses: ['engage', 'chase'],
+          notes: [
+            'S1 memberi MS +30% selama 3 detik untuk approach.',
+            'S3 adalah targeted jump ke hero musuh — gapclose ke backline.',
+            'Tidak ada escape tool — setelah masuk, Arthur harus commit atau mati.'
+          ],
+          sources: [
+            {
+              source: 'skill1',
+              type: 'moveSpeedBuff',
+              delivery: 'self_buff',
+              reliability: 'high',
+              durationSec: 3,
+              notes: ['MS +30% untuk approach sebelum enhanced basic attack.']
+            },
+            {
+              source: 'skill3',
+              type: 'gapclose',
+              delivery: 'targeted_dash',
+              reliability: 'medium',
+              notes: ['Jump ke hero musuh yang ditarget — bisa di-dodge kalau musuh keluar jangkauan.']
+            }
+          ]
+        },
+
+        teamNeeds: {
+          needs: [
+            'Butuh frontline/primary engage dari tim untuk membuka war duluan sebelum Arthur flanking.',
+            'Butuh follow-up damage dari tim setelah Arthur masuk backline — tanpa follow-up, Arthur terjebak sendirian.',
+            'Butuh vision untuk memastikan Arthur bisa masuk ke target yang tepat.'
+          ]
+        },
+
+        counterplay: {
+          counteredBy: [
+            'Peel kuat di backline yang mencegah Arthur bertahan setelah masuk.',
+            'Disengage/knockback yang memaksa Arthur keluar sebelum S2+S3 zone aktif penuh.',
+            'Jaga jarak dari Arthur untuk mencegah S3 targeted jump connect.',
+            'Hindari slow pada Arthur — pasif membuat Arthur justru lebih kuat saat kena slow.'
+          ]
+        },
+
+        needsValidation: {
+          questions: [
+            'Resource Arthur: apakah pakai Mana atau resource lain? Stats tidak mencantumkan maxMana.',
+            'Radius Holy Seal (S3) belum dicatat.',
+            'Apakah S1 enhanced basic attack bisa di-cancel atau harus dipakai dalam window tertentu?'
+          ]
+        },
+
+        synergy: {
+          source: {
+            name: 'hok_official',
+            metric: 'compatibility',
+            notes: ['Nilai adalah kompatibilitas resmi HoK (bukan win rate/pick rate). Disarankan dipakai sebagai bonus kecil/tie-breaker setelah kebutuhan komposisi terpenuhi.']
+          },
+          duo: [
+            { heroId: 'daji', compatibilityPct: 1.62 },
+            { externalName: 'Ming', compatibilityPct: 1.61 }
+          ],
+          trio: [
+            { externalNames: ['Hou Yi', 'Ming'], compatibilityPct: 6.07 },
+            { externalNames: ['Daji', 'Kui'], compatibilityPct: 5.50 }
+          ]
+        }
+      }
+    },
+    {
+      id: 'xiao_qiao',
+      name: 'Xiao Qiao',
+      role: 'Mid Lane',
+      secondaryRoles: [],
+
+      tags: ['mage', 'artillery', 'burst', 'aoe', 'poke', 'late_game', 'magic', 'ranged'],
+
+      image: 'images/heroes/xiao_qiao.png',
+
+      profile: {
+        traits: ['Burst', 'AoE'],
+        type: 'Mage',
+        subtype: 'Artillery Mage',
+        uniqueness: ['Poke/Damage Grup'],
+        power: 'Late Game',
+        lane: 'Mid Lane'
+      },
+
+      skills: {
+        passive: {
+          name: 'Encouraging Thoughts',
+          categories: ['move_speed', 'reposition'],
+          rawDescription: 'Skill Pasif: Encouraging Thoughts (Gerak Cepat)\nXiao Qiao mendapatkan 25% Kecepatan Gerakan selama 2 Detik saat Skill miliknya menghantam musuh.',
+          mechanics: {
+            trigger: {
+              on: 'skill_hit_enemy',
+              notes: ['Aktif setiap kali skill menghantam musuh — bisa refresh tiap cast.']
+            },
+            moveSpeedBuff: {
+              bonusPct: 25,
+              durationSec: 2
+            },
+            notes: [
+              'Repositioning tool pasif — poke dari satu posisi, dapat MS buff, pindah sebelum musuh balas.',
+              'Kompensasi move speed dasar yang rendah (365) saat aktif menyerang.'
+            ]
+          }
+        },
+
+        skill1: {
+          name: 'Blossoming Fan',
+          cdSec: 5,
+          manaCost: 30,
+          categories: ['magic', 'poke', 'multi_hit', 'skillshot'],
+          rawDescription: 'Skill 1: Blossoming Fan (Damage Magis) (CD 5/4,8/4,6/4,4/4,2/4 Detik) Konsumsi Mana 30\nXiao Qiao melemparkan kipas berputar ke arah target, menimbulkan Damage pada musuh yang terhantam. Kipas akan kembali kepadanya setelah mencapai jangkauan maksimumnya dan kembali menimbulkan Damage pada musuh yang terhantam. Musuh pertama yang terhantam menerima 585 (585/635/685/735/785/835+80% Serangan Magis) Damage Magis. (Damage berkurang sebesar 20% untuk setiap hantaman selanjutnya, hingga 50% dari Damage awal).',
+          mechanics: {
+            cooldownSecBySkillLevel: [5, 4.8, 4.6, 4.4, 4.2, 4],
+            delivery: 'skillshot_line',
+            projectile: {
+              type: 'boomerang',
+              goesOut: true,
+              returnsToOwner: true,
+              returnPathFollowsOwnerPosition: true,
+              notes: [
+                'Saat kembali, kipas mengikuti posisi Xiao Qiao saat itu — bukan jalur asal.',
+                'Bergerak setelah lempar (dibantu pasif MS) bisa mengarahkan hit balik ke target berbeda.',
+                'Bisa menghantam target berbeda saat pergi dan balik selagi berada di jalur.'
+              ]
+            },
+            damage: {
+              firstHit: {
+                magic: {
+                  baseDamageBySkillLevel: [585, 635, 685, 735, 785, 835],
+                  bonusMagicAttackPct: 80
+                }
+              },
+              subsequentHits: {
+                reductionPerHitPct: 20,
+                minimumMultiplier: 0.5,
+                notes: ['Damage berkurang 20% per hantaman setelah yang pertama, minimum 50% dari damage awal.']
+              }
+            }
+          }
+        },
+        skill2: {
+          name: 'Honeysweet Breeze',
+          cdSec: 10,
+          manaCost: 70,
+          categories: ['cc', 'magic', 'launch', 'aoe'],
+          rawDescription: 'Skill 2: Honeysweet Breeze (CC, Damage Magis) (CD 10/9,6/9,2/8,8/8,4/8 Detik) Konsumsi Mana 70\nXiao Qiao menciptakan angin puyuh di lokasi yang ditentukan, menimbulkan 300 (300/340/380/420/460/500+50% Serangan Magis) Damage Magis pada musuh dalam jangkauan dan membuat mereka terkena efek Launch selama 1,5 Detik.',
+          mechanics: {
+            cooldownSecBySkillLevel: [10, 9.6, 9.2, 8.8, 8.4, 8],
+            delivery: 'aoe_ground',
+            damage: {
+              magic: {
+                baseDamageBySkillLevel: [300, 340, 380, 420, 460, 500],
+                bonusMagicAttackPct: 50
+              }
+            },
+            crowdControl: {
+              effect: 'launch',
+              durationSec: 1.5,
+              notes: [
+                'Launch 1,5 detik — terlama di roster sejauh ini.',
+                'AoE ground = bisa kena multiple target sekaligus saat musuh bergerombol.',
+                'Sinergi dengan S1: poke + reposition (pasif MS) → S2 AoE launch untuk setup teamfight atau pick.'
+              ]
+            }
+          }
+        },
+        skill3: {
+          name: 'Meteor Storm',
+          cdSec: 35,
+          manaCost: 120,
+          categories: ['magic', 'aoe', 'dot', 'multi_hit', 'auto_target', 'move_speed'],
+          rawDescription: 'Skill 3: Meteor Storm (Damage Magis, Gerak Cepat) (CD 35/31,5/28 Detik) Konsumsi Mana 120\nXiao Qiao menjatuhkan hujan meteor selama 6 Detik. Meteor menarget musuh acak di sekitar, masing-masing menimbulkan 400 (400/500/600+100% Serangan Magis) Damage Magis. Meteor memprioritaskan Hero musuh.\nEfek Skill Pasifnya akan aktif selama durasi Skill. (Setiap musuh bisa terhantam hingga 4 meteor, tapi meteor berikutnya yang menghantam target menimbulkan 50% Damage lebih sedikit)',
+          mechanics: {
+            cooldownSecBySkillLevel: [35, 31.5, 28],
+            durationSec: 6,
+            totalMeteorsApprox: 12,
+            delivery: 'auto_target_homing',
+            targeting: {
+              priority: 'enemy_hero',
+              random: true,
+              maxHitsPerTarget: 4
+            },
+            damage: {
+              magicPerMeteor: {
+                baseDamageBySkillLevel: [400, 500, 600],
+                bonusMagicAttackPct: 100
+              },
+              subsequentHitsOnSameTarget: {
+                multiplier: 0.5,
+                notes: ['Meteor ke-2, 3, 4 pada target yang sama hanya 50% damage.']
+              }
+            },
+            passiveSynergy: {
+              passiveActiveWhileCasting: true,
+              notes: [
+                'Pasif MS +25% aktif selama S3 berlangsung — Xiao Qiao bisa terus bergerak dan reposition selama 6 detik.',
+                'Anti-grouping: musuh yang bergerombol kena lebih banyak meteor.',
+                '12 meteor tersebar random ke musuh terdekat — efektif di teamfight 5v5.'
+              ]
+            }
+          }
+        }
+      },
+
+      stats: {
+        level1: {
+          physicalAttack: { total: 163, base: 163, bonus: 0 },
+          magicAttack: { total: 10, base: 10, bonus: 0 },
+          maxHP: 3200,
+          maxMana: 640,
+          physicalDefense: { value: 150 },
+          magicDefense: { value: 75 },
+          attackSpeedBonusPct: 5,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 365,
+          hpRegenPer5s: 44,
+          manaRegenPer5s: 16,
+          attackRange: 'Ranged'
+        },
+
+        level15: {
+          physicalAttack: { total: 283, base: 283, bonus: 0 },
+          magicAttack: { total: 10, base: 10, bonus: 0 },
+          maxHP: 6070,
+          maxMana: 1280,
+          physicalDefense: { value: 353 },
+          magicDefense: { value: 220 },
+          attackSpeedBonusPct: 26,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 365,
+          hpRegenPer5s: 75,
+          manaRegenPer5s: 32,
+          attackRange: 'Ranged'
+        }
+      },
+
+      coachProfile: {
+        draftIdentity: {
+          archetype: 'Mage',
+          engageRole: 'secondary',
+          playPattern: 'Hybrid poke + teamfight AoE: spam S1 boomerang (CD 4-5 detik) dari jarak aman untuk poke + pasif MS reposition, S2 AoE launch 1,5 detik untuk setup/pick, S3 Meteor Storm 6 detik untuk AoE DPS teamfight sambil terus bergerak. Anti-grouping specialist — musuh yang bergerombol kena lebih banyak meteor.',
+          notes: [
+            'Pasif MS +25% aktif setiap skill hit + selama S3 — Xiao Qiao selalu bergerak, susah di-pin.',
+            'S2 launch 1,5 detik AoE adalah CC terlama di roster — sangat kuat untuk setup teamfight.',
+            'S1 boomerang mengikuti posisi Xiao Qiao saat kembali — bergerak setelah lempar bisa hit target berbeda.',
+            'Efektif melawan F2B dan Sustain comp yang suka fight bergerombol (lebih banyak meteor kena).'
+          ]
+        },
+
+        powerCurve: {
+          early: 'low',
+          mid: 'medium',
+          late: 'high',
+          notes: ['Late game kuat karena scaling magic attack S1/S3 + S2 CC yang reliable di teamfight besar.']
+        },
+
+        draftValues: {
+          mobility: 'medium',
+          frontline: 'low',
+          sustain: 'low',
+
+          engage: 'low',
+          disengage: 'low',
+          peel: 'low',
+
+          cc: 'high',
+          pickPotential: 'medium',
+
+          burst: 'high',
+          dps: 'high'
+        },
+
+        crowdControl: [
+          {
+            source: 'skill2',
+            effect: 'launch',
+            delivery: 'aoe_ground',
+            reliability: 'high',
+            durationSec: 1.5,
+            notes: ['Launch 1,5 detik AoE — terlama di roster. Bisa kena multiple target sekaligus.']
+          }
+        ],
+
+        mobilityProfile: {
+          level: 'medium',
+          uses: ['reposition', 'escape'],
+          notes: [
+            'Move speed dasar terendah di roster (365) tapi pasif MS +25% setiap skill hit + selama S3 aktif.',
+            'Tidak punya dash — mobilitas murni dari pasif MS buff yang konsisten saat aktif menyerang.'
+          ]
+        },
+
+        teamNeeds: {
+          needs: [
+            'Butuh frontline/peel agar Xiao Qiao bisa poke dan cast S2/S3 dengan aman.',
+            'Butuh setup/engage dari tim agar S2 AoE launch bisa connect ke target yang sudah terisolasi.',
+            'Butuh follow-up damage dari tim untuk mengkonversi S2 launch menjadi kill.'
+          ]
+        },
+
+        counterplay: {
+          counteredBy: [
+            'Dive/backline pressure yang memaksa Xiao Qiao keluar posisi sebelum S3 selesai.',
+            'Spread formation — musuh yang tidak bergerombol mengurangi efektivitas S3 meteor.',
+            'Hard CC yang menghentikan channel S3 atau memaksa Xiao Qiao keluar area aman.'
+          ]
+        },
+
+        needsValidation: {
+          questions: [
+            'Total meteor S3: 12 adalah estimasi dari observasi — konfirmasi angka pasti dari in-game.',
+            'Interval antar meteor S3 belum dicatat (apakah konstan atau random dalam 6 detik).'
+          ]
+        },
+
+        synergy: {
+          source: {
+            name: 'hok_official',
+            metric: 'compatibility',
+            notes: ['Nilai adalah kompatibilitas resmi HoK (bukan win rate/pick rate). Disarankan dipakai sebagai bonus kecil/tie-breaker setelah kebutuhan komposisi terpenuhi.']
+          },
+          duo: [
+            { heroId: 'musashi', compatibilityPct: 1.65 },
+            { externalName: 'Lam', compatibilityPct: 1.53 },
+            { externalName: 'Sun Ce', compatibilityPct: 1.42 },
+            { externalName: 'Nakoruru', compatibilityPct: 1.39 }
+          ],
+          trio: [
+            { heroIds: ['xiao_qiao', 'cai_yan'], compatibilityPct: 4.33 },
+            { externalNames: ['Cai Yan', 'Sun Ce'], compatibilityPct: 3.08 }
+          ]
+        }
+      }
+    },
+    {
+      id: 'luara',
+      name: 'Luara',
+      role: 'Farm Lane',
+      secondaryRoles: [],
+
+      tags: ['marksman', 'dps', 'late_game', 'nimble', 'physical', 'ranged', 'vision', 'on_hit', 'cooldown_cut'],
+
+      image: 'images/heroes/luara.png',
+
+      profile: {
+        traits: ['Late Game', 'Nimble'],
+        type: 'Marksman',
+        subtype: 'DPS Marksman',
+        uniqueness: ['Carry/Melewati Rintangan'],
+        power: 'Late Game',
+        lane: 'Farm Lane'
+      },
+
+      skills: {
+        passive: {
+          name: "Serpent's Envoy",
+          categories: ['enhance', 'physical', 'basic_attack_amp', 'cooldown_cut', 'vision'],
+          rawDescription: "Skill Pasif: Serpent's Envoy (Tingkatkan, Damage Fisik)\nSerangan Dasar Luara adalah lemparan Serpent Blade yang menimbulkan Damage Fisik pada musuh. Setiap kali Serpent Blade menghantam musuh, CD Skill 1 miliknya berkurang 0,15 Detik.\n(Serpent Blade mengakibatkan 30% Efek On-Hit dan memperlihatkan musuh yang terhantam. Setiap Serpent Blade aktif selama 6 Detik, maks 2 Serpent Blade bisa aktif dalam satu waktu.)",
+          mechanics: {
+            basicAttackType: 'serpent_blade_projectile',
+            onHitEffectPct: 30,
+            cooldownReductionOnHit: {
+              target: 'skill1',
+              reductionSec: 0.15,
+              notes: ['CDR on-hit membuat S1 sangat sering tersedia saat free-hit.']
+            },
+            vision: {
+              revealsTarget: true,
+              durationSec: 6
+            },
+            serpentBladeLimit: {
+              maxActive: 2,
+              durationSec: 6
+            },
+            notes: [
+              'On-hit effect hanya 30% — lifesteal, slow item, dll kurang efektif. Lebih bergantung raw damage/crit.',
+              'Squishiest marksman di roster (HP level 15: 5880) — sangat bergantung pada frontline/peel tim.',
+              'CDR S1 dari basic attack membuat Luara sangat bergantung pada free-hit untuk tempo skill.'
+            ]
+          }
+        },
+
+        skill1: {
+          name: 'Deadly Fang',
+          cdSec: 12.5,
+          manaCost: 40,
+          categories: ['physical', 'enhance', 'movement', 'terrain_cross', 'dps'],
+          rawDescription: 'Skill 1: Deadly Fang (Melewati Rintangan, Gerak Cepat, Tingkatkan) (CD 12,5/12/11,5/11/10,5/10 Detik) Konsumsi Mana 40\nLuara mendapatkan satu Serpent Blade yang menyerang target terus menerus selama 6 Detik, menimbulkan 74 (40/48/56/64/72/80+20% Serangan Fisik) Damage Fisik di setiap serangannya. Dia juga mendapatkan 45/54/63/72/81/90% Peningkatan Kecepatan Gerakan yang terus berkurang selama 2 Detik dan bisa dengan cepat memanjat tembok jika dia menabrak tembok selama periode tersebut. Kecepatan Serpent Blade akan meningkat seiring Levelnya, dan bisa meningkat hingga maks 25%.',
+          mechanics: {
+            cooldownSecBySkillLevel: [12.5, 12, 11.5, 11, 10.5, 10],
+            serpentBlade: {
+              durationSec: 6,
+              damagePerHit: {
+                physical: {
+                  baseDamageBySkillLevel: [40, 48, 56, 64, 72, 80],
+                  bonusPhysicalAttackPct: 20
+                }
+              },
+              speedScalingWithLevel: true,
+              maxSpeedBonusPct: 25,
+              notes: ['Setiap hit Serpent Blade ini juga mengurangi CD S1 0,15 detik via pasif — loop CDR.']
+            },
+            moveSpeedBuff: {
+              bonusPctBySkillLevel: [45, 54, 63, 72, 81, 90],
+              durationSec: 2,
+              decay: 'gradual'
+            },
+            wallClimb: {
+              available: true,
+              condition: 'hit_wall_during_ms_buff_window',
+              durationSec: 2,
+              notes: [
+                'Melewati Rintangan — Luara bisa memanjat tembok saat MS buff aktif (2 detik).',
+                'Escape tool unik di roster — counter natural untuk dive/assassin yang tidak bisa ikut lewat tembok.',
+                'Bisa reposition ke posisi yang tidak bisa dijangkau hero lain.'
+              ]
+            }
+          }
+        },
+        skill2: {
+          name: 'Furtive Attack',
+          cdSec: 10,
+          manaCost: 50,
+          categories: ['magic', 'slow', 'cc', 'conditional'],
+          rawDescription: 'Skill 2: Furtive Attack (Damage Magis, Slow) (CD 10/9,6/9,2/8,8/8,4/8 Detik) Konsumsi Mana 50\nLuara memanggil Ular Api di lokasi target. Setelah jeda singkat, Ular Api menerjang ke arahnya, menimbulkan 320 (320/384/448/512/576/640+80% Serangan Fisik ekstra) Damage Magis dan 25/30/35/40/45/50% Slow selama 2 Detik pada musuh yang terhantam.\nJika ada Serpent Blade yang sedang aktif, Serpent Blade tersebut akan menyerang musuh yang terhantam Ular Api.\nJika tidak ada Serpent Blade yang sedang Aktif, CD Skill 2 akan dipersingkat 50%.\n(Kecepatan animasi penggunaan Skill ini akan meningkat sesuai dengan Kecepatan Serangannya)',
+          mechanics: {
+            cooldownSecBySkillLevel: [10, 9.6, 9.2, 8.8, 8.4, 8],
+            delivery: 'aoe_ground',
+            delay: 'short',
+            damage: {
+              magic: {
+                baseDamageBySkillLevel: [320, 384, 448, 512, 576, 640],
+                bonusPhysicalAttackPct: 80
+              }
+            },
+            crowdControl: {
+              effect: 'slow',
+              slowPctBySkillLevel: [25, 30, 35, 40, 45, 50],
+              durationSec: 2
+            },
+            conditionalEffects: {
+              ifSerpentBladeActive: {
+                effect: 'serpentBladeAttacksHitTarget',
+                notes: ['Slow memastikan target tidak kabur dari Serpent Blade yang menyerang.']
+              },
+              ifNoSerpentBladeActive: {
+                effect: 'cooldownReductionPct',
+                reductionPct: 50,
+                notes: ['Fallback saat S1 belum aktif — CD S2 jadi ~5 detik.']
+              }
+            },
+            animationSpeedScaling: {
+              scalesWith: 'attackSpeed',
+              notes: ['Makin tinggi attack speed, makin cepat animasi S2 — lebih susah di-dodge di late game.']
+            }
+          }
+        },
+        skill3: {
+          name: 'Blazing Glare',
+          cdSec: 50,
+          manaCost: 120,
+          categories: ['magic', 'cc', 'blind', 'launch', 'enhance', 'fury'],
+          rawDescription: 'Skill 3: Blazing Glare (Blind, CC, Tingkatkan) (CD 50/45/40 Detik) Konsumsi Mana 120\nLuara mengerahkan Ular Api ke arah target, menimbulkan 480 (480/576/672+120% Serangan Fisik ekstra) Damage Magis pada musuh yang terhantam dan mengaburkan pandangan mereka selama 2 Detik.\nDia langsung mendapatkan 1 Serpent Blade dan meningkatkan dirinya sendiri selama 6 Detik. Menyerang musuh atau menerima Damage selama rentang waktu ini akan mengakumulasi Fury. Saat Fury mencapai maks, dia menimbulkan 240 (240/360/480+60% Serangan Fisik ekstra) Damage Magis dan Launch selama 0,5 Detik pada musuh dalam jangkauan.\n(Musuh yang pandangannya kabur tidak bisa menimbulkan Damage dengan Serangan Dasar, dan proyektil Skill mereka akan meleset dari lintangan normalnya secara acak.)',
+          mechanics: {
+            cooldownSecBySkillLevel: [50, 45, 40],
+            delivery: 'targeted',
+            damage: {
+              magic: {
+                baseDamageBySkillLevel: [480, 576, 672],
+                bonusPhysicalAttackPct: 120
+              }
+            },
+            crowdControl: {
+              effect: 'blind',
+              durationSec: 2,
+              blindEffects: [
+                'target tidak bisa menimbulkan damage dengan basic attack',
+                'proyektil skill meleset secara acak dari lintasan normal'
+              ],
+              notes: ['CC unik — belum ada di roster lain. Counter langsung untuk marksman dan mage skillshot musuh.']
+            },
+            selfBuff: {
+              durationSec: 6,
+              grantsSerpentBlade: 1
+            },
+            fury: {
+              gainedBy: ['attacking_enemy', 'receiving_damage'],
+              onMaxFury: {
+                damage: {
+                  magic: {
+                    baseDamageBySkillLevel: [240, 360, 480],
+                    bonusPhysicalAttackPct: 60
+                  }
+                },
+                crowdControl: {
+                  effect: 'launch',
+                  durationSec: 0.5,
+                  delivery: 'aoe_self'
+                }
+              },
+              notes: [
+                'Menerima damage juga mengisi Fury — diver yang masuk justru mempercepat launch.',
+                'Counter-intuitive: Luara lebih berbahaya saat diserang.'
+              ]
+            }
+          }
+        }
+      },
+
+      stats: {
+        level1: {
+          physicalAttack: { total: 180, base: 180, bonus: 0 },
+          maxHP: 3204,
+          maxMana: 600,
+          physicalDefense: { value: 150 },
+          magicDefense: { value: 75 },
+          attackSpeedBonusPct: 10,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 360,
+          hpRegenPer5s: 37,
+          manaRegenPer5s: 15,
+          attackRange: 'Ranged'
+        },
+
+        level15: {
+          physicalAttack: { total: 359, base: 359, bonus: 0 },
+          maxHP: 5880,
+          maxMana: 1200,
+          physicalDefense: { value: 339 },
+          magicDefense: { value: 178 },
+          attackSpeedBonusPct: 38,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 360,
+          hpRegenPer5s: 64,
+          manaRegenPer5s: 30,
+          attackRange: 'Ranged'
+        }
+      },
+
+      coachProfile: {
+        draftIdentity: {
+          archetype: 'Marksman',
+          engageRole: 'secondary',
+          playPattern: 'Self-sufficient DPS marksman dengan dua layer survival unik: S1 wall climb (escape lewat terrain) + S3 Blind 2 detik (mematikan output musuh). Counter pick terkuat untuk marksman musuh — Blind langsung mematikan basic attack dan mengacak skillshot mereka. Fury dari S3 membuat diver yang masuk justru kena launch.',
+          notes: [
+            'Wall climb S1 adalah escape tool unik di roster — diver yang tidak bisa ikut lewat tembok kehilangan target.',
+            'S3 Blind adalah CC unik di roster — counter langsung untuk marksman dan mage skillshot musuh.',
+            'On-hit effect hanya 30% dari pasif — item on-hit kurang efektif, lebih bergantung raw damage/crit.',
+            'Squishiest marksman di roster (HP 5880 level 15) — sangat bergantung pada frontline/peel tim.',
+            'Fury S3 mengisi dari menerima damage — diver yang masuk justru mempercepat launch balik.'
+          ]
+        },
+
+        powerCurve: {
+          early: 'low',
+          mid: 'medium',
+          late: 'high',
+          notes: [
+            'Late game kuat karena attack speed scaling membuat animasi S2 lebih cepat dan CDR S1 lebih sering.',
+            'Early sangat rentan — butuh perlindungan penuh dari tim.'
+          ]
+        },
+
+        draftValues: {
+          mobility: 'high',
+          frontline: 'low',
+          sustain: 'low',
+
+          engage: 'low',
+          disengage: 'high',
+          peel: 'medium',
+
+          cc: 'high',
+          pickPotential: 'medium',
+
+          burst: 'medium',
+          dps: 'high'
+        },
+
+        crowdControl: [
+          {
+            source: 'skill3',
+            effect: 'blind',
+            delivery: 'targeted',
+            reliability: 'high',
+            durationSec: 2,
+            notes: ['Blind — musuh tidak bisa basic attack dan proyektil skill meleset acak. CC unik di roster.']
+          },
+          {
+            source: 'skill3.fury',
+            effect: 'launch',
+            delivery: 'aoe_self',
+            reliability: 'medium',
+            durationSec: 0.5,
+            notes: ['Launch saat Fury penuh — diisi dari menyerang atau menerima damage.']
+          },
+          {
+            source: 'skill2',
+            effect: 'slow',
+            delivery: 'aoe_ground',
+            reliability: 'medium',
+            durationSec: 2,
+            notes: ['Slow 25-50% scaling level. Sinergi dengan Serpent Blade aktif.']
+          }
+        ],
+
+        mobilityProfile: {
+          level: 'high',
+          uses: ['escape', 'reposition'],
+          notes: [
+            'S1 memberi MS burst 45-90% (decay 2 detik) + wall climb — escape tool terkuat untuk marksman di roster.',
+            'Wall climb memungkinkan reposition ke posisi yang tidak bisa dijangkau hero lain.'
+          ],
+          sources: [
+            {
+              source: 'skill1',
+              type: 'moveSpeedBuff',
+              delivery: 'self_buff',
+              reliability: 'high',
+              durationSec: 2,
+              notes: ['MS burst 45-90% decay + wall climb saat menabrak tembok dalam window 2 detik.']
+            }
+          ]
+        },
+
+        teamNeeds: {
+          needs: [
+            'Butuh frontline/peel untuk melindungi marksman — HP paling rendah di roster.',
+            'Butuh setup/engage dari tim agar Luara bisa free-hit dan memaksimalkan CDR S1 dari pasif.',
+            'Butuh vision control agar Luara bisa positioning aman sebelum S3.'
+          ]
+        },
+
+        counterplay: {
+          counteredBy: [
+            'Burst damage sebelum Fury S3 penuh — mati sebelum sempat launch balik.',
+            'CC yang menghentikan Luara sebelum bisa wall climb (stun/silence saat S1 aktif).',
+            'Komposisi tanpa marksman/mage skillshot — Blind S3 kehilangan value.'
+          ]
+        },
+
+        needsValidation: {
+          questions: [
+            'Berapa hit/damage yang dibutuhkan untuk mengisi Fury S3 hingga penuh?',
+            'Apakah Blind S3 juga mempengaruhi skill yang sudah terlanjur dilempar (in-flight projectile)?'
+          ]
+        },
+
+        synergy: {
+          source: {
+            name: 'hok_official',
+            metric: 'compatibility',
+            notes: ['Nilai adalah kompatibilitas resmi HoK (bukan win rate/pick rate).']
+          },
+          duo: [
+            { externalName: 'Ming', compatibilityPct: 2.89 },
+            { externalName: 'Guiguzi', compatibilityPct: 1.76 }
+          ],
+          trio: [
+            { externalNames: ['Wang Zhaojun', 'Ming'], compatibilityPct: 3.85 }
+          ]
+        }
+      }
+    },
+    {
+      id: 'augran',
+      name: 'Augran',
+      role: 'Jungling',
+      secondaryRoles: [],
+
+      tags: ['fighter', 'assassin', 'dps', 'physical', 'melee', 'chase', 'on_hit', 'tether', 'early_game'],
+
+      image: 'images/heroes/augran.png',
+
+      profile: {
+        traits: ['Damage Berkelanjutan', 'Nimble'],
+        type: 'Fighter',
+        subtype: 'Assassin Fighter',
+        uniqueness: ['Menerobos/Cleanup'],
+        power: 'Seimbang (Early, Mid, Late Game)',
+        lane: 'Jungling'
+      },
+
+      skills: {
+        passive: {
+          name: 'Soul Resonance',
+          categories: ['physical', 'magic', 'dps', 'tether', 'on_hit', 'dot'],
+          rawDescription: 'Skill Pasif: Soul Resonance (Damage Fisik)\nSerangan Dasar Augran akan membuat senjatanya terkoneksi dengan jiwa satu musuh selama 3 Detik, menimbulkan 88 (50% Serangan Fisik) Damage Fisik saat koneksi terjalin. Kecuali musuh bisa melepaskan diri, koneksi ini akan terus menimbulkan Damage dengan frekuensi yang terus meningkat. Saat durasi koneksi berakhir, dia akan menimbulkan 211 (70/140+80% Serangan Fisik) Damage Magis.\n(Damage di bagian awal dan akhir Soul Resonance memiliki 100% efek On-Hit, sedangkan Damage di bagian lainnya memiliki 40% efek On-Hit.)',
+          mechanics: {
+            trigger: 'basic_attack',
+            tether: {
+              durationSec: 3,
+              breakCondition: 'target_exits_max_range',
+              notes: [
+                'Koneksi putus kalau musuh keluar jarak maksimal.',
+                'Counter natural: hero dengan high mobility/disengage bisa putus koneksi.',
+                'Sangat kuat melawan hero immobile yang tidak bisa kabur.'
+              ]
+            },
+            damagePhases: {
+              initial: {
+                physical: { bonusPhysicalAttackPct: 50, baseDamage: 88 },
+                onHitEffectPct: 100
+              },
+              continuous: {
+                frequencyIncreases: true,
+                onHitEffectPct: 40,
+                notes: ['Frekuensi damage meningkat selama koneksi aktif — makin lama fight, makin besar DPS.']
+              },
+              final: {
+                magic: { baseDamageByLevel: [70, 140], bonusPhysicalAttackPct: 80 },
+                onHitEffectPct: 100,
+                notes: ['Damage akhir saat durasi koneksi habis.']
+              }
+            }
+          }
+        },
+
+        skill1: {
+          name: 'Path of Passing',
+          cdSec: 12.5,
+          manaCost: 60,
+          categories: ['magic', 'movement', 'slow', 'terrain_cross', 'execute', 'zone'],
+          rawDescription: 'Skill 1: Path of Passing (Gerak Cepat, Damage Magis, Slow) (CD 12,5/12/11,5/11/10,5/10 Detik) Konsumsi Mana 60\nAugran membuka jalan lintas dimensi, menimbulkan 280 (280/336/392/448/504/560+95% Serangan Fisik ekstra) Damage Magis pada musuh yang terhantam.\nJalan ini terbuka lebih cepat saat mengenai tembok atau Life-Death Border, lalu menimbulkan 150 (150/180/210/240/270/300+60% Serangan Fisik ekstra) Damage Magis tambahan pada musuh yang terhantam. Saat Augran melintasi jalan ini, dia mengabaikan rintangan dan mendapatkan Kecepatan Gerakan sebesar 50/60/70/80/90/100%. Saat jalan ini mengenai Tembok untuk pertama kalinya, jembatan akan terbentuk. Menyeberanginya memberikan Kecepatan Gerakan yang besar pada Augran dan mengakibatkan Slow sebesar 15/18/21/24/27/30% pada musuh di sekitar.\nAugran bisa menggunakan Skill ini lagi untuk memanggil kembali Dagger-Axe miliknya dan memasuki Seer Stage selama 4 Detik. Jika Serangan Dasar menghantam target dengan HP kurang dari 10% (750-1500 untuk Monster, sesuai Level Hero), Augran akan langsung menghabisinya.\n(Skill ini menimbulkan Damage Kontak maksimum pada non-Hero. Saat CD Skill miliknya berakhir, Dagger-Axe akan otomatis dipanggil kembali)',
+          mechanics: {
+            cooldownSecBySkillLevel: [12.5, 12, 11.5, 11, 10.5, 10],
+            delivery: 'skillshot_line',
+            damage: {
+              primary: {
+                magic: {
+                  baseDamageBySkillLevel: [280, 336, 392, 448, 504, 560],
+                  bonusPhysicalAttackPct: 95
+                }
+              },
+              wallBonus: {
+                magic: {
+                  baseDamageBySkillLevel: [150, 180, 210, 240, 270, 300],
+                  bonusPhysicalAttackPct: 60
+                },
+                notes: ['Damage tambahan saat jalan mengenai tembok atau Life-Death Border.']
+              }
+            },
+            terrainCross: {
+              augranIgnoresObstacles: true,
+              moveSpeedBonusPctBySkillLevel: [50, 60, 70, 80, 90, 100],
+              notes: ['Augran bisa chase target melewati tembok — counter langsung untuk hero yang mengandalkan wall escape.']
+            },
+            wallBridge: {
+              formsOnFirstWallHit: true,
+              crossingEffect: {
+                moveSpeedBuff: 'large',
+                slow: {
+                  effect: 'slow',
+                  slowPctBySkillLevel: [15, 18, 21, 24, 27, 30],
+                  delivery: 'aoe_self',
+                  notes: ['Slow AoE di sekitar Augran saat menyeberangi jembatan.']
+                }
+              }
+            },
+            recast: {
+              effect: 'recall_dagger_axe',
+              entersSeerStage: {
+                durationSec: 4,
+                execute: {
+                  trigger: 'basic_attack_on_low_hp_target',
+                  heroThresholdPct: 10,
+                  monsterThresholdHp: { min: 750, max: 1500, scalesWithLevel: true },
+                  notes: ['Execute monster sangat efisien untuk jungle clear.']
+                }
+              }
+            },
+            nonHeroBonus: {
+              maxContactDamage: true,
+              notes: ['Damage kontak maksimum pada non-Hero — jungle clear sangat cepat.']
+            }
+          }
+        },
+        skill2: {
+          name: "Death's Precipice",
+          cdSec: 10,
+          manaCost: 50,
+          categories: ['physical', 'magic', 'slow', 'mark', 'enhance', 'recovery', 'zone'],
+          rawDescription: "Skill 2: Death's Precipice (Tingkatkan, Recovery, Damage Magis) (CD 10/9,6/9,2/8,8/8,4/8 Detik) Konsumsi Mana: 50\nAugran mengayunkan Dagger-Axe miliknya, menimbulkan 200 (200/240/280/320/360/400+60% Serangan Fisik ekstra) Damage Fisik pada musuh di hadapannya dan Slow sebesar 25/30/35/40/45/50% selama 1 Detik. Dia lalu meninggalkan jejak Life-Death Border, menerapkan Mark pada musuh yang menyentuhnya. Ranting di dalamnya juga menimbulkan 140 (140/168/196/224/252/280+45% Serangan Fisik ekstra) Damage Magis dan Slow sebesar 25/30/35/40/45/50% selama 1 Detik pada musuh yang menyentuhnya.\nSerangan Dasar Augran yang berikutnya akan ditingkatkan dan menimbulkan 50% Damage tambahan pada target, serta memulihkan 65 (65/78/91/104/117/130+1,5% HP ekstra) HP miliknya. Jika musuh yang memiliki Mark ada di dalam jangkauan, resonansi akan menimbulkan Damage tambahan serta efek Pemulihan dengan jumlah yang sama untuk setiap target yang memiliki Mark.\n(Skill ini juga membuat unit Non-Hero terpukul mundur. Resonansi dapat terhubung ke maksimal 3 target. Saat terhubung ke unit Non-Hero, efek Pemulihannya hanya 50%)",
+          mechanics: {
+            cooldownSecBySkillLevel: [10, 9.6, 9.2, 8.8, 8.4, 8],
+            swing: {
+              delivery: 'skillshot_cone',
+              damage: {
+                physical: {
+                  baseDamageBySkillLevel: [200, 240, 280, 320, 360, 400],
+                  bonusPhysicalAttackPct: 60
+                }
+              },
+              crowdControl: {
+                effect: 'slow',
+                slowPctBySkillLevel: [25, 30, 35, 40, 45, 50],
+                durationSec: 1
+              },
+              nonHeroKnockback: true
+            },
+            lifeDeathBorder: {
+              type: 'zone_trail',
+              appliesMark: true,
+              damage: {
+                magic: {
+                  baseDamageBySkillLevel: [140, 168, 196, 224, 252, 280],
+                  bonusPhysicalAttackPct: 45
+                }
+              },
+              crowdControl: {
+                effect: 'slow',
+                slowPctBySkillLevel: [25, 30, 35, 40, 45, 50],
+                durationSec: 1
+              },
+              notes: ['Musuh yang menyentuh jejak kena Mark + damage + slow. Memaksa musuh memilih: kena Mark atau menghindar.']
+            },
+            enhancedBasicAttack: {
+              bonusDamagePct: 50,
+              healing: {
+                baseHealBySkillLevel: [65, 78, 91, 104, 117, 130],
+                bonusHpPct: 1.5
+              },
+              resonance: {
+                triggersOnMarkedTargetsInRange: true,
+                maxTargets: 3,
+                damageAndHealPerTarget: 'same_as_enhanced_basic',
+                nonHeroHealMultiplier: 0.5,
+                notes: [
+                  'Resonansi ke maks 3 target ber-Mark = AoE DPS + sustain di teamfight.',
+                  'Sinergi dengan pasif Soul Resonance — Mark dari S2 membantu mempertahankan koneksi.'
+                ]
+              }
+            }
+          }
+        },
+        skill3: {
+          name: 'Conductor of Souls',
+          cdSec: 40,
+          manaCost: 100,
+          categories: ['physical', 'cc', 'knockback', 'recovery', 'summon', 'execute', 'grievous'],
+          rawDescription: 'Skill 3: Conductor of Souls (Grievous, CC, Damage Fisik) (CD 40/36/32 Detik) Konsumsi Mana 100\nAugran menyalurkan segenap kekuatannya dan turun dari langit, menimbulkan 380 (380/570/760+150% Serangan Fisik ekstra) Damage Fisik pada musuh di sekelilingnya dan membuat mereka terpukul mundur selama 0,5 Detik. Jika ada Hero musuh yang terhantam, dia memulihkan 750 (750/1125/1500+12% HP ekstra) HP dan memunculkan spirit tiruan Hero tersebut untuk membantunya selama 8 Detik. Setelah turun dari langit, dia memasuki Seer State selama 8 Detik.\n(Untuk setiap Hero musuh yang terhantam Skill ini, pemulihan HP akan meningkat 50%, hingga 100%. Spirit yang dipanggil tersebut mewarisi 30% Serangan Fisik Augran. Mereka hanya bisa menggunakan Serangan Dasar, tapi memiliki Kecepatan Gerakan dan Kecepatan Serangan yang lebih tinggi)',
+          mechanics: {
+            cooldownSecBySkillLevel: [40, 36, 32],
+            delivery: 'aoe_self',
+            damage: {
+              physical: {
+                baseDamageBySkillLevel: [380, 570, 760],
+                bonusPhysicalAttackPct: 150
+              }
+            },
+            crowdControl: {
+              effect: 'knockback',
+              durationSec: 0.5,
+              notes: ['AoE knockback semua musuh di sekitar — bisa dipakai sebagai war opener atau interrupt grouping.']
+            },
+            onHeroHit: {
+              healing: {
+                baseHealBySkillLevel: [750, 1125, 1500],
+                bonusHpPct: 12,
+                bonusPerAdditionalHero: {
+                  increasePct: 50,
+                  maxIncreasePct: 100
+                }
+              },
+              spiritSummon: {
+                durationSec: 8,
+                physicalAttackInheritPct: 30,
+                abilities: ['basic_attack_only'],
+                bonuses: ['higher_move_speed', 'higher_attack_speed'],
+                notes: [
+                  'Spirit makin kuat kalau hero musuh punya physical attack tinggi (Marksman, Fighter).',
+                  'Counter pick menarik vs komposisi physical damage.'
+                ]
+              }
+            },
+            seerState: {
+              durationSec: 8,
+              execute: {
+                trigger: 'basic_attack_on_low_hp_target',
+                heroThresholdPct: 10,
+                monsterThresholdHp: { min: 750, max: 1500, scalesWithLevel: true }
+              }
+            }
+          }
+        }
+      },
+
+      stats: {
+        level1: {
+          physicalAttack: { total: 187, base: 187, bonus: 0 },
+          maxHP: 3401,
+          maxMana: 580,
+          physicalDefense: { value: 150 },
+          magicDefense: { value: 75 },
+          attackSpeedBonusPct: 5,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 380,
+          hpRegenPer5s: 51,
+          manaRegenPer5s: 14,
+          attackRange: 'Melee'
+        },
+
+        level15: {
+          physicalAttack: { total: 357, base: 357, bonus: 0 },
+          maxHP: 6695,
+          maxMana: 1160,
+          physicalDefense: { value: 402 },
+          magicDefense: { value: 173 },
+          attackSpeedBonusPct: 19,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 380,
+          hpRegenPer5s: 88,
+          manaRegenPer5s: 28,
+          attackRange: 'Melee'
+        }
+      },
+
+      coachProfile: {
+        draftIdentity: {
+          archetype: 'Fighter/Assassin',
+          engageRole: 'primary',
+          playPattern: 'Sustained DPS jungler yang menang lewat koneksi Soul Resonance (pasif) + chase via terrain (S1) + sustain dari S2/S3. S3 AoE knockback bisa membuka fight sekaligus summon spirit tiruan hero musuh. Makin kuat melawan hero immobile yang tidak bisa memutus koneksi Soul Resonance.',
+          notes: [
+            'Counter natural untuk hero immobile (Hou Yi, Xiao Qiao, Angela) — tidak bisa kabur dari Soul Resonance.',
+            'S1 terrain ignore = counter langsung untuk hero yang mengandalkan wall escape (Luara).',
+            'Spirit S3 makin kuat vs komposisi physical damage (Marksman/Fighter musuh).',
+            'Kelemahan: hero dengan high mobility/disengage bisa putus koneksi Soul Resonance.'
+          ]
+        },
+
+        powerCurve: {
+          early: 'medium',
+          mid: 'medium',
+          late: 'medium',
+          notes: ['Seimbang di semua fase — sustain dari S2/S3 membuat Augran konsisten tanpa power spike yang jelas.']
+        },
+
+        draftValues: {
+          mobility: 'high',
+          frontline: 'medium',
+          sustain: 'high',
+
+          engage: 'high',
+          disengage: 'low',
+          peel: 'low',
+
+          cc: 'medium',
+          pickPotential: 'medium',
+
+          burst: 'medium',
+          dps: 'high'
+        },
+
+        crowdControl: [
+          {
+            source: 'skill2',
+            effect: 'slow',
+            delivery: 'skillshot_cone',
+            reliability: 'high',
+            durationSec: 1,
+            notes: ['Slow dari swing S2.']
+          },
+          {
+            source: 'skill2.lifeDeathBorder',
+            effect: 'slow',
+            delivery: 'aoe_ground',
+            reliability: 'medium',
+            durationSec: 1,
+            notes: ['Slow dari jejak Life-Death Border — musuh yang menyentuh jejak kena slow.']
+          },
+          {
+            source: 'skill3',
+            effect: 'knockback',
+            delivery: 'aoe_self',
+            reliability: 'high',
+            durationSec: 0.5,
+            notes: ['AoE knockback saat turun dari langit — war opener atau interrupt grouping.']
+          },
+          {
+            source: 'skill1.wallBridge',
+            effect: 'slow',
+            delivery: 'aoe_self',
+            reliability: 'medium',
+            durationSec: 1,
+            notes: ['Slow AoE saat Augran menyeberangi jembatan dari S1.']
+          }
+        ],
+
+        mobilityProfile: {
+          level: 'high',
+          uses: ['engage', 'chase'],
+          notes: [
+            'S1 MS buff 50-100% + terrain ignore = chase tool terkuat di roster untuk jungler.',
+            'Bisa mengejar target yang kabur lewat tembok — counter untuk wall escape hero.'
+          ],
+          sources: [
+            {
+              source: 'skill1',
+              type: 'moveSpeedBuff',
+              delivery: 'self_buff',
+              reliability: 'high',
+              notes: ['MS 50-100% + mengabaikan rintangan saat melintasi jalan dimensi.']
+            }
+          ]
+        },
+
+        teamNeeds: {
+          needs: [
+            'Butuh follow-up CC/damage dari tim setelah S3 knockback untuk mengkonversi engage menjadi kill.',
+            'Butuh vision untuk memastikan S3 kena hero musuh (untuk heal + spirit summon).',
+            'Lebih efektif dengan tim yang bisa lock target agar Soul Resonance tidak terputus.'
+          ]
+        },
+
+        counterplay: {
+          counteredBy: [
+            'Hero dengan high mobility/disengage yang bisa memutus koneksi Soul Resonance (keluar jarak).',
+            'Burst damage cepat sebelum Augran sempat stack Soul Resonance.',
+            'Peel kuat yang mencegah Augran menempel target prioritas.'
+          ]
+        },
+
+        needsValidation: {
+          questions: [
+            'Jarak maksimal koneksi Soul Resonance belum dicatat.',
+            'Apakah S3 "turun dari langit" bisa dipakai dari jarak jauh atau hanya di posisi Augran saat ini?',
+            'Grievous wounds dari S3 — berapa % dan berapa lama durasinya?'
+          ]
+        },
+
+        synergy: {
+          source: {
+            name: 'hok_official',
+            metric: 'compatibility',
+            notes: ['Nilai adalah kompatibilitas resmi HoK (bukan win rate/pick rate).']
+          },
+          duo: [
+            { externalName: 'Sun Bin', compatibilityPct: 1.8 }
+          ],
+          trio: [
+            { externalNames: ['Sun Bin', "Ao'yin"], compatibilityPct: 4.08 }
+          ]
+        }
+      }
+    },
+    {
+      id: 'cai_yan',
+      name: 'Cai Yan',
+      role: 'Roaming',
+      secondaryRoles: [],
+
+      tags: ['support', 'enchanter', 'heal', 'buff', 'ranged', 'magic', 'sustain', 'recovery'],
+
+      image: 'images/heroes/cai_yan.png',
+
+      profile: {
+        traits: ['Pelindung', 'Heal'],
+        type: 'Support',
+        subtype: 'Support Buff',
+        uniqueness: ['Buff Tim/Recovery'],
+        power: 'Seimbang (Early, Mid, Late Game)',
+        lane: 'Roaming'
+      },
+
+      skills: {
+        passive: {
+          name: "Can't Touch This",
+          categories: ['recovery', 'move_speed', 'conditional'],
+          rawDescription: "Skill Pasif: Can't Touch This (Pemulihan, Gerak Cepat)\nSaat menerima Damage, Cai Yan mendapatkan 35/70% Kecepatan Gerakan yang menghilang secara bertahap dalam rentang 2 Detik. Dia juga memulihkan 250 (250/530+50% Serangan Magis) HP per Detik selama 2 Detik.\nPasif ini hanya bisa dipicu sekali setiap 10 Detik.",
+          mechanics: {
+            trigger: 'on_take_damage',
+            internalCooldownSec: 10,
+            moveSpeedBuff: {
+              bonusPctByLevel: [35, 70],
+              durationSec: 2,
+              decay: 'gradual'
+            },
+            selfHeal: {
+              hpPerSecByLevel: [250, 530],
+              bonusMagicAttackPct: 50,
+              durationSec: 2,
+              totalHealApprox: { level1: 500, level15: 1060 }
+            },
+            notes: [
+              'Self-preservation tool — Cai Yan bisa survive lebih lama saat ditekan dive/assassin.',
+              'ICD 10 detik — tidak bisa di-spam tapi cukup sering untuk teamfight.'
+            ]
+          }
+        },
+
+        skill1: {
+          name: 'Healing Hymn',
+          cdSec: 15,
+          manaCost: 75,
+          categories: ['heal', 'move_speed', 'aoe', 'channel'],
+          rawDescription: 'Skill 1: Healing Hymn (Heal, Gerak Cepat) (CD 15/14,4/13,8/13,2/12,6/12 Detik) Konsumsi Mana 75\nCai Yan melantunkan musik, mendapatkan 40% Kecepatan Gerakan dan memulihkan 60 (60/72/84/96/108/120+20% Serangan Magis) HP rekan tim setiap 0,5 Detik selama 3 Detik. Unit Non-Hero menerima pemulihan HP 50% lebih banyak.',
+          mechanics: {
+            cooldownSecBySkillLevel: [15, 14.4, 13.8, 13.2, 12.6, 12],
+            channel: {
+              durationSec: 3,
+              canMoveWhileCasting: true,
+              notes: ['MS +40% memungkinkan Cai Yan mengikuti tim yang lebih cepat saat healing.']
+            },
+            selfBuff: {
+              moveSpeedBonusPct: 40,
+              durationSec: 3
+            },
+            heal: {
+              delivery: 'aoe_self',
+              target: 'ally',
+              hpPerTickBySkillLevel: [60, 72, 84, 96, 108, 120],
+              bonusMagicAttackPct: 20,
+              tickIntervalSec: 0.5,
+              totalTicks: 6,
+              totalHealApprox: {
+                level1: 360,
+                level15: 720,
+                notes: ['Total heal 360-720 HP ke semua rekan tim di area selama 3 detik.']
+              },
+              nonHeroBonus: {
+                multiplier: 1.5,
+                notes: ['Non-hero dapat 50% lebih banyak — bagus untuk minion wave/jungle clear tim.']
+              }
+            }
+          }
+        },
+        skill2: {
+          name: 'Earworm',
+          cdSec: 10,
+          categories: ['cc', 'stun', 'magic', 'multi_hit', 'bounce'],
+          rawDescription: 'Skill 2: Earworm (CC, Damage Magis) (CD 10/9,6/9,2/8,8/8,4/8 Detik)\nCai Yan melancarkan gelombang suara yang memantul di antara musuh. Setiap pantulan menimbulkan 270 (270/324/378/432/486/540+48% Serangan Magis) Damage Magis dan Stun selama 0,75 Detik pada musuh.\n(Setiap gelombang suara dapat memantul hingga 6 kali, dan target yang sama hanya bisa terkena 2 pantulan. Damage dan durasi Stun untuk pantulan kedua dan berikutnya hanya 25% dari efek semula)',
+          mechanics: {
+            cooldownSecBySkillLevel: [10, 9.6, 9.2, 8.8, 8.4, 8],
+            delivery: 'targeted_multi',
+            bounce: {
+              maxBounces: 6,
+              maxHitsPerTarget: 2,
+              subsequentHitMultiplier: 0.25,
+              notes: [
+                'Anti-grouping CC — musuh yang bergerombol kena lebih banyak pantulan.',
+                'Lebih ke CC tool daripada damage tool karena pantulan kedua hanya 25%.'
+              ]
+            },
+            damage: {
+              magic: {
+                baseDamageBySkillLevel: [270, 324, 378, 432, 486, 540],
+                bonusMagicAttackPct: 48
+              }
+            },
+            crowdControl: {
+              effect: 'stun',
+              durationSec: 0.75,
+              subsequentHitDurationSec: 0.19,
+              notes: ['Stun 0,75 detik per pantulan pertama; pantulan kedua ke target sama hanya 0,19 detik.']
+            }
+          }
+        },
+        skill3: {
+          name: 'Tune of Tranquility',
+          cdSec: 60,
+          manaCost: 120,
+          categories: ['heal', 'buff', 'defense', 'channel'],
+          rawDescription: 'Skill 3: Tune of Tranquility (Heal, Penguatan) (CD 60 Detik) Konsumsi Mana 120\nCai Yan memainkan harpa, memulihkan 90 (90/135/180+45% Serangan Magis) HP pada rekan tim dengan HP terendah dalam jangkauan setiap 0,5 Detik selama 5 Detik sambil meningkatkan Pertahanan Fisik dan Magis mereka sebesar 200 (200/300/400+30% Serangan Magis).',
+          mechanics: {
+            cooldownSecBySkillLevel: [60, 60, 60],
+            durationSec: 5,
+            targeting: {
+              type: 'lowest_hp_ally_in_range',
+              notes: ['Smart targeting otomatis ke rekan tim dengan HP terendah — tidak perlu manual aim.']
+            },
+            heal: {
+              hpPerTickBySkillLevel: [90, 135, 180],
+              bonusMagicAttackPct: 45,
+              tickIntervalSec: 0.5,
+              totalTicks: 10,
+              totalHealApprox: {
+                level1: 900,
+                level15: 1800,
+                notes: ['Total heal 900-1800 HP ke target HP terendah selama 5 detik.']
+              }
+            },
+            defenseBuff: {
+              physicalDefenseBonus: {
+                baseDamageBySkillLevel: [200, 300, 400],
+                bonusMagicAttackPct: 30
+              },
+              magicDefenseBonus: {
+                baseDamageBySkillLevel: [200, 300, 400],
+                bonusMagicAttackPct: 30
+              },
+              durationSec: 5,
+              notes: [
+                'Defense buff +200-400 sangat signifikan — hampir setara 1 item defense di level tinggi.',
+                'Heal + defense buff bersamaan = target yang hampir mati jadi sangat susah dibunuh selama 5 detik.',
+                'Counter terkuat untuk burst/dive comp.'
+              ]
+            }
+          }
+        }
+      },
+
+      stats: {
+        level1: {
+          physicalAttack: { total: 167, base: 167, bonus: 0 },
+          magicAttack: { total: 10, base: 10, bonus: 0 },
+          maxHP: 3314,
+          maxMana: 620,
+          physicalDefense: { value: 150 },
+          magicDefense: { value: 75 },
+          attackSpeedBonusPct: 5,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 365,
+          hpRegenPer5s: 38,
+          manaRegenPer5s: 15,
+          attackRange: 'Ranged'
+        },
+
+        level15: {
+          physicalAttack: { total: 308, base: 308, bonus: 0 },
+          magicAttack: { total: 10, base: 10, bonus: 0 },
+          maxHP: 6126,
+          maxMana: 1240,
+          physicalDefense: { value: 388 },
+          magicDefense: { value: 212 },
+          attackSpeedBonusPct: 19,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 365,
+          hpRegenPer5s: 66,
+          manaRegenPer5s: 30,
+          attackRange: 'Ranged'
+        }
+      },
+
+      coachProfile: {
+        draftIdentity: {
+          archetype: 'Support',
+          engageRole: 'secondary',
+          playPattern: 'Enchanter healer: S1 AoE heal sambil bergerak (MS +40%) untuk sustain tim di teamfight, S2 bouncing stun untuk CC/peel, S3 targeted heal + defense buff untuk menyelamatkan rekan tim yang hampir mati. Counter terkuat untuk burst/dive comp.',
+          notes: [
+            'S1 MS +40% saat channel — kompensasi move speed dasar rendah (365) agar bisa mengikuti tim.',
+            'S2 bouncing stun maks 6 pantulan — anti-grouping CC yang kuat, lebih efektif saat musuh bergerombol.',
+            'S3 smart targeting ke HP terendah + defense buff = rekan tim yang hampir mati jadi sangat susah dibunuh.',
+            'Pasif self-preservation: MS burst + heal saat kena damage — bisa survive lebih lama dari support biasa.'
+          ]
+        },
+
+        powerCurve: {
+          early: 'medium',
+          mid: 'medium',
+          late: 'medium',
+          notes: ['Seimbang di semua fase — sustain dan CC konsisten tanpa power spike yang jelas.']
+        },
+
+        draftValues: {
+          mobility: 'medium',
+          frontline: 'low',
+          sustain: 'high',
+
+          engage: 'low',
+          disengage: 'medium',
+          peel: 'high',
+
+          cc: 'high',
+          pickPotential: 'low',
+
+          burst: 'low',
+          dps: 'low'
+        },
+
+        crowdControl: [
+          {
+            source: 'skill2',
+            effect: 'stun',
+            delivery: 'targeted_multi',
+            reliability: 'high',
+            durationSec: 0.75,
+            durationSecMax: 0.75,
+            notes: ['Bouncing stun maks 6 pantulan, target sama maks 2x. Pantulan kedua hanya 0,19 detik.']
+          }
+        ],
+
+        mobilityProfile: {
+          level: 'medium',
+          uses: ['reposition', 'escape'],
+          notes: [
+            'S1 MS +40% saat channel — bisa mengikuti tim yang lebih cepat.',
+            'Pasif MS burst 35-70% saat kena damage — escape tool saat diserang.'
+          ]
+        },
+
+        teamNeeds: {
+          needs: [
+            'Butuh frontline/engage dari tim — Cai Yan tidak bisa membuka fight sendiri.',
+            'Paling efektif dengan tim yang suka extended fight karena sustain makin terasa saat fight berlangsung lama.',
+            'Butuh tim yang bisa grouping agar S1 AoE heal dan S2 bouncing stun maksimal.'
+          ]
+        },
+
+        counterplay: {
+          counteredBy: [
+            'Burst damage cepat sebelum S3 aktif — bunuh target sebelum Cai Yan sempat heal.',
+            'Silence/interrupt yang menghentikan S1 channel atau S3.',
+            'Spread formation — S2 bouncing stun kehilangan value kalau musuh tidak bergerombol.',
+            'Dive ke Cai Yan sendiri saat S3 aktif — Cai Yan tidak bisa heal dirinya sendiri dengan S3.'
+          ]
+        },
+
+        needsValidation: {
+          questions: [
+            'Apakah S3 bisa di-interrupt oleh CC?',
+            'Radius jangkauan S1 dan S3 belum dicatat.'
+          ]
+        },
+
+        synergy: {
+          source: {
+            name: 'hok_official',
+            metric: 'compatibility',
+            notes: ['Nilai adalah kompatibilitas resmi HoK (bukan win rate/pick rate).']
+          },
+          duo: [
+            { externalName: 'Huang Zhong', compatibilityPct: 3.08 },
+            { heroId: 'houyi', compatibilityPct: 2.78 },
+            { externalName: 'Luban', compatibilityPct: 2.39 },
+            { heroId: 'ying', compatibilityPct: 1.62 },
+            { externalName: 'Li Bai', compatibilityPct: 1.53 }
+          ],
+          trio: [
+            { heroIds: ['daji', 'houyi'], compatibilityPct: 6.23 },
+            { externalNames: ['Li Bai', 'Huang Zhong'], compatibilityPct: 6.21 },
+            { externalNames: ['Zilong', 'Hou Yi'], compatibilityPct: 5.96 },
+            { externalNames: ['Mai Shiranui', 'Chano'], compatibilityPct: 5.32 },
+            { externalNames: ['Xiao Qiao', 'Zilong'], compatibilityPct: 4.33 },
+            { externalNames: ['Di Renjie', 'Feyd'], compatibilityPct: 4.06 },
+            { externalNames: ['Xiao Qiao', 'Sun Ce'], compatibilityPct: 3.08 }
           ]
         }
       }
