@@ -1,3 +1,3 @@
 # Coach-DraftPick-Hok
 Ini adalah Website untuk membantu Kalian dalam melakukan Draft Pick, supaya tidak bingung dan bisa lebih fokus dalam Gameplay
-Untuk urusan UI masih ngebug ya, jadi aku biarkan dulu dan fokus pada logikanya dulu
+Website ini adalah versi Gratis, jadi beberapa fitur tentunya nggak terlalu komplek.
