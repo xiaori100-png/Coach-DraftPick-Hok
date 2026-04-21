@@ -171,6 +171,17 @@
     if (r.indexOf('Counter Poke: frontline') === 0) return 'Frontline';
     if (r.indexOf('Counter Poke: rentan poke') === 0) return 'Rentan Poke';
 
+    if (r.indexOf('Counter enemy Dive') === 0) return 'Counter Dive';
+    if (r.indexOf('Counter Dive: anti-dive specialist') === 0) return 'Anti-Dive';
+    if (r.indexOf('Counter Dive: carry statis') === 0) return 'Carry Statis';
+
+    if (r.indexOf('Counter timing: scale late') === 0) return 'Scale Late';
+    if (r.indexOf('Counter timing: bully early') === 0) return 'Bully Early';
+    if (r.indexOf('Timing: lemah di early') === 0) return 'Lemah Early';
+    if (r.indexOf('Timing: lemah di late') === 0) return 'Lemah Late';
+
+    if (r.indexOf('Counter lane:') === 0) return 'Counter Lane';
+
     if (r.length > 22) return r.slice(0, 22) + '…';
     return r;
   }
@@ -888,6 +899,45 @@
     };
   }
 
+  function inferEnemyLaneAssignments(enemyPicks) {
+    var picks = enemyPicks || [];
+    var assignments = new Array(picks.length);
+    var usedLanes = {};
+
+    // Pass 1: assign primary role dulu untuk semua hero
+    for (var i = 0; i < picks.length; i++) {
+      var hero = picks[i];
+      if (!hero) { assignments[i] = ''; continue; }
+      var primary = normalizeRole(hero.role);
+      assignments[i] = primary;
+      if (primary) usedLanes[primary] = (usedLanes[primary] || 0) + 1;
+    }
+
+    // Pass 2: hero yang primary role-nya bentrok → coba secondary
+    for (var j = 0; j < picks.length; j++) {
+      var h = picks[j];
+      if (!h) continue;
+      var pLane = normalizeRole(h.role);
+      if (!pLane) continue;
+
+      // Bentrok = lane ini dipakai lebih dari 1 hero
+      if (usedLanes[pLane] > 1) {
+        var secondary = heroSecondaryRoles(h);
+        for (var s = 0; s < secondary.length; s++) {
+          if (!usedLanes[secondary[s]] || usedLanes[secondary[s]] === 0) {
+            // Kurangi count primary, tambah secondary
+            usedLanes[pLane]--;
+            assignments[j] = secondary[s];
+            usedLanes[secondary[s]] = (usedLanes[secondary[s]] || 0) + 1;
+            break;
+          }
+        }
+      }
+    }
+
+    return assignments;
+  }
+
   function computeTeamSummary(teamPicks, laneAssignments) {
     var roles = {};
 
@@ -919,6 +969,12 @@
     var magicCount = 0;
     var physicalCount = 0;
     var pickedHeroes = [];
+
+    // powerCurve tracking
+    var countEarlyHigh = 0;
+    var countLateHigh = 0;
+    var hasLateFloor = false;
+    var hasEarlyFloor = false;
 
     for (var i = 0; i < teamPicks.length; i++) {
       var hero = teamPicks[i];
@@ -1011,6 +1067,16 @@
       var tags = heroTags(hero);
       if (tags.indexOf('magic') !== -1) magicCount++;
       if (tags.indexOf('physical') !== -1) physicalCount++;
+
+      // powerCurve tracking
+      var earlyRating = getEarlyPowerRating(hero);
+      var midRating = hero && hero.coachProfile && hero.coachProfile.powerCurve ? ratingToNumber(hero.coachProfile.powerCurve.mid) : null;
+      var lateRating = hero && hero.coachProfile && hero.coachProfile.powerCurve ? ratingToNumber(hero.coachProfile.powerCurve.late) : null;
+      if (earlyRating !== null && earlyRating >= 2) countEarlyHigh++;
+      if (lateRating !== null && lateRating >= 2) countLateHigh++;
+      // floor: medium atau high di fase tersebut = tidak collapse
+      if (lateRating !== null && lateRating >= 1) hasLateFloor = true;
+      if (earlyRating !== null && earlyRating >= 1) hasEarlyFloor = true;
     }
 
     var f2bScore = 0;
@@ -1084,6 +1150,12 @@
       magicCount: magicCount,
       physicalCount: physicalCount,
       pickedHeroes: pickedHeroes,
+      powerCurve: {
+        countEarlyHigh: countEarlyHigh,
+        countLateHigh: countLateHigh,
+        hasLateFloor: hasLateFloor,
+        hasEarlyFloor: hasEarlyFloor
+      },
       archetypeSignals: {
         frontToBack: f2bScore,
         pick: pickScore,
@@ -1365,7 +1437,7 @@
       else if (enemyPickedCount <= 3) enemyInfoFactor = 0.6;
       else enemyInfoFactor = 1.0;
 
-      var enemySummary = computeTeamSummary(enemyPicks || [], null);
+      var enemySummary = computeTeamSummary(enemyPicks || [], inferEnemyLaneAssignments(enemyPicks || []));
       var enemySignals = enemySummary && enemySummary.archetypeSignals;
 
       if (enemySignals && enemySignals.primary === 'frontToBack' && enemySignals.frontToBack > 0) {
@@ -1533,6 +1605,18 @@
           reasons.push('Counter enemy Dive');
         }
 
+        // Anti-dive specialist bonus: hero dengan peel:high + disengage:high
+        // adalah protector sejati yang bisa melindungi carry dari diver secara konsisten.
+        var isAntiDiveSpecialist = (peelRating3 !== null && peelRating3 >= 2) &&
+                                   (disengageRating3 !== null && disengageRating3 >= 2);
+        if (isAntiDiveSpecialist) {
+          var specialistBonus = Math.round(1 * enemyInfoFactor);
+          if (specialistBonus > 0) {
+            score += specialistBonus;
+            reasons.push('Counter Dive: anti-dive specialist');
+          }
+        }
+
         // Penalize immobile Farm Lane core when enemy has multiple dive tools.
         if (role === 'Farm Lane') {
           var immobile = (mobilityRating4 === null || mobilityRating4 === 0) && ((disengageRating3 === null || disengageRating3 === 0));
@@ -1625,6 +1709,115 @@
       }
     }
 
+    // powerCurve counter-timing (Global V3)
+    var enemyPowerCurve = enemySummary && enemySummary.powerCurve;
+    var allyPowerCurve = summary.powerCurve;
+    if (enemyPowerCurve && allyPowerCurve && enemyPickedCount > 0) {
+      var heroLateRating = hero && hero.coachProfile && hero.coachProfile.powerCurve ? ratingToNumber(hero.coachProfile.powerCurve.late) : null;
+      var heroEarlyRating = getEarlyPowerRating(hero);
+
+      // Musuh heavy early → boost late carry
+      if (enemyPowerCurve.countEarlyHigh >= 2 && heroLateRating !== null && heroLateRating >= 2) {
+        var lateBonus = allyPowerCurve.hasLateFloor ? 1 : 2;
+        lateBonus = Math.round(lateBonus * enemyInfoFactor);
+        if (lateBonus > 0) {
+          score += lateBonus;
+          reasons.push('Counter timing: scale late');
+        }
+      }
+
+      // Musuh late heavy → boost early bully
+      if (enemyPowerCurve.countLateHigh >= 2 && heroEarlyRating !== null && heroEarlyRating >= 2) {
+        var earlyBonus = allyPowerCurve.hasEarlyFloor ? 1 : 2;
+        earlyBonus = Math.round(earlyBonus * enemyInfoFactor);
+        if (earlyBonus > 0) {
+          score += earlyBonus;
+          reasons.push('Counter timing: bully early');
+        }
+      }
+
+      // Penalty: musuh early heavy + hero early low (akan menderita di early)
+      if (enemyPowerCurve.countEarlyHigh >= 2 && heroEarlyRating !== null && heroEarlyRating === 0) {
+        if (allyPowerCurve.hasLateFloor) {
+          var earlyWeakPenalty = Math.round(1 * enemyInfoFactor);
+          if (earlyWeakPenalty > 0) {
+            score -= earlyWeakPenalty;
+            reasons.push('Timing: lemah di early');
+          }
+        }
+      }
+
+      // Penalty: musuh late heavy + hero late low (tim collapse di late)
+      if (enemyPowerCurve.countLateHigh >= 2 && heroLateRating !== null && heroLateRating === 0) {
+        if (allyPowerCurve.hasEarlyFloor) {
+          var lateWeakPenalty = Math.round(1 * enemyInfoFactor);
+          if (lateWeakPenalty > 0) {
+            score -= lateWeakPenalty;
+            reasons.push('Timing: lemah di late');
+          }
+        }
+      }
+    }
+
+    // Counter lane scoring (Global V3)
+    // Hanya untuk Farm Lane, Clash Lane, Mid Lane — Jungle/Roaming skip (tidak punya lane tetap)
+    var laneCounterLanes = ['Farm Lane', 'Clash Lane', 'Mid Lane'];
+    if (laneContext && laneCounterLanes.indexOf(laneContext) !== -1 && enemyPickedCount > 0) {
+      var enemyInSameLane = null;
+      var enemyLaneAssignments = inferEnemyLaneAssignments(enemyPicks || []);
+      var enemyPicksArr = enemyPicks || [];
+      for (var eli = 0; eli < enemyPicksArr.length; eli++) {
+        if (!enemyPicksArr[eli]) continue;
+        var assignedEnemyLane = enemyLaneAssignments[eli] || normalizeRole(enemyPicksArr[eli].role);
+        if (assignedEnemyLane === normalizeRole(laneContext)) {
+          enemyInSameLane = enemyPicksArr[eli];
+          break;
+        }
+      }
+
+      if (enemyInSameLane) {
+        var laneCounterBase = 0;
+        var enemyBurstLane = getBurstRating(enemyInSameLane);
+        var enemySustainLane = getSustainRating(enemyInSameLane);
+        var enemyCCLane = getCCRating(enemyInSameLane);
+        var enemyDpsLane = getDpsRating(enemyInSameLane);
+
+        var heroMobilityLane = getMobilityRating(hero);
+        var heroDisengageLane = getDisengageRating(hero);
+        var heroBurstLane = getBurstRating(hero);
+
+        // Musuh burst tinggi di lane → ally dengan mobility/disengage tinggi lebih aman
+        if (enemyBurstLane !== null && enemyBurstLane >= 2) {
+          if (heroMobilityLane !== null && heroMobilityLane >= 2) laneCounterBase += 1;
+          else if (heroDisengageLane !== null && heroDisengageLane >= 2) laneCounterBase += 1;
+        }
+
+        // Musuh sustain tinggi di lane → ally dengan burst tinggi lebih efektif
+        if (enemySustainLane !== null && enemySustainLane >= 2) {
+          if (heroBurstLane !== null && heroBurstLane >= 2) laneCounterBase += 1;
+        }
+
+        // Musuh CC tinggi di lane → ally dengan mobility/disengage tinggi lebih aman
+        if (enemyCCLane !== null && enemyCCLane >= 2) {
+          if (heroMobilityLane !== null && heroMobilityLane >= 2) laneCounterBase += 1;
+          else if (heroDisengageLane !== null && heroDisengageLane >= 2) laneCounterBase += 1;
+        }
+
+        // Musuh DPS tinggi di lane → ally dengan sustain atau disengage lebih tahan
+        if (enemyDpsLane !== null && enemyDpsLane >= 2) {
+          var heroSustainLane = getSustainRating(hero);
+          if (heroSustainLane !== null && heroSustainLane >= 2) laneCounterBase += 1;
+          else if (heroDisengageLane !== null && heroDisengageLane >= 2) laneCounterBase += 1;
+        }
+
+        var laneCounterScore = Math.round(laneCounterBase * enemyInfoFactor);
+        if (laneCounterScore > 0) {
+          score += laneCounterScore;
+          reasons.push('Counter lane: cocok vs musuh ' + enemyInSameLane.name);
+        }
+      }
+    }
+
     var tags = heroTags(hero);
 
     var diff = summary.magicCount - summary.physicalCount;
@@ -1673,7 +1866,7 @@
 
     // Special case for Li Xin form recommendation (Global V2)
     if (hero.id === 'li_xin') {
-      var tempEnemySummary = computeTeamSummary(enemyPicks || [], null);
+      var tempEnemySummary = computeTeamSummary(enemyPicks || [], inferEnemyLaneAssignments(enemyPicks || []));
       var advice = getLiXinFormAdvice(summary, tempEnemySummary);
       if (advice) {
         reasons.push('Saran: ' + advice.label);
@@ -1890,9 +2083,41 @@
     var overrideLane = this.state.laneOverrides && this.state.laneOverrides.ally ? this.state.laneOverrides.ally[idx] : '';
     if (overrideLane) return normalizeRole(overrideLane);
 
-    if (hero) return normalizeRole(hero.role);
+    if (!hero) return '';
 
-    return '';
+    // Auto-assign: coba secondary role jika primary sudah terisi hero lain (non-user slot)
+    var primaryLane = normalizeRole(hero.role);
+    if (idx !== this.state.userSlotIndex) {
+      // Kumpulkan lane yang sudah terpakai tanpa rekursi — pakai data mentah langsung
+      var usedLanes = {};
+      for (var i = 0; i < this.state.teams.ally.length; i++) {
+        if (i === idx) continue;
+        var otherHero = this.state.teams.ally[i];
+        if (!otherHero) continue;
+
+        // Pakai override/userLane kalau ada, fallback ke primary role hero
+        var otherLane = '';
+        if (i === this.state.userSlotIndex && normalizeRole(this.state.userLane)) {
+          otherLane = normalizeRole(this.state.userLane);
+        } else {
+          var otherOverride = this.state.laneOverrides && this.state.laneOverrides.ally ? this.state.laneOverrides.ally[i] : '';
+          otherLane = otherOverride ? normalizeRole(otherOverride) : normalizeRole(otherHero.role);
+        }
+        if (otherLane) usedLanes[otherLane] = true;
+      }
+
+      // Kalau primary lane sudah terisi, coba secondary
+      if (usedLanes[primaryLane]) {
+        var secondary = heroSecondaryRoles(hero);
+        for (var s = 0; s < secondary.length; s++) {
+          if (!usedLanes[secondary[s]]) {
+            return secondary[s];
+          }
+        }
+      }
+    }
+
+    return primaryLane;
   };
 
   DraftPickApp.prototype.ensureLanePopover = function () {
@@ -2667,7 +2892,7 @@
       }
 
       if (liXinOnTeam) {
-        var finalEnemySummary = computeTeamSummary(this.state.teams[enemyKey], null);
+        var finalEnemySummary = computeTeamSummary(this.state.teams[enemyKey], inferEnemyLaneAssignments(this.state.teams[enemyKey]));
         var finalAdvice = getLiXinFormAdvice(summary, finalEnemySummary);
         if (finalAdvice) {
           var insightBox = el('div', { className: 'tm-insight-box tm-insight-box--large' });
