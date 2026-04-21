@@ -247,7 +247,7 @@
           duo: [
             { externalName: 'Shouyue', compatibilityPct: 3.04 },
             { externalName: 'Gan & Mo', compatibilityPct: 2.52 },
-            { externalName: 'Kui', compatibilityPct: 2.35 },
+            { heroId: 'kui', compatibilityPct: 2.35 },
             { externalName: 'Donghuang', compatibilityPct: 1.93 }
           ],
           trio: [
@@ -255,8 +255,8 @@
             { externalNames: ['Gan & Mo', 'Shouyue'], compatibilityPct: 8.19 },
             { externalNames: ['Diaochan', 'Shouyue'], compatibilityPct: 7.08 },
             { externalNames: ['Daji', 'Donghuang'], compatibilityPct: 5.2 },
-            { externalNames: ['Kui', 'Li Xin'], compatibilityPct: 4.33 },
-            { externalNames: ['Angela', 'Kui'], compatibilityPct: 3.88 }
+            { heroIds: ['kui', 'li_xin'], compatibilityPct: 4.33 },
+            { heroIds: ['angela', 'kui'], compatibilityPct: 3.88 }
           ]
         },
 
@@ -986,7 +986,7 @@
           cdSec: 5,
           manaCost: 20,
           categories: ['mobility', 'enhance', 'move_speed', 'physical', 'basic_attack_amp'],
-          rawDescription: 'Skill 1: Rolling Raid (Gerakan, Tingkatkan, Gerak Cepat) (CD 5 Detik) Konsumsi Mana 20\nLady Sun berguling ke arah target dan meningkatkan Serangan Dasar berikutnya, yang akan menimbulkan 439 (270+100% Serangan Fisik) Damage Fisik pada musuh yang terhantam. Menggunakan Serangan Dasar Ditingkatkan akan mereset Serangan Dasar setelahnya dan menambahkan jangkauannya.\nJika ada Hero musuh di sekitar lokasi berguling, Kecepatan Gerakannya akan bertambah 80%. Efek ini akan lenyap secara bertahap 2 Detik.',
+          rawDescription: 'Skill 1: Rolling Raid (Gerakan, Tingkatkan, Gerak Cepat) (CD 5 Detik) Konsumsi Mana 20\nLady Sun berguling ke arah target dan meningkatkan Serangan Dasar berikutnya, yang akan menimbulkan 454 (285/342/399/456/513/570+100% Serangan Fisik) Damage Fisik pada musuh yang terhantam. Menggunakan Serangan Dasar Ditingkatkan akan mereset Serangan Dasar setelahnya dan menambahkan jangkauannya.\nJika ada Hero musuh di sekitar lokasi berguling, Kecepatan Gerakannya akan bertambah 80%. Efek ini akan lenyap secara bertahap 2 Detik.',
           mechanics: {
             delivery: 'dash',
             dash: {
@@ -998,7 +998,10 @@
               windowSec: 5,
               countsAsBasicAttack: true,
               damage: {
-                physical: { baseDamage: 270, bonusPhysicalAttackPct: 100 }
+                physical: {
+                  baseDamageBySkillLevel: [285, 342, 399, 456, 513, 570],
+                  bonusPhysicalAttackPct: 100
+                }
               }
             },
             basicAttackReset: {
@@ -1036,11 +1039,15 @@
           cdSec: 7.5,
           manaCost: 45,
           categories: ['enfeeble', 'slow', 'physical', 'damage', 'mark', 'basic_attack_amp'],
-          rawDescription: 'Skill 2: Frag Grenade (Enfeeble, Slow, Damage Fisik) (CD 7,5 Detik) Konsumsi Mana 45\nLady Sun melemparkan granat ke lokasi target, menimbulkan 380 (380+100% Serangan Fisik ekstra) Damage Fisik, Slow Ekstrem selama 1 Detik, dan mengakibatkan pengurangan 10% Pertahanan Fisik pada musuh dalam jangkauan. Dia juga akan memberikan Mark pada Hero dan Minion musuh selama 5 Detik.\nSerangan Dasarnya menimbulkan 120 (120+30% Serangan Fisik ekstra) Damage Fisik tambahan pada Hero yang memiliki Mark dan 240 (240+60% Serangan Fisik ekstra) Damage Fisik tambahan pada Minion yang memiliki Mark.',
+          rawDescription: 'Skill 2: Frag Grenade (Enfeeble, Slow, Damage Fisik) (CD 7,5/7,2/6,9/6,6/6,3/6 Detik) Konsumsi Mana 45\nLady Sun melemparkan granat ke lokasi target, menimbulkan 380 (380/456/532/608/684/760+100% Serangan Fisik ekstra) Damage Fisik, Slow Ekstrem selama 1 Detik pada musuh dalam jangkauan. Mengakibatkan pengurangan 10% Pertahanan Fisik pada musuh serta menambahkan Mark pada Hero dan Minion musuh yang aktif selama 5 Detik.\nSerangan Dasarnya juga menimbulkan tambahan 120 (120/144/168/192/216/240+30% Serangan Fisik ekstra) Damage Fisik pada Hero musuh dengan Mark, 240 (240+60% Serangan Fisik ekstra) Damage Fisik pada Minion yang memiliki Mark.',
           mechanics: {
+            cooldownSecBySkillLevel: [7.5, 7.2, 6.9, 6.6, 6.3, 6],
             delivery: 'aoe_ground',
             damage: {
-              physical: { baseDamage: 380, bonusPhysicalAttackPct: 100 }
+              physical: {
+                baseDamageBySkillLevel: [380, 456, 532, 608, 684, 760],
+                bonusPhysicalAttackPct: 100
+              }
             },
             crowdControl: {
               effect: 'slow',
@@ -1063,7 +1070,12 @@
             bonusBasicAttackDamageVsMarked: {
               applies: true,
               onlyTargets: ['hero', 'minion'],
-              hero: { physical: { baseDamage: 120, bonusPhysicalAttackPct: 30 } },
+              hero: {
+                physical: {
+                  baseDamageBySkillLevel: [120, 144, 168, 192, 216, 240],
+                  bonusPhysicalAttackPct: 30
+                }
+              },
               minion: { physical: { baseDamage: 240, bonusPhysicalAttackPct: 60 } }
             },
             needsValidation: {
@@ -1077,8 +1089,9 @@
           cdSec: 25,
           manaCost: 75,
           categories: ['physical', 'damage', 'burst'],
-          rawDescription: 'Skill 3: Ultimate Shell (Damage Fisik) (CD 25 Detik) Konsumsi Mana 75\nLady Sun menembakkan peluru dahsyat ke arah target, menimbulkan 840 (840+210% Serangan Fisik ekstra) Damage Fisik pada musuh pertama yang terhantam. Saat menghantam musuh atau mencapai jarak maksimum, peluru itu akan terpencar dan menimbulkan 75% Damage pada musuh dalam area kerucut di belakang titik ledakan.',
+          rawDescription: 'Skill 3: Ultimate Shell (Damage Fisik) (CD 25/20/15 Detik) Konsumsi Mana 75\nLady Sun menembakkan peluru dahsyat ke arah target, menimbulkan 840 (840/1260/1680+210% Serangan Fisik ekstra) Damage Fisik pada musuh pertama yang terhantam. Saat menghantam musuh atau mencapai jarak maksimum, peluru itu akan terpencar dan menimbulkan 75% Damage pada musuh dalam area kerucut di belakang titik ledakan.',
           mechanics: {
+            cooldownSecBySkillLevel: [25, 20, 15],
             delivery: 'skillshot_line',
             projectile: {
               hitsFirstTargetOnly: true,
@@ -1089,7 +1102,10 @@
             directHit: {
               appliesWhen: 'hits_target',
               damage: {
-                physical: { baseDamage: 840, bonusPhysicalAttackPct: 210 }
+                physical: {
+                  baseDamageBySkillLevel: [840, 1260, 1680],
+                  bonusPhysicalAttackPct: 210
+                }
               }
             },
             shatterCone: {
@@ -3232,7 +3248,7 @@
             notes: ['Nilai adalah kompatibilitas resmi HoK (bukan win rate/pick rate). Disarankan dipakai sebagai bonus kecil/tie-breaker setelah kebutuhan komposisi terpenuhi.']
           },
           duo: [
-            { externalName: 'Kui', compatibilityPct: 2.27 },
+            { heroId: 'kui', compatibilityPct: 2.27 },
             { externalName: 'Mi Yue', compatibilityPct: 1.88 },
             { externalName: 'Gao Changgong', compatibilityPct: 1.38 }
           ],
@@ -3240,7 +3256,7 @@
             { externalNames: ['Mi Yue', 'Kui'], compatibilityPct: 5.46 },
             { externalNames: ['Consort Yu', 'Kui'], compatibilityPct: 4.15 },
             { externalNames: ['Luban', 'Kui'], compatibilityPct: 4.05 },
-            { externalNames: ['Wukong', 'Kui'], compatibilityPct: 3.88 }
+            { heroIds: ['wukong', 'kui'], compatibilityPct: 3.88 }
           ]
         },
 
@@ -3547,9 +3563,9 @@
           trio: [
             { externalNames: ['Lady Zhen', 'Yaria'], compatibilityPct: 29.82 },
             { externalNames: ['Luna', 'Yaria'], compatibilityPct: 29.62 },
-            { externalNames: ['Yaria', 'Lam'], compatibilityPct: 28.87 },
+            { heroIds: ['yaria', 'lam'], compatibilityPct: 28.87 },
             { externalNames: ['Diaochan', 'Yaria'], compatibilityPct: 19.02 },
-            { externalNames: ['Wang Zhaojun', 'Yaria'], compatibilityPct: 18.83 },
+            { heroIds: ['wang_zhaojun', 'yaria'], compatibilityPct: 18.83 },
             { externalNames: ['Li Bai', 'Yaria'], compatibilityPct: 18.69 },
             { externalNames: ['Yaria', 'Ying'], compatibilityPct: 18.69 },
             { externalNames: ['Yaria', 'Cirrus'], compatibilityPct: 18.63 },
@@ -3611,7 +3627,7 @@
         passive: {
           name: 'Magnetic Barrier',
           categories: ['disrupt', 'recovery', 'push', 'objective', 'tower_interaction'],
-          rawDescription: 'Skill Pasif: Magnetic Barrier (Disrupt, Recovery)\nSkill Liu Shan menimbulkan Damage setara pada Tower dan Skill CC miliknya mengakibatkan Disrupt pada mereka selama 1,2 Detik. Dia menjarah puing Tower untuk memulihkan 280 HP saat menyerang Tower dengan Skill-nya.',
+          rawDescription: 'Skill Pasif: Magnetic Barrier (Disrupt, Recovery)\nSkill Liu Shan menimbulkan Damage setara pada Tower dan Skill CC miliknya mengakibatkan Disrupt pada mereka selama 1,2 Detik. Dia menjarah puing Tower untuk memulihkan 280/672 HP saat menyerang Tower dengan Skill-nya.',
           mechanics: {
             towers: {
               skillsDealFullDamage: true,
@@ -3625,8 +3641,9 @@
               notes: ['Disrupt hanya berlaku pada Tower.']
             },
             towerHealOnSkillHit: {
-              selfHealFlat: 280,
-              appliesOn: 'each_hit'
+              selfHealByLevel: { level1: 280, level15: 672 },
+              appliesOn: 'each_hit',
+              notes: ['Heal scaling dengan level hero.']
             }
           }
         },
@@ -3636,17 +3653,18 @@
           cdSec: 9,
           manaCost: 50,
           categories: ['cc', 'shield', 'damage', 'mobility', 'enhanced_basic_attack'],
-          rawDescription: 'Skill 1: Overcharge! (CC, Shield, Damage) (CD 9 Detik) Konsumsi Mana 50\nLiu Shan mengakibatkan Shield dan memulai serangan, mendapatkan 50% Kecepatan Gerakan dan Shield yang menangkal 650 (650+14% HP ekstra) Damage selama 3 Detik. Selain itu, Serangan Dasar Liu Shan berikutnya akan ditingkatkan (dapat disimpan hingga total 6 Detik), membuatnya melompat dan menghantam tanah, menimbulkan 350 (350+122% Serangan Fisik) Damage Fisik pada musuh dalam jangkauan dan membuat mereka terkena efek Launch selama 1 Detik.',
+          rawDescription: 'Skill 1: Overcharge! (CC, Shield, Damage Fisik) (CD 9/8,6/8,2/7,8/7,4/7 Detik) Konsumsi Mana: 50\nLiu Shan mengaktifkan Shield dan memulai serangan, mendapatkan 50/60/70/80/90/100% Kecepatan Gerakan yang berkurang seiring waktu dan Shield yang menangkal 650 (650/780/910/1040/1170/1300+16% HP ekstra) Damage selama 3 Detik. Selain itu, Serangan Dasar Liu Shan berikutnya akan ditingkatkan, membuatnya melompat dan menghantam tanah, menimbulkan 569 (350/400/450/500/550/600+122% Serangan Fisik) Damage Fisik pada musuh dalam jangkauan dan membuat mereka terkena efek Launch selama 1 Detik.',
           mechanics: {
+            cooldownSecBySkillLevel: [9, 8.6, 8.2, 7.8, 7.4, 7],
             selfBuff: {
               durationSec: 3,
-              moveSpeedBonusPct: 50,
-              moveSpeedDecaysOverTime: false,
+              moveSpeedBonusPctBySkillLevel: [50, 60, 70, 80, 90, 100],
+              moveSpeedDecaysOverTime: true,
               shield: {
                 durationSec: 3,
                 absorb: {
-                  baseValue: 650,
-                  bonusHpPct: 14
+                  baseDamageBySkillLevel: [650, 780, 910, 1040, 1170, 1300],
+                  bonusHpPct: 16
                 }
               }
             },
@@ -3661,7 +3679,10 @@
                 notes: ['Radius belum dicatat.']
               },
               damage: {
-                physical: { baseDamage: 350, bonusPhysicalAttackPct: 122 }
+                physical: {
+                  baseDamageBySkillLevel: [350, 400, 450, 500, 550, 600],
+                  bonusPhysicalAttackPct: 122
+                }
               },
               crowdControl: {
                 effect: 'launch',
@@ -3677,9 +3698,10 @@
           name: 'Robo Smash',
           cdSec: 7.5,
           manaCost: 40,
-          categories: ['cc', 'damage'],
-          rawDescription: 'Skill 2: Robo Smash (CC, Damage) (CD 7,5 Detik) Konsumsi Mana 40\nLiu Shan memerintahkan Mechcraft miliknya untuk mencakar musuh dalam area kerucut, menimbulkan 400 (400+100% Serangan Fisik) Damage Fisik pada mereka dan membuat mereka Stun selama 1 Detik.',
+          categories: ['cc', 'physical', 'damage'],
+          rawDescription: 'Skill 2: Robo Smash (CC, Damage Fisik) (CD 7,5/7,2/6,9/6,6/6,3/6 Detik) Konsumsi Mana: 40\nLiu Shan memerintahkan Mechcraft miliknya untuk mencakar musuh dalam area kerucut, menimbulkan 580 (400/480/560/640/720/800+100% Serangan Fisik) Damage Fisik pada mereka dan membuat mereka Stun selama 1 Detik.',
           mechanics: {
+            cooldownSecBySkillLevel: [7.5, 7.2, 6.9, 6.6, 6.3, 6],
             delivery: 'skillshot_cone',
             cone: {
               angleDeg: 45,
@@ -3687,7 +3709,10 @@
               notes: ['Range terasa dekat (short-to-mid).']
             },
             damage: {
-              physical: { baseDamage: 400, bonusPhysicalAttackPct: 100 }
+              physical: {
+                baseDamageBySkillLevel: [400, 480, 560, 640, 720, 800],
+                bonusPhysicalAttackPct: 100
+              }
             },
             crowdControl: {
               effect: 'stun',
@@ -3703,9 +3728,10 @@
           name: 'Take It for a Spin',
           cdSec: 40,
           manaCost: 100,
-          categories: ['damage', 'slow'],
-          rawDescription: 'Skill 3: Take It for a Spin (Damage, Slow) (CD 40 Detik) Konsumsi Mana 100\nMechcraft Liu Shan memutar lengannya, menimbulkan 380 (380+110% Serangan Fisik ekstra) Damage Fisik setiap 0,5 Detik selama 3 Detik serta Slow sebesar 15% selama 0,5 Detik pada musuh di sekitar. Selama berputar, Skill lain tetap bisa digunakan.',
+          categories: ['physical', 'damage', 'slow'],
+          rawDescription: 'Skill 3: Take It for a Spin (Damage Fisik, Slow) (CD 40/35/30 Detik) Konsumsi Mana 100\nMechcraft Liu Shan memutar lengannya, menimbulkan 380 (380/570/760+110% Serangan Fisik ekstra) Damage Fisik setiap 0,5 Detik selama 3 Detik serta Slow sebesar 15% selama 0,5 Detik pada musuh di sekitar. Selama berputar, Skill lain tetap bisa digunakan.',
           mechanics: {
+            cooldownSecBySkillLevel: [40, 35, 30],
             delivery: 'aoe_self',
             durationSec: 3,
             tickIntervalSec: 0.5,
@@ -3715,7 +3741,10 @@
               notes: ['Radius terasa mirip S2 (dekat / short-to-mid).']
             },
             damagePerTick: {
-              physical: { baseDamage: 380, bonusPhysicalAttackPct: 110 }
+              physical: {
+                baseDamageBySkillLevel: [380, 570, 760],
+                bonusPhysicalAttackPct: 110
+              }
             },
             slow: {
               slowPct: 15,
@@ -4380,11 +4409,11 @@
             ]
           },
           duo: [
-            { externalName: 'Kui', compatibilityPct: 2.0 },
+            { heroId: 'kui', compatibilityPct: 2.0 },
             { externalName: 'Zhang Fei', compatibilityPct: 1.83 }
           ],
           trio: [
-            { externalNames: ['Wukong', 'Kui'], compatibilityPct: 4.33 },
+            { heroIds: ['wukong', 'kui'], compatibilityPct: 4.33 },
             { externalNames: ['Kui', 'Shouyue'], compatibilityPct: 4.18 },
             { externalNames: ['Liu Shan', 'Shouyue'], compatibilityPct: 3.92 }
           ]
@@ -6176,7 +6205,7 @@
           ],
           trio: [
             { externalNames: ['Menki', 'Yaria'], compatibilityPct: 13.16 },
-            { externalNames: ['Wang Zhaojun', 'Yaria'], compatibilityPct: 12.53 },
+            { heroIds: ['wang_zhaojun', 'yaria'], compatibilityPct: 12.53 },
             { heroIds: ['musashi', 'yaria'], compatibilityPct: 12.26 },
             { externalNames: ['Yaria', 'Shi'], compatibilityPct: 11.11 },
             { externalNames: ['Musashi', 'Da Qiao'], compatibilityPct: 8.04 },
@@ -6609,7 +6638,7 @@
             { externalName: 'Lady Zhen', compatibilityPct: 2.76 },
             { externalName: 'Menki', compatibilityPct: 2.58 },
             { externalName: 'Diaochan', compatibilityPct: 2.42 },
-            { externalName: 'Lam', compatibilityPct: 2.38 },
+            { heroId: 'lam', compatibilityPct: 2.38 },
             { externalName: 'Xuance', compatibilityPct: 1.90 },
             { externalName: 'Li Bai', compatibilityPct: 1.78 },
             { externalName: 'Cirrus', compatibilityPct: 1.67 },
@@ -6619,15 +6648,15 @@
           trio: [
             { externalNames: ['Lady Zhen', 'Marco Polo'], compatibilityPct: 29.82 },
             { externalNames: ['Marco Polo', 'Luna'], compatibilityPct: 29.62 },
-            { externalNames: ['Marco Polo', 'Lam'], compatibilityPct: 28.87 },
+            { heroIds: ['marco_polo', 'lam'], compatibilityPct: 28.87 },
             { externalNames: ['Marco Polo', 'Diaochan'], compatibilityPct: 19.02 },
-            { externalNames: ['Marco Polo', 'Wang Zhaojun'], compatibilityPct: 18.83 },
+            { heroIds: ['marco_polo', 'wang_zhaojun'], compatibilityPct: 18.83 },
             { externalNames: ['Li Bai', 'Marco Polo'], compatibilityPct: 18.69 },
             { heroIds: ['marco_polo', 'ying'], compatibilityPct: 18.69 },
             { externalNames: ['Marco Polo', 'Cirrus'], compatibilityPct: 18.63 },
             { externalNames: ['Marco Polo', 'Han Xin'], compatibilityPct: 18.62 },
             { externalNames: ['Menki', 'Arli'], compatibilityPct: 13.16 },
-            { externalNames: ['Wang Zhaojun', 'Arli'], compatibilityPct: 12.53 },
+            { heroIds: ['wang_zhaojun', 'arli'], compatibilityPct: 12.53 },
             { heroIds: ['musashi', 'arli'], compatibilityPct: 12.26 },
             { externalNames: ['Arli', 'Shi'], compatibilityPct: 11.11 },
             { externalNames: ['Yixing', 'Arli'], compatibilityPct: 7.01 },
@@ -7289,7 +7318,7 @@
           ],
           trio: [
             { externalNames: ['Hou Yi', 'Ming'], compatibilityPct: 6.07 },
-            { externalNames: ['Daji', 'Kui'], compatibilityPct: 5.50 }
+            { heroIds: ['daji', 'kui'], compatibilityPct: 5.50 }
           ]
         }
       }
@@ -7554,7 +7583,7 @@
           },
           duo: [
             { heroId: 'musashi', compatibilityPct: 1.65 },
-            { externalName: 'Lam', compatibilityPct: 1.53 },
+            { heroId: 'lam', compatibilityPct: 1.53 },
             { externalName: 'Sun Ce', compatibilityPct: 1.42 },
             { externalName: 'Nakoruru', compatibilityPct: 1.39 }
           ],
@@ -8572,6 +8601,1803 @@
             { externalNames: ['Xiao Qiao', 'Zilong'], compatibilityPct: 4.33 },
             { externalNames: ['Di Renjie', 'Feyd'], compatibilityPct: 4.06 },
             { externalNames: ['Xiao Qiao', 'Sun Ce'], compatibilityPct: 3.08 }
+          ]
+        }
+      }
+    },
+    {
+      id: 'yuan_ge',
+      name: 'Yuan Ge',
+      role: 'Clash Lane',
+      secondaryRoles: [],
+
+      tags: ['assassin', 'ranged', 'physical', 'nimble', 'summon', 'copy', 'late_game', 'dps', 'burst'],
+
+      image: 'images/heroes/yuan_ge.png',
+
+      profile: {
+        traits: ['Nimble', 'Assassin'],
+        type: 'Assassin',
+        subtype: 'Roving Assassin',
+        uniqueness: ['Roving Assassin'],
+        power: 'Seimbang (Early, Mid, Late Game)',
+        lane: 'Clash Lane'
+      },
+
+      skills: {
+        passive: {
+          name: 'Occult Arts - Manipulation',
+          categories: ['summon', 'copy', 'recovery', 'blueprint', 'on_hit'],
+          rawDescription: 'Skill Pasif: Occult Arts - Manipulation (Boneka, Recovery)\nSetiap kali Serangan Dasar Yuan Ge dan bonekanya menghantam Hero musuh, ada peluang 30% untuk mendapatkan Blueprint Hero dan memulihkan 70 (70/140+1% HP ekstra) HP.\n(Skill Recovery Yuan Ge digantikan dengan Blueprint Hero. Dia bisa menyimpan hingga 150 Blueprint Hero yang bisa digunakan untuk mengubah bentuk bonekanya menjadi tiruan salah satu Hero musuh. Dia mendapatkan 1 Blueprint Hero secara otomatis setiap 10-5 Detik, tergantung Level dirinya.)\nBoneka Hero: Mengonsumsi 50 Blueprint Hero untuk mengubah bentuk bonekanya selama 10 Detik menjadi tiruan Hero musuh yang dipilih.\nBoneka Hero (memiliki Skill yang sama persis dengan Hero yang ditirunya), tapi hanya menimbulkan 50% Damage dan menerima 100% Damage lebih banyak dibandingkan Hero yang ditiru. (Pertumbuhan kekuatan Boneka Hero beriringan dengan Yuan Ge, Damage meningkat 1% untuk setiap 15 Serangan Fisik ekstra, sedangkan Damage yang diterima berkurang 2% untuk setiap 80 HP ekstra)',
+          mechanics: {
+            blueprintSystem: {
+              maxStored: 150,
+              passiveIncomeIntervalSec: { level1: 10, level15: 5 },
+              onHitProcChancePct: 30,
+              onHitTargets: ['hero'],
+              costPerDollTransform: 50
+            },
+            onHitHeal: {
+              baseHealByLevel: { level1: 70, level15: 140 },
+              bonusHpPct: 1,
+              notes: ['Heal dari basic attack Yuan Ge dan bonekanya saat kena hero musuh.']
+            },
+            dollHeroTransform: {
+              durationSec: 10,
+              copiesAllSkillsIncludingUltimate: true,
+              damageMultiplier: 0.5,
+              damageTakenMultiplier: 2.0,
+              scalingWithYuanGe: {
+                damageIncreasePerBonusPhysicalAttack: { per: 15, increasePct: 1 },
+                damageTakenDecreasePerBonusHp: { per: 80, decreasePct: 2 }
+              },
+              notes: [
+                'Boneka bisa menggunakan SEMUA skill hero yang ditiru termasuk ultimate.',
+                'Makin kuat hero musuh, makin kuat bonekanya — counter pick terbaik untuk hero dengan ultimate high-impact.',
+                'Yuan Ge lebih baik dipick setelah musuh reveal hero mereka.',
+                'Groundwork untuk Skill Set Logic V5: Yuan Ge naik value saat musuh punya hero dengan ultimate powerful.'
+              ]
+            }
+          }
+        },
+
+        skill1: {
+          name: 'Occult Art - Umbra',
+          cdSec: 20,
+          manaCost: 60,
+          categories: ['physical', 'cc', 'launch', 'summon', 'shield', 'move_speed'],
+          rawDescription: 'Skill 1: Occult Art - Umbra (Boneka, Damage Fisik, CC) (CD 20/18,7/17,3/16 Detik) Konsumsi Mana 60\nYuan Ge mengerahkan boneka ke arah yang ditentukan, menimbulkan 300 (300/400/500/600+100% Serangan Fisik ekstra) Damage Fisik dan Launch selama 0,5 Detik pada musuh yang terhantam, kemudian dia mengendalikan boneka tersebut. Serangan Dasar bonekanya menimbulkan Damage Fisik sebesar 100% Serangan Fisik. Saat boneka ditarik kembali, efek CC pada Yuan Ge akan hilang dan dia mendapatkan 40/53,3/66,7/80% Kecepatan Gerakan selama 1 Detik, serta Shield yang menangkal 420 (420/560/700/840+6% HP ekstra) Damage.\nSaat bonekanya hancur, posisi Yuan Ge akan terungkap dan terkena Stun selama 2 Detik. Dia tidak bisa mengerahkan bonekanya lagi selama 20-16 Detik. Jika boneka berjarak lebih dari 2500 dari Yuan Ge selama 5 Detik, boneka akan hancur otomatis.\n(Boneka Normal: Mewarisi semua efek Item Yuan Ge (kecuali Revive, Blood Fury, Dark Curtain, dan Mana Shield) dan efek Buff tertentu, serta berbagi Gold dan EXP yang diperolehnya dengan Yuan Ge)',
+          mechanics: {
+            cooldownSecBySkillLevel: [20, 18.7, 17.3, 16],
+            deploy: {
+              delivery: 'skillshot_line',
+              damage: {
+                physical: {
+                  baseDamageBySkillLevel: [300, 400, 500, 600],
+                  bonusPhysicalAttackPct: 100
+                }
+              },
+              crowdControl: {
+                effect: 'launch',
+                durationSec: 0.5
+              }
+            },
+            dollControl: {
+              yuanGeImmobilizedWhileControlling: true,
+              dollBasicAttack: {
+                damagePhysicalAttackPct: 100
+              },
+              maxRangeFromYuanGe: 2500,
+              autoDestroyIfOutOfRangeForSec: 5,
+              notes: [
+                'Yuan Ge DIAM TOTAL saat mengendalikan boneka — sangat rentan di-dive.',
+                'Posisi aman sebelum deploy adalah kunci utama.'
+              ]
+            },
+            onRecall: {
+              clearsYuanGeCCEffects: true,
+              moveSpeedBonusPctBySkillLevel: [40, 53.3, 66.7, 80],
+              moveSpeedDurationSec: 1,
+              shield: {
+                baseDamageBySkillLevel: [420, 560, 700, 840],
+                bonusHpPct: 6
+              }
+            },
+            onDollDestroyed: {
+              revealsYuanGePosition: true,
+              stunYuanGeDurationSec: 2,
+              extendedCooldownSec: { min: 16, max: 20 },
+              notes: ['Boneka hancur = stun 2 detik + posisi terungkap + CD panjang — sangat punishable.']
+            },
+            dollNormal: {
+              inheritsItemEffects: true,
+              exceptions: ['Revive', 'Blood Fury', 'Dark Curtain', 'Mana Shield'],
+              sharesGoldAndExp: true
+            },
+            recast: {
+              name: 'Occult Arts - Return',
+              description: 'Langsung menarik kembali bonekanya, menimbulkan 300 (300/400/500/600+100% Serangan Fisik ekstra) Damage Fisik dan Launch selama 0,5 Detik pada musuh yang dilewatinya.',
+              damage: {
+                physical: {
+                  baseDamageBySkillLevel: [300, 400, 500, 600],
+                  bonusPhysicalAttackPct: 100
+                }
+              },
+              crowdControl: {
+                effect: 'launch',
+                durationSec: 0.5,
+                delivery: 'skillshot_line',
+                notes: ['Launch pada musuh yang dilewati boneka saat ditarik kembali.']
+              }
+            }
+          }
+        },
+        skill2: {
+          name: 'Occult Arts - Zhi Chu Luan',
+          cdSec: 11,
+          manaCost: 40,
+          categories: ['physical', 'poke', 'multi_hit'],
+          rawDescription: 'Skill 2: Occult Arts - Zhi Chu Luan (Damage Fisik) (CD 11/10,3/9,7/9 Detik) Konsumsi Mana 40\nYuan Ge melemparkan 4 burung origami, menimbulkan 435 (435/580/725/870+165% Serangan Fisik ekstra) Damage Fisik pada musuh yang terhantam. Jika target terhantam lebih dari satu burung origami, Damage burung origami berikutnya berkurang 50%.',
+          mechanics: {
+            cooldownSecBySkillLevel: [11, 10.3, 9.7, 9],
+            delivery: 'skillshot_multi_projectile',
+            projectiles: {
+              count: 4,
+              notes: ['4 burung origami dilempar sekaligus — bisa kena multiple target atau stack ke satu target.']
+            },
+            damage: {
+              physical: {
+                baseDamageBySkillLevel: [435, 580, 725, 870],
+                bonusPhysicalAttackPct: 165
+              },
+              multiHitSameTarget: {
+                subsequentHitMultiplier: 0.5,
+                notes: ['Burung ke-2, 3, 4 pada target yang sama hanya 50% damage.']
+              }
+            },
+            recast: {
+              name: 'Occult Arts - Substitution',
+              cdSec: 10,
+              description: 'Jika boneka berada dalam jarak 900 dari Yuan Ge, keduanya akan bertukar posisi. Jika tidak, boneka akan bergerak ke lokasi yang jaraknya 900 dari Yuan Ge, menimbulkan 300 (300/400/500/600+100% Serangan Fisik ekstra) Damage Fisik kepada musuh yang dilewatinya.',
+              mechanics: {
+                swapCondition: {
+                  ifDollWithin900: 'swap_positions_instantly',
+                  ifDollBeyond900: 'doll_moves_to_900_range_then_swap',
+                  dollMoveDamage: {
+                    physical: {
+                      baseDamageBySkillLevel: [300, 400, 500, 600],
+                      bonusPhysicalAttackPct: 100
+                    }
+                  }
+                },
+                onDollMovementInterrupted: {
+                  effect: 'pull_yuan_ge_to_doll_and_return_control',
+                  notes: ['Fallback safety: kalau boneka di-interrupt, Yuan Ge ditarik ke boneka dan kontrol kembali.']
+                },
+                notes: [
+                  'Escape/repositioning tool terkuat Yuan Ge — teleport instan ke posisi boneka.',
+                  'Boneka di posisi aman = Yuan Ge punya escape route kapan saja.',
+                  'Boneka maju ke musuh + swap = gapclose yang tidak terduga.'
+                ]
+              }
+            }
+          }
+        },
+        skill3: {
+          name: 'Occult Arts - Shadow Crucifixion',
+          cdSec: 11,
+          manaCost: 40,
+          categories: ['physical', 'slow', 'execute', 'multi_hit'],
+          rawDescription: 'Skill 3: Occult Arts - Shadow Crucifixion (Damage Fisik, Slow) (CD 11/10,3/9,7/9 Detik) Konsumsi Mana 40\nYuan Ge mengeluarkan dua benang lalu menariknya kembali, masing-masing menimbulkan 180 (180/240/300/360+90% Serangan Fisik ekstra) Damage Fisik. Musuh yang terhantam oleh kedua benang juga akan menerima Damage Fisik tambahan sebesar 13% HP yang hilang dan Slow sebesar 30/40/50/60% selama 2 Detik.',
+          mechanics: {
+            cooldownSecBySkillLevel: [11, 10.3, 9.7, 9],
+            delivery: 'skillshot_line',
+            threads: {
+              count: 2,
+              damagePerThread: {
+                physical: {
+                  baseDamageBySkillLevel: [180, 240, 300, 360],
+                  bonusPhysicalAttackPct: 90
+                }
+              }
+            },
+            onBothThreadsHit: {
+              bonusDamage: {
+                type: 'missing_hp_pct',
+                pct: 13,
+                notes: ['Execute tool — makin rendah HP musuh, makin besar bonus damage.']
+              },
+              crowdControl: {
+                effect: 'slow',
+                slowPctBySkillLevel: [30, 40, 50, 60],
+                durationSec: 2
+              }
+            },
+            recast: {
+              name: 'Occult Arts - Binding',
+              cdSec: 10,
+              description: 'Boneka menimbulkan 300 (300/400/500/600+100% Serangan Fisik ekstra) Damage Fisik dan mengakibatkan 250 Slow selama 2 Detik pada musuh di sekitar. Jika Skill digunakan lagi dalam rentang 3 Detik, Skill akan memasuki fase kedua. Setelah beberapa saat, boneka akan mengakibatkan Stun pada musuh secara terus-menerus, dan tiap serangannya menimbulkan 120 (120/160/200/240+40% Serangan Fisik ekstra) Damage Magis.',
+              mechanics: {
+                phase1: {
+                  delivery: 'aoe_self',
+                  damage: {
+                    physical: {
+                      baseDamageBySkillLevel: [300, 400, 500, 600],
+                      bonusPhysicalAttackPct: 100
+                    }
+                  },
+                  crowdControl: {
+                    effect: 'slow',
+                    slowFlat: 250,
+                    durationSec: 2,
+                    notes: ['250 adalah flat slow value (bukan %), hampir menghentikan pergerakan musuh sepenuhnya.']
+                  }
+                },
+                phase2: {
+                  activationWindow: 3,
+                  crowdControl: {
+                    effect: 'stun',
+                    delivery: 'aoe_self',
+                    continuous: true,
+                    notes: ['Stun terus-menerus selama boneka aktif di fase 2.']
+                  },
+                  damagePerHit: {
+                    magic: {
+                      baseDamageBySkillLevel: [120, 160, 200, 240],
+                      bonusPhysicalAttackPct: 40
+                    }
+                  }
+                },
+                needsValidation: {
+                  questions: [
+                    'Konfirmasi "250 Slow" — apakah flat move speed reduction atau ada mekanik lain?',
+                    'Durasi fase 2 Binding belum dicatat.',
+                    'Apakah stun fase 2 bisa di-interrupt oleh CC pada boneka?'
+                  ]
+                }
+              }
+            }
+          }
+        },
+
+        skill4: {
+          name: 'Occult Arts - Dispersal',
+          cdSec: 25,
+          manaCost: 100,
+          categories: ['cleanse', 'movement', 'blink'],
+          rawDescription: 'Skill 4: Occult Arts - Dispersal (Cleanse, Gerakan) (CD 25/22,5/20 Detik) Konsumsi Mana 100\nYuan Ge menghilang seketika, menghapus semua efek CC pada dirinya, lalu muncul kembali ke lokasi target setelah jeda singkat.\n(Tidak menghapus efek Stun yang terjadi akibat hancurnya boneka miliknya.)',
+          mechanics: {
+            cooldownSecBySkillLevel: [25, 22.5, 20],
+            cleanse: {
+              removesAllCC: true,
+              exception: 'stun_from_doll_destruction',
+              notes: ['Tidak menghapus stun dari boneka hancur — punishment tetap berlaku.']
+            },
+            blink: {
+              delivery: 'point_blink',
+              delay: 'short',
+              notes: ['Menghilang seketika lalu muncul di lokasi target — escape terbaik di roster.']
+            },
+            recast: {
+              name: 'Occult Arts - Breakout',
+              cdSec: 12,
+              description: 'Boneka melesat ke arah yang dituju, menimbulkan 300 (300+100% Serangan Fisik ekstra) Damage Fisik pada musuh yang dilewatinya.',
+              mechanics: {
+                delivery: 'dash',
+                direction: 'targeted_direction',
+                damage: {
+                  physical: { baseDamage: 300, bonusPhysicalAttackPct: 100 }
+                },
+                cooldownSecBySkillLevel: [12, 11, 10],
+                onMovementInterrupted: {
+                  effect: 'return_control_to_yuan_ge',
+                  notes: ['Fallback: kalau boneka di-interrupt, kontrol kembali ke Yuan Ge.']
+                }
+              }
+            }
+          }
+        }
+      },
+
+      stats: {
+        level1: {
+          physicalAttack: { total: 175, base: 175, bonus: 0 },
+          maxHP: 3001,
+          maxMana: 560,
+          physicalDefense: { value: 150 },
+          magicDefense: { value: 75 },
+          attackSpeedBonusPct: 5,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 375,
+          hpRegenPer5s: 40,
+          manaRegenPer5s: 14,
+          attackRange: 'Ranged'
+        },
+
+        level15: {
+          physicalAttack: { total: 371, base: 371, bonus: 0 },
+          maxHP: 5554,
+          maxMana: 1120,
+          physicalDefense: { value: 360 },
+          magicDefense: { value: 161 },
+          attackSpeedBonusPct: 26,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 375,
+          hpRegenPer5s: 65,
+          manaRegenPer5s: 28,
+          attackRange: 'Ranged'
+        }
+      },
+
+      coachProfile: {
+        draftIdentity: {
+          archetype: 'Assassin',
+          engageRole: 'secondary',
+          playPattern: 'Ranged assassin yang engage via boneka dari jarak aman — Yuan Ge diam saat kontrol boneka tapi punya S2 swap + S4 cleanse/blink sebagai escape. Boneka bisa copy semua skill hero musuh termasuk ultimate. Counter pick terbaik untuk hero dengan ultimate high-impact. Lebih baik dipick setelah musuh reveal hero mereka.',
+          notes: [
+            'Boneka bisa copy SEMUA skill hero musuh termasuk ultimate — makin kuat hero musuh, makin kuat bonekanya.',
+            'Yuan Ge diam saat kontrol boneka, tapi S2 swap + S4 blink = dua escape route.',
+            'Risiko tinggi: boneka hancur = stun 2 detik + posisi terungkap. S4 tidak bisa menghapus stun ini.',
+            'HP terendah di roster (5554) — butuh posisi aman dan perlindungan tim.',
+            'Groundwork V5: Yuan Ge naik value saat musuh punya hero dengan ultimate powerful.'
+          ]
+        },
+
+        powerCurve: {
+          early: 'medium',
+          mid: 'medium',
+          late: 'medium',
+          notes: ['Seimbang — boneka makin kuat seiring item Yuan Ge berkembang.']
+        },
+
+        draftValues: {
+          mobility: 'high',
+          frontline: 'low',
+          sustain: 'low',
+
+          engage: 'medium',
+          disengage: 'high',
+          peel: 'low',
+
+          cc: 'high',
+          pickPotential: 'high',
+
+          burst: 'high',
+          dps: 'high'
+        },
+
+        crowdControl: [
+          {
+            source: 'skill1.deploy',
+            effect: 'launch',
+            delivery: 'skillshot_line',
+            reliability: 'medium',
+            durationSec: 0.5,
+            notes: ['Launch saat deploy boneka.']
+          },
+          {
+            source: 'skill1.recast',
+            effect: 'launch',
+            delivery: 'skillshot_line',
+            reliability: 'medium',
+            durationSec: 0.5,
+            notes: ['Launch saat boneka ditarik kembali — musuh yang dilewati.']
+          },
+          {
+            source: 'skill3.onBothThreadsHit',
+            effect: 'slow',
+            delivery: 'skillshot_line',
+            reliability: 'medium',
+            durationSec: 2,
+            notes: ['Slow 30-60% kalau kena kedua benang.']
+          },
+          {
+            source: 'skill3.recast.phase1',
+            effect: 'slow',
+            delivery: 'aoe_self',
+            reliability: 'high',
+            durationSec: 2,
+            notes: ['Slow flat 250 AoE di sekitar boneka — hampir menghentikan pergerakan.']
+          },
+          {
+            source: 'skill3.recast.phase2',
+            effect: 'stun',
+            delivery: 'aoe_self',
+            reliability: 'high',
+            durationSec: 1,
+            notes: ['Stun terus-menerus dari boneka di fase 2 Binding.']
+          }
+        ],
+
+        mobilityProfile: {
+          level: 'high',
+          uses: ['escape', 'reposition', 'engage'],
+          notes: [
+            'S2 Substitution: swap posisi dengan boneka — teleport instan ke lokasi boneka.',
+            'S4 Dispersal: cleanse semua CC + blink ke lokasi target.',
+            'Dua mobility tool = sangat sulit di-catch kalau boneka sudah di posisi aman.'
+          ],
+          sources: [
+            {
+              source: 'skill2.recast',
+              type: 'blink',
+              delivery: 'targeted',
+              reliability: 'high',
+              notes: ['Swap posisi dengan boneka — escape atau engage.']
+            },
+            {
+              source: 'skill4',
+              type: 'blink',
+              delivery: 'point_blink',
+              reliability: 'high',
+              notes: ['Cleanse + blink — escape terbaik di roster.']
+            }
+          ]
+        },
+
+        teamNeeds: {
+          needs: [
+            'Butuh frontline/peel untuk melindungi Yuan Ge saat diam mengendalikan boneka.',
+            'Butuh vision agar Yuan Ge bisa positioning aman sebelum deploy boneka.',
+            'Lebih efektif dengan tim yang bisa follow-up CC dari boneka.'
+          ]
+        },
+
+        counterplay: {
+          counteredBy: [
+            'Bunuh boneka — boneka hancur = Yuan Ge stun 2 detik + posisi terungkap.',
+            'Burst damage ke Yuan Ge saat dia diam mengendalikan boneka.',
+            'Vision control untuk menemukan posisi Yuan Ge yang diam.'
+          ]
+        },
+
+        needsValidation: {
+          questions: [
+            'Konfirmasi "250 Slow" di S3 Binding — flat move speed reduction atau mekanik lain?',
+            'Durasi fase 2 Binding belum dicatat.',
+            'Apakah boneka bisa di-target dan dibunuh oleh musuh?'
+          ]
+        },
+
+        synergy: {
+          source: {
+            name: 'hok_official',
+            metric: 'compatibility',
+            notes: ['Nilai adalah kompatibilitas resmi HoK (bukan win rate/pick rate).']
+          },
+          duo: [
+            { externalName: 'Zhang Fei', compatibilityPct: 2.05 },
+            { externalName: 'Sakeer', compatibilityPct: 1.88 }
+          ],
+          trio: [
+            { externalNames: ['Zhang Fei', 'Kongming'], compatibilityPct: 3.79 },
+            { externalNames: ['Pei', 'Dyadia'], compatibilityPct: 3.57 }
+          ]
+        }
+      }
+    },
+    {
+      id: 'wang_zhaojun',
+      name: 'Wang Zhaojun',
+      role: 'Mid Lane',
+      secondaryRoles: [],
+
+      tags: ['mage', 'cc', 'slow', 'ranged', 'magic', 'dps', 'on_hit', 'shield', 'anti_dive'],
+
+      image: 'images/heroes/wang_zhaojun.png',
+
+      profile: {
+        traits: ['CC', 'Serangan Non-Stop'],
+        type: 'Mage',
+        subtype: 'CC Mage',
+        uniqueness: ['CC/Frozen'],
+        power: 'Seimbang (Early, Mid, Late Game)',
+        lane: 'Mid Lane'
+      },
+
+      skills: {
+        passive: {
+          name: 'Frozen Heart',
+          categories: ['shield', 'slow', 'magic', 'on_hit', 'anti_dive', 'enhance'],
+          rawDescription: 'Skill Pasif: Frozen Heart (Shield, Slow, Damage Magis)\nSetelah meninggalkan pertempuran, Wang Zhaojun mendapatkan Shield yang menangkal 450 (450/900+58% Serangan Magis) Damage. Musuh yang menimbulkan Damage Fisik pada Shield akan terkena efek Dingin. Saat Shield lenyap, menimbulkan 400 (400/800+75% Serangan Magis) Damage Magis dan efek Dingin pada musuh di sekitar. Setiap Serangan Dasar ketiga akan ditingkatkan dengan menembakkan 3 Icicle, menimbulkan total 180 (180/360+36% Serangan Magis) Damage Magis. Setiap Icicle menerapkan 100% Efek On-Hit dari Serangan Dasar. Hantaman dari Skill Aktif dan Serangan Dasar Ditingkatkan menimbulkan efek Dingin, mengurangi 25/50% Kecepatan Gerakan, dan 25/50% Kecepatan Serangan pada musuh selama 2 Detik. Efek ini berkurang seiring waktu.',
+          mechanics: {
+            outOfCombatShield: {
+              absorb: { baseByLevel: [450, 900], bonusMagicAttackPct: 58 },
+              onPhysicalHit: { appliesCold: true },
+              onShieldExpire: {
+                damage: { magic: { baseByLevel: [400, 800], bonusMagicAttackPct: 75 } },
+                appliesColdAoe: true,
+                notes: ['Anti-dive tool — diver yang masuk justru kena Dingin dan melambat.']
+              }
+            },
+            enhancedBasicAttack: {
+              everyNthHit: 3,
+              icicles: {
+                count: 3,
+                totalDamage: { magic: { baseByLevel: [180, 360], bonusMagicAttackPct: 36 } },
+                onHitEffectPct: 100
+              }
+            },
+            coldEffect: {
+              triggeredBy: ['active_skill_hit', 'enhanced_basic_attack'],
+              slowMsPctByLevel: [25, 50],
+              slowAsPctByLevel: [25, 50],
+              durationSec: 2,
+              decaysOverTime: true,
+              isFreezeStack: false,
+              notes: ['Efek Dingin hanya slow biasa — tidak bisa stack menjadi beku total.']
+            }
+          }
+        },
+
+        skill1: {
+          name: 'Shattered Ice',
+          cdSec: 5,
+          manaCost: 30,
+          categories: ['magic', 'slow', 'aoe', 'vision', 'poke'],
+          rawDescription: 'Skill 1: Shattered Ice (Slow, Damage Magis, Vision) (CD 5/4,8/4,6/4,4/4,2/4 Detik) Konsumsi Mana 30\nWang Zhaojun memunculkan ledakan es di lokasi target, menimbulkan 350 (350/420/490/560/630/700+50% Serangan Magis) Damage Magis dan mendinginkan musuh dalam jangkauan. Dia juga memperlihatkan area tersebut dan musuh yang terhantam selama 2 Detik.',
+          mechanics: {
+            cooldownSecBySkillLevel: [5, 4.8, 4.6, 4.4, 4.2, 4],
+            delivery: 'aoe_ground',
+            damage: {
+              magic: {
+                baseDamageBySkillLevel: [350, 420, 490, 560, 630, 700],
+                bonusMagicAttackPct: 50
+              }
+            },
+            appliesCold: true,
+            vision: {
+              revealsArea: true,
+              revealsHitTargets: true,
+              durationSec: 2
+            },
+            notes: [
+              'CD 4-5 detik — poke tool utama, bisa di-spam terus.',
+              'Setiap hit = Dingin aktif = slow MS+AS terus-menerus pada musuh di area.'
+            ]
+          }
+        },
+        skill2: {
+          name: 'Frigid Prison',
+          cdSec: 9,
+          manaCost: 60,
+          categories: ['magic', 'freeze', 'cc', 'aoe'],
+          rawDescription: 'Skill 2: Frigid Prison (CC, Slow, Damage Magis) (CD 9/8,6/8,2/7,8/7,4/7 Detik) Konsumsi Mana 60\nWang Zhaojun menciptakan zona beku di lokasi target. Setelah jeda singkat, dia menimbulkan 250 (250/300/350/400/450/500+50% Serangan Magis) Damage Magis pada musuh dalam jangkauan dan membuat mereka terkena efek Freeze selama 2,5 Detik.\n(Dia menimbulkan 150 (150/180/210/240/270/300+20% Serangan Magis) Damage Magis tambahan pada musuh yang terkena efek Freeze.)',
+          mechanics: {
+            cooldownSecBySkillLevel: [9, 8.6, 8.2, 7.8, 7.4, 7],
+            delivery: 'aoe_ground',
+            delay: 'short',
+            damage: {
+              magic: {
+                baseDamageBySkillLevel: [250, 300, 350, 400, 450, 500],
+                bonusMagicAttackPct: 50
+              }
+            },
+            crowdControl: {
+              effect: 'freeze',
+              durationSec: 2.5,
+              notes: ['Freeze = beku total, berbeda dari efek Dingin (slow) di pasif.']
+            },
+            bonusDamageVsFrozen: {
+              magic: {
+                baseDamageBySkillLevel: [150, 180, 210, 240, 270, 300],
+                bonusMagicAttackPct: 20
+              },
+              notes: ['Bonus damage untuk musuh yang sudah kena Freeze — reward untuk combo S1→S2→Ultimate/basic.']
+            },
+            comboPattern: {
+              notes: [
+                'Pola utama: S1 slow → S2 Freeze → Ultimate/basic attack untuk maksimalkan bonus damage.',
+                'S1 memastikan musuh melambat sehingga S2 lebih mudah connect.'
+              ]
+            }
+          }
+        },
+        skill3: {
+          name: 'Winter is Here',
+          cdSec: 35,
+          manaCost: 100,
+          categories: ['magic', 'slow', 'aoe', 'dot', 'shield'],
+          rawDescription: 'Skill 3: Winter is Here (Slow, Damage Magis) (CD 35/31,5/28 Detik) Konsumsi Mana 100\nWang Zhaojun memunculkan badai salju di lokasi target selama 5 Detik, menimbulkan 200 (200/300/400+35% Serangan Magis) Damage Magis dan Dingin pada musuh dalam jangkauan setiap 0,5 Detik. Dia mendapatkan Shield dari Skill Pasif saat memunculkan badai salju.',
+          mechanics: {
+            cooldownSecBySkillLevel: [35, 31.5, 28],
+            delivery: 'aoe_ground',
+            durationSec: 5,
+            tickIntervalSec: 0.5,
+            totalTicks: 10,
+            damagePerTick: {
+              magic: {
+                baseDamageBySkillLevel: [200, 300, 400],
+                bonusMagicAttackPct: 35
+              }
+            },
+            appliesColdPerTick: true,
+            selfBuff: {
+              activatesPassiveShield: true,
+              notes: ['Shield dari pasif aktif saat cast — Wang Zhaojun lebih survive saat ultimate aktif.']
+            },
+            totalDamageApprox: {
+              level1: 2000,
+              level15: 4000,
+              notes: ['Total damage 2000-4000 selama 5 detik ke semua musuh di area.']
+            },
+            comboPattern: {
+              notes: [
+                'Combo optimal: S1 slow → S2 Freeze → S3 di atas musuh yang beku = musuh tidak bisa keluar area DoT.',
+                'Makin kuat saat musuh bergerombol — anti-grouping DPS.'
+              ]
+            }
+          }
+        }
+      },
+
+      stats: {
+        level1: {
+          physicalAttack: { total: 166, base: 166, bonus: 0 },
+          magicAttack: { total: 10, base: 10, bonus: 0 },
+          maxHP: 3206,
+          maxMana: 640,
+          physicalDefense: { value: 150 },
+          magicDefense: { value: 75 },
+          attackSpeedBonusPct: 5,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 365,
+          hpRegenPer5s: 44,
+          manaRegenPer5s: 16,
+          attackRange: 'Ranged'
+        },
+
+        level15: {
+          physicalAttack: { total: 306, base: 306, bonus: 0 },
+          magicAttack: { total: 10, base: 10, bonus: 0 },
+          maxHP: 5626,
+          maxMana: 1280,
+          physicalDefense: { value: 367 },
+          magicDefense: { value: 220 },
+          attackSpeedBonusPct: 26,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 365,
+          hpRegenPer5s: 70,
+          manaRegenPer5s: 32,
+          attackRange: 'Ranged'
+        }
+      },
+
+      coachProfile: {
+        draftIdentity: {
+          archetype: 'Mage',
+          engageRole: 'secondary',
+          playPattern: 'CC Mage dengan slow konsisten (Dingin dari semua skill) + Freeze AoE 2.5 detik (S2) + AoE DoT 5 detik (S3). Combo optimal: S1 slow → S2 Freeze → S3 di atas musuh yang beku. Pasif shield anti-dive membuat diver yang masuk justru melambat.',
+          notes: [
+            'S2 Freeze 2.5 detik AoE adalah setup tool terbaik di roster — tim bisa all-in dengan aman.',
+            'Pasif shield out-of-combat: diver yang hit shield kena Dingin, saat shield lenyap AoE Dingin di sekitar.',
+            'S3 aktifkan pasif shield — lebih survive saat ultimate aktif.',
+            'Efek Dingin (slow) berbeda dari Freeze (beku total) — Dingin dari pasif/S1/S3, Freeze hanya dari S2.'
+          ]
+        },
+
+        powerCurve: {
+          early: 'medium',
+          mid: 'medium',
+          late: 'medium',
+          notes: ['Seimbang — CC konsisten di semua fase, tidak ada power spike yang jelas.']
+        },
+
+        draftValues: {
+          mobility: 'low',
+          frontline: 'low',
+          sustain: 'low',
+
+          engage: 'low',
+          disengage: 'medium',
+          peel: 'high',
+
+          cc: 'high',
+          pickPotential: 'high',
+
+          burst: 'medium',
+          dps: 'high'
+        },
+
+        crowdControl: [
+          {
+            source: 'skill2',
+            effect: 'freeze',
+            delivery: 'aoe_ground',
+            reliability: 'medium',
+            durationSec: 2.5,
+            notes: ['Freeze AoE 2.5 detik — CC terkuat di roster. Ada delay singkat sebelum aktif.']
+          },
+          {
+            source: 'skill1',
+            effect: 'slow',
+            delivery: 'aoe_ground',
+            reliability: 'high',
+            durationSec: 2,
+            notes: ['Dingin dari S1 — slow MS+AS, berkurang seiring waktu.']
+          },
+          {
+            source: 'skill3',
+            effect: 'slow',
+            delivery: 'aoe_ground',
+            reliability: 'high',
+            durationSec: 2,
+            notes: ['Dingin per tick setiap 0.5 detik selama 5 detik — slow terus-menerus di area.']
+          },
+          {
+            source: 'passive.enhancedBasic',
+            effect: 'slow',
+            delivery: 'targeted_multi',
+            reliability: 'high',
+            durationSec: 2,
+            notes: ['Dingin dari enhanced basic attack setiap 3 hit.']
+          }
+        ],
+
+        mobilityProfile: {
+          level: 'low',
+          uses: ['reposition'],
+          notes: ['Tidak punya dash/blink. Move speed dasar rendah (365). Butuh perlindungan tim.']
+        },
+
+        teamNeeds: {
+          needs: [
+            'Butuh frontline/peel agar Wang Zhaojun bisa poke dan cast S2/S3 dengan aman.',
+            'Butuh follow-up damage dari tim saat S2 Freeze aktif — window 2.5 detik untuk all-in.',
+            'Butuh engage dari tim karena Wang Zhaojun tidak bisa membuka fight sendiri.'
+          ]
+        },
+
+        counterplay: {
+          counteredBy: [
+            'Dive/backline pressure sebelum S2 Freeze aktif — Wang Zhaojun tidak punya escape.',
+            'Cleanse/CC immunity yang menghapus Freeze sebelum tim sempat follow-up.',
+            'Spread formation — S2 dan S3 kehilangan value kalau musuh tidak bergerombol.'
+          ]
+        },
+
+        needsValidation: {
+          questions: [
+            'Apakah efek Dingin bisa di-cleanse?',
+            'Radius S1, S2, S3 belum dicatat.'
+          ]
+        },
+
+        synergy: {
+          source: {
+            name: 'hok_official',
+            metric: 'compatibility',
+            notes: ['Nilai adalah kompatibilitas resmi HoK (bukan win rate/pick rate).']
+          },
+          duo: [
+            { externalName: 'Ming', compatibilityPct: 2.23 },
+            { externalName: 'Jing', compatibilityPct: 1.9 },
+            { externalName: 'Pei', compatibilityPct: 1.70 }
+          ],
+          trio: [
+            { heroIds: ['marco_polo', 'yaria'], compatibilityPct: 18.83 },
+            { heroIds: ['arli', 'yaria'], compatibilityPct: 12.53 },
+            { externalNames: ['Ming', 'Luara'], compatibilityPct: 3.85 }
+          ]
+        }
+      }
+    },
+    {
+      id: 'erin',
+      name: 'Erin',
+      role: 'Farm Lane',
+      secondaryRoles: [],
+
+      tags: ['marksman', 'dps', 'nimble', 'physical', 'magic', 'hybrid', 'ranged', 'energy', 'dash', 'laurel'],
+
+      image: 'images/heroes/erin.png',
+
+      profile: {
+        traits: ['Late Game', 'Nimble'],
+        type: 'Marksman',
+        subtype: 'Deft Marksman',
+        uniqueness: ['Damage Berkelanjutan'],
+        power: 'Mid Game',
+        lane: 'Farm Lane'
+      },
+
+      skills: {
+        passive: {
+          name: 'Elf Dance',
+          categories: ['enhance', 'physical', 'magic', 'hybrid', 'dash', 'energy', 'basic_attack_amp'],
+          rawDescription: 'Skill Pasif: Elf Dance (Gerak Cepat, Tingkatkan, Damage Fisik)\nSerangan Dasar Erin menimbulkan 166 (100% Serangan Fisik+20% Serangan Magis) Damage Fisik dan memberikan Energi. Saat Energi mencapai jumlah maksimum, Erin melakukan Gerak Cepat, mendapatkan 1 tumpukan Laurel, dan meningkatkan Serangan Dasar berikutnya.\nGerak Cepat: Erin mengonsumsi Energi untuk Dash, meningkatkan 30 Kecepatan Gerakan per 100 Serangan Magis, hingga 450 Kecepatan Gerakan.\nSerangan Dasar Ditingkatkan: Serangan Dasar Ditingkatkan Erin menimbulkan 269 (70/140+120% Serangan Fisik+30% Serangan Magis) Damage Fisik pada musuh yang terhantam.\n(Stat Penembusan dan Lifesteal miliknya saling berkaitan. Penembusan/Lifesteal Fisik dan Magis, masing-masing akan menggunakan nilai yang lebih di antara kedua stat tersebut)',
+          mechanics: {
+            resource: 'energy',
+            energyMax: 100,
+            energyRegenPerSec: 0,
+            energyGainedBy: ['basic_attack'],
+            basicAttackDamage: {
+              physical: { bonusPhysicalAttackPct: 100, bonusMagicAttackPct: 20 }
+            },
+            onEnergyFull: {
+              dash: {
+                type: 'auto_dash',
+                moveSpeedBonusPerMagicAttack: { per: 100, bonusMs: 30 },
+                maxMoveSpeed: 450,
+                notes: ['Dash otomatis saat Energi penuh — built-in mobility tanpa skill cast.']
+              },
+              gainLaurelStack: 1,
+              enhancedBasicAttack: {
+                damage: {
+                  physical: {
+                    baseByLevel: [70, 140],
+                    bonusPhysicalAttackPct: 120,
+                    bonusMagicAttackPct: 30
+                  }
+                }
+              }
+            },
+            statSynergy: {
+              penetrationAndLifesteal: {
+                physical: 'uses_higher_of_physical_or_magic',
+                magic: 'uses_higher_of_physical_or_magic',
+                notes: ['Mekanik unik — build hybrid physical+magic lebih efisien karena stat saling berkaitan.']
+              }
+            },
+            notes: [
+              'Laurel stack dari pasif kemungkinan punya efek tambahan dari skill aktif.',
+              'Hybrid damage scaling — bisa build physical atau magic atau keduanya.'
+            ]
+          }
+        },
+
+        skill1: {
+          name: 'Dance - Leaf Greeting',
+          cdSec: 7.5,
+          categories: ['magic', 'slow', 'poke', 'laurel', 'zone'],
+          rawDescription: 'Skill 1: Dance - Leaf Greeting (Slow, Damage Magis) (CD 7,5/7,2/6,9/6,6/6,3/6 Detik)\nErin menembakkan daun Laurel, menimbulkan 525 (525/630/735/840/945/1050+120% Serangan Fisik ekstra+110% Serangan Magis) Damage Magis pada musuh yang terhantam sambil mendapatkan satu tumpukan Laurel. Setelah menghantam Hero musuh atau terbang sampai jangkauan maksimumnya, daun itu akan terbang melingkar, dan menimbulkan 175 (175/210/245/280/315/350+40% Serangan Fisik ekstra+37% Serangan Magis) Damage Magis dan 15/18/21/24/27/30% Slow selama 1 Detik pada musuh yang menyentuh lingkaran ini.\n(CD Skill ini berkurang 0,1 Detik untuk setiap 100 Serangan Magis, dan bisa berkurang hingga 1,5 Detik)',
+          mechanics: {
+            cooldownSecBySkillLevel: [7.5, 7.2, 6.9, 6.6, 6.3, 6],
+            cooldownReductionPerMagicAttack: {
+              reductionPerHundred: 0.1,
+              maxReductionSec: 1.5,
+              notes: ['Makin banyak magic attack item, makin sering S1 bisa dipakai.']
+            },
+            delivery: 'skillshot_line',
+            directHit: {
+              damage: {
+                magic: {
+                  baseDamageBySkillLevel: [525, 630, 735, 840, 945, 1050],
+                  bonusPhysicalAttackPct: 120,
+                  bonusMagicAttackPct: 110
+                }
+              },
+              gainsLaurelStack: 1
+            },
+            circleZone: {
+              triggersOn: ['hit_hero', 'max_range'],
+              damage: {
+                magic: {
+                  baseDamageBySkillLevel: [175, 210, 245, 280, 315, 350],
+                  bonusPhysicalAttackPct: 40,
+                  bonusMagicAttackPct: 37
+                }
+              },
+              crowdControl: {
+                effect: 'slow',
+                slowPctBySkillLevel: [15, 18, 21, 24, 27, 30],
+                durationSec: 1,
+                notes: ['Zone control kecil — musuh yang menyentuh lingkaran kena slow.']
+              }
+            }
+          }
+        },
+        skill2: {
+          name: 'Twirl - Forest Whisper',
+          cdSec: 10,
+          categories: ['enhance', 'cc_immunity', 'energy', 'laurel', 'attack_speed'],
+          rawDescription: 'Skill 2: Twirl - Forest Whisper (Tingkatkan, Kekebalan) (CD 10/9,6/9,2/8,8/8,4/8 Detik)\nDengan memanfaatkan kekuatan Luminescent Forest, Erin langsung memulihkan Energi sampai penuh, mendapatkan efek Pasifnya (termasuk Gerak Cepat, 1 tumpukan Laurel, Serangan Dasar Ditingkatkan), dan 1 tumpukan Laurel lagi.\nErin juga menjadi kebal terhadap Slow dan mendapatkan 20/24/28/32/36/40% Kecepatan Serangan selama 3 Detik.',
+          mechanics: {
+            cooldownSecBySkillLevel: [10, 9.6, 9.2, 8.8, 8.4, 8],
+            instantEnergyFull: true,
+            triggersPassiveEffects: {
+              dash: true,
+              laurelStack: 1,
+              enhancedBasicAttack: true
+            },
+            bonusLaurelStack: 1,
+            selfBuff: {
+              durationSec: 3,
+              slowImmunity: true,
+              attackSpeedBonusPctBySkillLevel: [20, 24, 28, 32, 36, 40],
+              notes: [
+                'Slow immunity = counter langsung untuk slow-heavy comp (Wang Zhaojun, Dun S1, dll).',
+                'Sinergi dengan S1: S1 slow musuh → S2 instant dash menjauh + immune slow = kite sangat efektif.'
+              ]
+            }
+          }
+        },
+        skill3: {
+          name: 'Waltz - Laurel Bloom',
+          cdSec: 20,
+          categories: ['magic', 'dps', 'laurel', 'move_speed', 'cooldown_cut', 'auto_target'],
+          rawDescription: 'Skill 3: Waltz - Laurel Bloom (Damage Magis, Gerak Cepat, Cooldown) (CD 20/17,5/15 Detik)\nSaat Energi mencapai maksimum, Erin mendapatkan satu tumpukan Laurel. Saat Skill ini aktif, dia mendapatkan 10/15/20% Kecepatan Gerakan dan secara terus-menerus mengonsumsi tumpukan Laurel untuk menembakkan dedaunan. Setiap tembakan daun menimbulkan 130 (72/108/144+35% Serangan Fisik+30% Serangan Magis) Damage Magis pada musuh dengan HP terendah dalam jangkauan. Setiap tembakan juga mempersingkat CD Skill 2 sebanyak 0,2 Detik.\nUltimate: Waltz - Laurel Bloom hanya terbuka saat mencapai 6 Laurel. Laurel dapat ditumpuk hingga 12/15/18 kali.\n(Setiap tembakan 3 daun dianggap sebagai 1 Serangan Dasar)',
+          mechanics: {
+            cooldownSecBySkillLevel: [20, 17.5, 15],
+            unlockRequirement: {
+              laurelStacks: 6,
+              notes: ['Butuh setup dari pasif + S1 + S2 sebelum bisa ultimate.']
+            },
+            laurelMaxBySkillLevel: [12, 15, 18],
+            selfBuff: {
+              moveSpeedBonusPctBySkillLevel: [10, 15, 20]
+            },
+            leafShot: {
+              targeting: 'lowest_hp_enemy_in_range',
+              consumesLaurelPerShot: true,
+              leavesPerShot: 3,
+              countsAsBasicAttack: true,
+              damage: {
+                magic: {
+                  baseDamageBySkillLevel: [72, 108, 144],
+                  bonusPhysicalAttackPct: 35,
+                  bonusMagicAttackPct: 30
+                }
+              },
+              skill2CooldownReductionSec: 0.2,
+              notes: [
+                'Smart targeting ke HP terendah = execute tool.',
+                'CDR S2 per tembakan — makin banyak Laurel, makin sering slow immunity + dash tersedia.'
+              ]
+            }
+          }
+        }
+      },
+
+      stats: {
+        level1: {
+          physicalAttack: { total: 176, base: 176, bonus: 0 },
+          maxHP: 3245,
+          maxMana: null,
+          maxEnergy: 100,
+          physicalDefense: { value: 150 },
+          magicDefense: { value: 75 },
+          attackSpeedBonusPct: 10,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 370,
+          hpRegenPer5s: 39,
+          energyRegenPerSec: 0,
+          attackRange: 'Ranged'
+        },
+
+        level15: {
+          physicalAttack: { total: 339, base: 339, bonus: 0 },
+          maxHP: 5961,
+          maxMana: null,
+          maxEnergy: 100,
+          physicalDefense: { value: 329 },
+          magicDefense: { value: 195 },
+          attackSpeedBonusPct: 38,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 370,
+          hpRegenPer5s: 72,
+          energyRegenPerSec: 0,
+          attackRange: 'Ranged'
+        }
+      },
+
+      coachProfile: {
+        draftIdentity: {
+          archetype: 'Marksman',
+          engageRole: 'secondary',
+          playPattern: 'Hybrid DPS marksman dengan built-in mobility (auto-dash pasif + S2 instant dash). S2 slow immunity = counter langsung untuk slow-heavy comp. Ultimate Laurel Bloom (butuh 6 Laurel) tembak target HP terendah terus-menerus sambil CDR S2. Kite-focused — makin bebas basic attack, makin kuat.',
+          notes: [
+            'S2 slow immunity adalah counter langsung untuk slow-heavy comp (Wang Zhaojun, Dun, dll).',
+            'Hybrid damage scaling (PA+MA) — build hybrid lebih efisien karena stat Penembusan/Lifesteal saling berkaitan.',
+            'Ultimate butuh 6 Laurel untuk unlock — butuh setup dari pasif + S1 + S2 sebelum bisa ultimate.',
+            'CDR S2 dari ultimate = lebih sering dapat slow immunity + dash saat fight berlangsung.'
+          ]
+        },
+
+        powerCurve: {
+          early: 'low',
+          mid: 'high',
+          late: 'medium',
+          notes: ['Mid game kuat saat Laurel stack sudah bisa dibangun konsisten dan S2 sering tersedia.']
+        },
+
+        draftValues: {
+          mobility: 'high',
+          frontline: 'low',
+          sustain: 'low',
+
+          engage: 'low',
+          disengage: 'high',
+          peel: 'low',
+
+          cc: 'medium',
+          pickPotential: 'medium',
+
+          burst: 'medium',
+          dps: 'high'
+        },
+
+        crowdControl: [
+          {
+            source: 'skill1.circleZone',
+            effect: 'slow',
+            delivery: 'aoe_ground',
+            reliability: 'medium',
+            durationSec: 1,
+            notes: ['Slow dari lingkaran S1 setelah hit hero/max range.']
+          }
+        ],
+
+        mobilityProfile: {
+          level: 'high',
+          uses: ['reposition', 'escape', 'chase'],
+          notes: [
+            'Pasif auto-dash saat Energi penuh — mobility konsisten tanpa skill cast.',
+            'S2 instant dash + slow immunity 3 detik — escape terkuat saat ditekan slow-heavy comp.'
+          ],
+          sources: [
+            {
+              source: 'passive',
+              type: 'dash',
+              delivery: 'self_buff',
+              reliability: 'high',
+              notes: ['Auto-dash saat Energi penuh dari basic attack.']
+            },
+            {
+              source: 'skill2',
+              type: 'dash',
+              delivery: 'self_buff',
+              reliability: 'high',
+              notes: ['Instant dash + slow immunity 3 detik.']
+            }
+          ]
+        },
+
+        teamNeeds: {
+          needs: [
+            'Butuh frontline/peel agar Erin bisa free-hit dan membangun Energi/Laurel dengan aman.',
+            'Butuh engage dari tim — Erin tidak bisa membuka fight sendiri.',
+            'Lebih efektif dengan tim yang bisa lock target agar Erin bisa kite dengan aman.'
+          ]
+        },
+
+        counterplay: {
+          counteredBy: [
+            'Hard CC (stun/silence/root) yang tidak bisa di-cleanse oleh S2 slow immunity.',
+            'Burst damage cepat sebelum Erin sempat membangun Laurel untuk ultimate.',
+            'Dive saat S2 sedang cooldown — Erin tidak punya escape selain pasif dash.'
+          ]
+        },
+
+        needsValidation: {
+          questions: [
+            'Berapa Energi yang didapat per basic attack?',
+            'Laurel stack dari pasif: berapa per Energi penuh vs dari S1/S2?',
+            'Apakah slow immunity S2 juga melindungi dari root/stun?'
+          ]
+        },
+
+        synergy: {
+          source: {
+            name: 'hok_official',
+            metric: 'compatibility',
+            notes: ['Nilai adalah kompatibilitas resmi HoK (bukan win rate/pick rate).']
+          },
+          duo: [
+            { externalName: 'Gao Changgong', compatibilityPct: 1.96 },
+            { externalName: 'Lu Bu', compatibilityPct: 1.53 }
+          ],
+          trio: [
+            { externalNames: ['Nakoruru', 'Ming'], compatibilityPct: 6.25 },
+            { externalNames: ['Sun Bin', 'Butterfly'], compatibilityPct: 4.89 },
+            { externalNames: ['Liu Shan', 'Milady'], compatibilityPct: 3.60 },
+            { heroIds: ['liu_shan', 'ukyo_tachibana'], compatibilityPct: 2.89 },
+            { externalNames: ['Nuwa', 'Flowborn (Tank)'], compatibilityPct: 1.46 }
+          ]
+        }
+      }
+    },
+    {
+      id: 'lam',
+      name: 'Lam',
+      role: 'Jungling',
+      secondaryRoles: [],
+
+      tags: ['assassin', 'fighter', 'nimble', 'physical', 'melee', 'true_damage', 'execute', 'mark', 'cleanup'],
+
+      image: 'images/heroes/lam.png',
+
+      profile: {
+        traits: ['Versatile', 'Nimble'],
+        type: 'Assassin/Fighter',
+        subtype: 'Roving Assassin',
+        uniqueness: ['Mendekati/Cleanup'],
+        power: 'Seimbang (Early, Mid, Late Game)',
+        lane: 'Jungling'
+      },
+
+      skills: {
+        passive: {
+          name: 'Hunter',
+          categories: ['true_damage', 'mark', 'execute'],
+          rawDescription: 'Skill Pasif: Hunter (True Damage, Gerak Cepat)\nJika HP musuh turun ke bawah 30%, Lam akan menerapkan Mark Prey padanya. Skill dan Serangan Dasar Lam menimbulkan 7,5/15% True Damage tambahan pada target dengan Mark Prey.',
+          mechanics: {
+            markPrey: {
+              trigger: 'enemy_hp_below_pct',
+              thresholdPct: 30,
+              trueDamageBonusPctByLevel: [7.5, 15],
+              appliesTo: ['skill', 'basic_attack'],
+              notes: [
+                'Execute/cleanup specialist — makin rendah HP musuh, makin efektif Lam.',
+                'True damage tidak bisa di-block oleh defense — efektif melawan tank/frontline tebal.',
+                'Mark Prey otomatis saat musuh HP < 30% = kill confirm yang sangat reliable.'
+              ]
+            }
+          }
+        },
+
+        skill1: {
+          name: 'Wavebreaker',
+          cdSec: 10,
+          manaCost: 30,
+          categories: ['movement', 'dash', 'slow', 'physical', 'move_speed'],
+          rawDescription: 'Skill 1: Wavebreaker (Menyelam, Gerakan, Gerak Cepat) (CD 10/9,6/9,2/8,8/8,4/8 Detik) Konsumsi Mana 30\nLam memasuki status Submerged, membuatnya menyelam selama 3 Detik dan mendapatkan 40/48/56/64/72/80 Kecepatan Gerakan selama 3 Detik. Setelah durasi ini berakhir, dia kembali ke permukaan dan Skill ini dipersingkat 50%.\nJika menggunakan Skill ini lagi saat menyelam, dia akan menerjang ke permukaan dan Dash ke arah target, menimbulkan 300 (300/360/420/480/540/600+120% Serangan Fisik ekstra) Damage Fisik pada musuh yang terhantam dan Mengurangi Kecepatan Gerakan mereka sebesar 25/30/35/40/45/50% selama 1,5 Detik.',
+          mechanics: {
+            cooldownSecBySkillLevel: [10, 9.6, 9.2, 8.8, 8.4, 8],
+            submergedMode: {
+              durationSec: 3,
+              moveSpeedFlatBonusBySkillLevel: [40, 48, 56, 64, 72, 80],
+              isTargetable: true,
+              isVisible: true,
+              notes: ['Submerged hanya visual/flavor — Lam tetap bisa di-target, di-hit, dan terlihat.'],
+              onExpire: {
+                cooldownReductionPct: 50,
+                notes: ['CD dipotong 50% kalau biarkan habis sendiri — lebih sering tersedia.']
+              }
+            },
+            recast: {
+              condition: 'while_submerged',
+              delivery: 'targeted_dash',
+              damage: {
+                physical: {
+                  baseDamageBySkillLevel: [300, 360, 420, 480, 540, 600],
+                  bonusPhysicalAttackPct: 120
+                }
+              },
+              crowdControl: {
+                effect: 'slow',
+                slowPctBySkillLevel: [25, 30, 35, 40, 45, 50],
+                durationSec: 1.5
+              }
+            }
+          }
+        },
+        skill2: {
+          name: 'Space Split',
+          cdSec: 6,
+          manaCost: 40,
+          categories: ['physical', 'recovery', 'enhance', 'mark', 'dash', 'cooldown_cut'],
+          rawDescription: 'Skill 2: Space Split (Damage Fisik, Tingkatkan, Recovery) (CD 6/5,8/5,6/5,4/5,2/5 Detik) Konsumsi Mana 40\nLam menyerang musuh di sekitar 2 kali, menimbulkan 225 (225/270/315/360/405/450+45% Serangan Fisik ekstra) Damage Fisik dan memulihkan 85 (85/102/119/136/153/170+15% Serangan Fisik ekstra+1% HP ekstra) HP untuk setiap Hero musuh yang terhantam (efek pemulihan hanya setengahnya untuk Non-Hero). Dia mendapatkan 1 Mark saat menggunakan Skill, dan mendapatkan 1 Mark tambahan setiap kali menghantam musuh yang berbeda, maks 3 tumpukan Mark.\nSaat memiliki Mark, Serangan Dasarnya ditingkatkan, mengonsumsi 1 Mark untuk Dash dan menimbulkan 177 (50/60/70/80/90/100+75% Serangan Fisik) Damage Fisik, serta memulihkan 85 (85/102/119/136/153/170+15% Serangan Fisik ekstra+1% HP ekstra) HP. Setiap serangan lanjutan mempersingkat Cooldown Skill ini sebesar 10%-20%. Menggunakan Skill ini selagi dalam kondisi Submerged akan membuatnya Dash ke arah target dan mempersingkat CD Skill 1 sebesar 25/30/35/40/45/50%.',
+          mechanics: {
+            cooldownSecBySkillLevel: [6, 5.8, 5.6, 5.4, 5.2, 5],
+            aoeAttack: {
+              hits: 2,
+              delivery: 'aoe_self',
+              damage: {
+                physical: {
+                  baseDamageBySkillLevel: [225, 270, 315, 360, 405, 450],
+                  bonusPhysicalAttackPct: 45
+                }
+              },
+              healPerHeroHit: {
+                baseHealBySkillLevel: [85, 102, 119, 136, 153, 170],
+                bonusPhysicalAttackPct: 15,
+                bonusHpPct: 1,
+                nonHeroMultiplier: 0.5
+              }
+            },
+            markSystem: {
+              gainOnCast: 1,
+              gainPerDifferentTargetHit: 1,
+              maxStacks: 3,
+              enhancedBasicAttack: {
+                consumesMarkPerDash: 1,
+                delivery: 'targeted_dash',
+                damage: {
+                  physical: {
+                    baseDamageBySkillLevel: [50, 60, 70, 80, 90, 100],
+                    bonusPhysicalAttackPct: 75
+                  }
+                },
+                heal: {
+                  baseHealBySkillLevel: [85, 102, 119, 136, 153, 170],
+                  bonusPhysicalAttackPct: 15,
+                  bonusHpPct: 1
+                },
+                skill2CooldownReductionPct: { min: 10, max: 20 }
+              }
+            },
+            submergedBonus: {
+              condition: 'cast_while_submerged',
+              dashToTarget: true,
+              skill1CooldownReductionPctBySkillLevel: [25, 30, 35, 40, 45, 50],
+              notes: ['S1+S2 combo: cast S2 saat Submerged = dash + CDR S1 → S1 recast dash lagi = mobility sangat fluid.']
+            }
+          }
+        },
+        skill3: {
+          name: 'Death From Below',
+          cdSec: 40,
+          manaCost: 80,
+          categories: ['physical', 'cc', 'slow', 'dash', 'displacement'],
+          rawDescription: 'Skill 3: Death From Below (CC, Damage Fisik, Gerakan) (CD 40/35/30 Detik) Konsumsi Mana 80\nLam melemparkan Dagger ke arah target, mengakibatkan Slow Ekstrem selama musuh yang terhantam selama 0,5 Detik. Setelah jeda singkat, Lam akan Dash ke lokasi Dagger, menimbulkan 520 (520/760/1040+180% Serangan Fisik ekstra) Damage Fisik dan menyeret musuh yang terhantam bersamanya.\nKetika menggunakan Skill ini dalam kondisi Submerged, dia akan menyeret musuh ke tujuan Dash dan CD Skill 1 akan berkurang 50%.',
+          mechanics: {
+            cooldownSecBySkillLevel: [40, 35, 30],
+            dagger: {
+              delivery: 'skillshot_line',
+              crowdControl: {
+                effect: 'slow',
+                slowPct: 'extreme',
+                durationSec: 0.5,
+                notes: ['Slow ekstrem 0.5 detik — cukup untuk memastikan dash connect.']
+              }
+            },
+            dash: {
+              delivery: 'targeted_dash',
+              target: 'dagger_location',
+              delay: 'short',
+              damage: {
+                physical: {
+                  baseDamageBySkillLevel: [520, 760, 1040],
+                  bonusPhysicalAttackPct: 180
+                }
+              },
+              displacement: {
+                type: 'drag_with_lam',
+                notes: ['Musuh diseret bersamanya — pick tool terkuat Lam.']
+              }
+            },
+            submergedBonus: {
+              condition: 'cast_while_submerged',
+              dragToDestination: true,
+              skill1CooldownReductionPct: 50,
+              notes: [
+                'Submerged + S3: seret musuh ke posisi yang diinginkan + CDR S1.',
+                'Combo: S1 Submerged → S2 (CDR S1) → S3 Submerged (seret + CDR S1) → S1 slow → S2 enhanced basic.'
+              ]
+            }
+          }
+        }
+      },
+
+      stats: {
+        level1: {
+          physicalAttack: { total: 180, base: 180, bonus: 0 },
+          maxHP: 3312,
+          maxMana: 560,
+          physicalDefense: { value: 150 },
+          magicDefense: { value: 75 },
+          attackSpeedBonusPct: 5,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 380,
+          hpRegenPer5s: 51,
+          manaRegenPer5s: 14,
+          attackRange: 'Melee'
+        },
+
+        level15: {
+          physicalAttack: { total: 395, base: 395, bonus: 0 },
+          maxHP: 6621,
+          maxMana: 1120,
+          physicalDefense: { value: 382 },
+          magicDefense: { value: 166 },
+          attackSpeedBonusPct: 26,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 380,
+          hpRegenPer5s: 86,
+          manaRegenPer5s: 28,
+          attackRange: 'Melee'
+        }
+      },
+
+      coachProfile: {
+        draftIdentity: {
+          archetype: 'Assassin/Fighter',
+          engageRole: 'secondary',
+          playPattern: 'Mobile cleanup assassin: S1 Submerged untuk approach → S2 saat Submerged (dash + CDR S1) → S3 saat Submerged (seret musuh + CDR S1) → S1 recast slow → S2 enhanced basic (maks 3 dash). Pasif Mark Prey = true damage saat musuh HP < 30% — kill confirm yang sangat reliable.',
+          notes: [
+            'Pasif Hunter: true damage saat musuh HP < 30% — counter natural untuk tank/frontline tebal.',
+            'S3 pick tool terkuat: slow ekstrem → dash → seret musuh ke posisi yang diinginkan.',
+            'Combo S1+S2+S3 saat Submerged sangat fluid — susah di-escape karena terus ada CDR S1.',
+            'Sustain dari S2 heal per hero hit — bisa bertahan lebih lama di extended fight.'
+          ]
+        },
+
+        powerCurve: {
+          early: 'medium',
+          mid: 'medium',
+          late: 'medium',
+          notes: ['Seimbang — true damage dari pasif makin efektif saat musuh sudah terkena damage dari tim.']
+        },
+
+        draftValues: {
+          mobility: 'high',
+          frontline: 'low',
+          sustain: 'medium',
+
+          engage: 'medium',
+          disengage: 'medium',
+          peel: 'low',
+
+          cc: 'high',
+          pickPotential: 'high',
+
+          burst: 'high',
+          dps: 'high'
+        },
+
+        crowdControl: [
+          {
+            source: 'skill3.dagger',
+            effect: 'slow',
+            delivery: 'skillshot_line',
+            reliability: 'medium',
+            durationSec: 0.5,
+            notes: ['Slow ekstrem 0.5 detik — setup untuk dash S3.']
+          },
+          {
+            source: 'skill3.dash',
+            effect: 'pull',
+            delivery: 'targeted_dash',
+            reliability: 'medium',
+            durationSec: 0.5,
+            notes: ['Seret musuh bersamanya — displacement pick tool.']
+          },
+          {
+            source: 'skill1.recast',
+            effect: 'slow',
+            delivery: 'targeted_dash',
+            reliability: 'medium',
+            durationSec: 1.5,
+            notes: ['Slow 25-50% dari recast S1 saat Submerged.']
+          }
+        ],
+
+        mobilityProfile: {
+          level: 'high',
+          uses: ['engage', 'chase', 'reposition'],
+          notes: [
+            'S1 MS flat + Submerged untuk approach.',
+            'S2 enhanced basic maks 3 dash — sangat mobile saat Mark aktif.',
+            'S1+S2+S3 combo saat Submerged = terus ada CDR S1, susah di-escape.'
+          ],
+          sources: [
+            { source: 'skill1', type: 'moveSpeedBuff', delivery: 'self_buff', reliability: 'high', notes: ['MS flat saat Submerged.'] },
+            { source: 'skill1.recast', type: 'dash', delivery: 'targeted_dash', reliability: 'high', notes: ['Dash saat recast Submerged.'] },
+            { source: 'skill2.enhancedBasic', type: 'dash', delivery: 'targeted_dash', reliability: 'high', notes: ['Dash per Mark, maks 3x.'] },
+            { source: 'skill3', type: 'dash', delivery: 'targeted_dash', reliability: 'medium', notes: ['Dash ke lokasi Dagger.'] }
+          ]
+        },
+
+        teamNeeds: {
+          needs: [
+            'Butuh tim yang bisa damage musuh dulu agar HP turun ke < 30% untuk aktifkan Mark Prey.',
+            'Butuh vision agar Lam bisa approach dengan aman via Submerged.',
+            'Lebih efektif dengan tim yang punya CC untuk setup S3 pick.'
+          ]
+        },
+
+        counterplay: {
+          counteredBy: [
+            'Heal/sustain yang mencegah HP musuh turun ke < 30% — Mark Prey tidak aktif.',
+            'Hard CC saat Lam sedang Submerged — tidak punya CC immunity.',
+            'Peel kuat yang mencegah Lam menempel target setelah S3 drag.'
+          ]
+        },
+
+        needsValidation: {
+          questions: [
+            'Apakah Mark Prey bisa di-cleanse oleh musuh?',
+            'Berapa % slow "ekstrem" dari S3 Dagger (angka pasti)?'
+          ]
+        },
+
+        synergy: {
+          source: {
+            name: 'hok_official',
+            metric: 'compatibility',
+            notes: ['Nilai adalah kompatibilitas resmi HoK (bukan win rate/pick rate).']
+          },
+          duo: [
+            { heroId: 'yaria', compatibilityPct: 2.38 },
+            { heroId: 'xiao_qiao', compatibilityPct: 1.53 }
+          ],
+          trio: [
+            { heroIds: ['marco_polo', 'yaria'], compatibilityPct: 28.87 },
+            { externalNames: ['Lady Zhen', 'Yaria'], compatibilityPct: 6.63 }
+          ]
+        }
+      }
+    },
+    {
+      id: 'kui',
+      name: 'Kui',
+      role: 'Roaming',
+      secondaryRoles: [],
+
+      tags: ['tank', 'support', 'cc', 'engage', 'magic', 'melee', 'frontline', 'aoe', 'early_game'],
+
+      image: 'images/heroes/kui.png',
+
+      profile: {
+        traits: ['Initiate', 'Tank'],
+        type: 'Support/Mage',
+        subtype: 'Support Ofensif',
+        uniqueness: ['CC/Buka War'],
+        power: 'Early Game',
+        lane: 'Roaming'
+      },
+
+      skills: {
+        passive: {
+          name: 'Ethereal Outburst',
+          categories: ['magic', 'aoe', 'reactive', 'hp_scaling'],
+          rawDescription: 'Skill Pasif: Ethereal Outburst (Damage Magis)\nKui memicu ledakan saat menerima Damage yang melampaui 10% HP miliknya saat ini dalam sekali hantaman, menimbulkan 166 (60/228+60% Serangan Magis + 3% HP) Damage Magis pada musuh di sekitarnya. Efek ini memiliki CD 2 Detik.\n3 Detik setelah dikalahkan, dia meledak, menimbulkan 664 (240/912+240% Serangan Magis + 12% HP) Damage Magis pada musuh di sekitar.',
+          mechanics: {
+            burstTrigger: {
+              condition: 'single_hit_damage_exceeds_pct_current_hp',
+              thresholdPct: 10,
+              cooldownSec: 2,
+              damage: {
+                magic: {
+                  baseDamageByLevel: { level1: 60, level15: 228 },
+                  bonusMagicAttackPct: 60,
+                  bonusHpPct: 3
+                }
+              },
+              delivery: 'aoe_self',
+              notes: [
+                'Trigger saat 1 hit > 10% HP saat ini — lebih mudah dipicu di early game (HP rendah).',
+                'Counter natural vs burst/assassin: membunuh Kui cepat justru memicu ledakan besar.',
+                'HP scaling: semakin banyak item HP, semakin sakit ledakannya.'
+              ]
+            },
+            deathExplosion: {
+              delayAfterDeathSec: 3,
+              damage: {
+                magic: {
+                  baseDamageByLevel: { level1: 240, level15: 912 },
+                  bonusMagicAttackPct: 240,
+                  bonusHpPct: 12
+                }
+              },
+              delivery: 'aoe_self',
+              notes: [
+                'Damage 4x dari burst normal.',
+                'Delay 3 detik memberi window musuh untuk kabur, tapi berbahaya di area sempit/teamfight.'
+              ]
+            }
+          }
+        },
+
+        skill1: {
+          name: 'Mortals!',
+          cdSec: 5,
+          manaCost: 40,
+          categories: ['magic', 'aoe', 'slow', 'mark'],
+          rawDescription: 'Skill 1: Mortals! (Damage Magis, Slow) (CD 5/4,8/4,6/4,4/4,2/4 Detik) Konsumsi Mana 40\nKui menghantam tanah, menimbulkan 320 (320/384/448/512/576/640+32% Serangan Magis) Damage Magis dan 15/18/21/24/27/30% Slow pada musuh dalam jangkauan selama 1,5 Detik. Musuh yang berada tepat di sekelilingnya menerima 250% Damage Magis dan 15/18/21/24/27/30% Slow selama 1,5 Detik, serta Mark Into the Void.',
+          mechanics: {
+            cooldownSecBySkillLevel: [5, 4.8, 4.6, 4.4, 4.2, 4],
+            delivery: 'aoe_self',
+            outerZone: {
+              damage: {
+                magic: {
+                  baseDamageBySkillLevel: [320, 384, 448, 512, 576, 640],
+                  bonusMagicAttackPct: 32
+                }
+              },
+              crowdControl: {
+                effect: 'slow',
+                slowPctBySkillLevel: [15, 18, 21, 24, 27, 30],
+                durationSec: 1.5
+              }
+            },
+            innerZone: {
+              damageMultiplier: 2.5,
+              damage: {
+                magic: {
+                  baseDamageBySkillLevel: [800, 960, 1120, 1280, 1440, 1600],
+                  bonusMagicAttackPct: 80,
+                  notes: ['250% dari damage zona luar.']
+                }
+              },
+              crowdControl: {
+                effect: 'slow',
+                slowPctBySkillLevel: [15, 18, 21, 24, 27, 30],
+                durationSec: 1.5
+              },
+              mark: {
+                name: 'Into the Void',
+                durationSec: 5,
+                notes: [
+                  'Hanya musuh di zona dalam (tepat di sekeliling Kui) yang mendapat Mark.',
+                  'Kui harus masuk dekat untuk memaksimalkan damage + Mark — konsisten dengan identitas engage.',
+                  'Window 5 detik cukup longgar; tim tidak perlu instant follow-up.',
+                  'CD S1 4-5 detik memungkinkan re-apply Mark sebelum yang lama habis.'
+                ]
+              }
+            }
+          }
+        },
+        skill2: {
+          name: 'Join Me',
+          cdSec: 13,
+          manaCost: 60,
+          categories: ['cc', 'magic', 'pull', 'mark', 'skillshot', 'hp_scaling'],
+          rawDescription: 'Skill 2: Join Me (CC, Damage Magis) (CD 13/12,6/12,2/11,8/11,4/11 Detik) Konsumsi Mana 60\nKui melemparkan Chain Hook ke arah target, lalu menarik musuh pertama yang terhantam ke hadapannya, menimbulkan 550 (550/615/680/745/810/875+60% Serangan Magis) Damage Magis serta memberi Mark Into the Void pada mereka.\nPasif: Setiap Kill atau Assist memberikannya 1 tumpukan Void Devour, hingga 20 tumpukan. Tiap tumpukan memberinya peningkatan 180 HP Maks.',
+          mechanics: {
+            cooldownSecBySkillLevel: [13, 12.6, 12.2, 11.8, 11.4, 11],
+            active: {
+              delivery: 'targeted_hook_pull',
+              target: 'first_unit_hit',
+              pull: {
+                destination: 'in_front_of_kui',
+                notes: ['Menarik musuh pertama yang terhantam ke hadapan Kui — pick tool jarak jauh.']
+              },
+              damage: {
+                magic: {
+                  baseDamageBySkillLevel: [550, 615, 680, 745, 810, 875],
+                  bonusMagicAttackPct: 60
+                }
+              },
+              mark: {
+                name: 'Into the Void',
+                durationSec: 5,
+                behavior: 'refresh',
+                notes: [
+                  'Mark refresh (bukan stack) jika sudah ada Mark aktif.',
+                  'S2 adalah cara kedua apply Mark selain S1 zona dalam — range pick tool.',
+                  'Combo natural: S2 hook → Mark → S1 zona dalam (refresh Mark) → Ultimate konsumsi Mark.'
+                ]
+              }
+            },
+            passive: {
+              name: 'Void Devour',
+              trigger: ['kill', 'assist'],
+              maxStacks: 20,
+              perStackBonusHp: 180,
+              maxBonusHp: 3600,
+              notes: [
+                'Full stack: +3600 HP — total HP bisa mencapai ~11.212 di level 15.',
+                'Langsung mengamplify damage pasif Ethereal Outburst (3% HP per ledakan).',
+                'Kui yang snowball = makin susah dibunuh + makin sakit saat dipukul.'
+              ]
+            }
+          }
+        },
+        skill3: {
+          name: 'Into the Void',
+          cdSec: 40,
+          manaCost: 130,
+          categories: ['magic', 'cc', 'stun', 'pull', 'shield', 'channel', 'mark_consume', 'hp_scaling'],
+          rawDescription: 'Skill 3: Into the Void (Damage Magis, Shield, CC) (CD 40/35/30 Detik) Konsumsi Mana 130\nKui melakukan Devour, menarik musuh di depannya ke lokasinya dan melahap mereka hingga 16 kali, menimbulkan total 1920 (1920/2400/2880+288% Serangan Magis) Damage Magis dan terus menyebabkan Stun pada target yang memiliki Mark Into the Void.\n(Dia juga mendapatkan Shield yang menangkal 46 (46/69/92+1% HP ekstra) Damage tiap kali Skill ini menghantam musuh).',
+          mechanics: {
+            cooldownSecBySkillLevel: [40, 35, 30],
+            delivery: 'targeted_multi',
+            hits: 16,
+            pull: {
+              target: 'enemies_in_front',
+              destination: 'kui_location',
+              notes: ['Menarik musuh di depan ke lokasi Kui sebelum channel dimulai.']
+            },
+            damage: {
+              magic: {
+                totalBySkillLevel: [1920, 2400, 2880],
+                bonusMagicAttackPct: 288,
+                perHitBase: [120, 150, 180],
+                notes: ['Total dibagi 16 hit — per hit 120/150/180 base.']
+              }
+            },
+            markConsume: {
+              markName: 'Into the Void',
+              effect: 'stun',
+              duration: 'continuous_during_channel',
+              notes: [
+                'Stun hanya aktif pada target yang memiliki Mark Into the Void.',
+                'Tanpa Mark: hanya damage + tarik, tanpa Stun.',
+                'Mark bisa diapply via S1 zona dalam atau S2 hook sebelum Ultimate.'
+              ]
+            },
+            shieldPerHit: {
+              baseBySkillLevel: [46, 69, 92],
+              bonusHpPct: 1,
+              maxTotalShield: {
+                notes: ['16 hit × (46/69/92 + 1% HP) = total shield 736/1104/1472 + 16% HP jika semua hit connect.']
+              }
+            }
+          }
+        }
+      },
+
+      stats: {
+        level1: {
+          physicalAttack: { total: 181, base: 181, bonus: 0 },
+          maxHP: 3657,
+          maxMana: 600,
+          physicalDefense: { value: 150 },
+          magicDefense: { value: 75 },
+          attackSpeedBonusPct: 0,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 370,
+          hpRegenPer5s: 79,
+          manaRegenPer5s: 15,
+          attackRange: 'Melee'
+        },
+
+        level15: {
+          physicalAttack: { total: 328, base: 328, bonus: 0 },
+          maxHP: 7612,
+          maxMana: 1200,
+          physicalDefense: { value: 416 },
+          magicDefense: { value: 203 },
+          attackSpeedBonusPct: 21,
+          criticalRatePct: 0,
+          criticalDamagePct: 200,
+          moveSpeed: 370,
+          hpRegenPer5s: 143,
+          manaRegenPer5s: 30,
+          attackRange: 'Melee'
+        }
+      },
+
+      coachProfile: {
+        draftIdentity: {
+          archetype: 'Tank/Support Ofensif',
+          engageRole: 'primary',
+          playPattern: 'Self-sufficient initiator: S2 hook (Mark + tarik) atau S1 zona dalam (Mark) → Ultimate Into the Void (Stun terus-menerus + 16 hit damage + shield per hit). Combo lengkap: S2 hook → S1 refresh Mark → Ultimate untuk Stun + full damage. Pasif Void Devour (kill/assist → +HP) membuat Kui makin tanky dan makin sakit seiring snowball.',
+          notes: [
+            'Mark Into the Void adalah kunci: tanpa Mark, Ultimate hanya damage + tarik. Dengan Mark, target di-Stun selama seluruh channel.',
+            'Dua cara apply Mark: S1 zona dalam (AoE, butuh masuk dekat) atau S2 hook (range, single target).',
+            'Shield per hit dari Ultimate scale dari HP — semakin banyak HP, semakin tebal shield saat commit.',
+            'Pasif Ethereal Outburst bisa dipicu oleh serangan turret — aman engage di area turret musuh.'
+          ]
+        },
+
+        powerCurve: {
+          early: 'high',
+          mid: 'high',
+          late: 'medium',
+          notes: [
+            'Early game power — paling berbahaya saat musuh belum punya item untuk mitigasi CC.',
+            'Void Devour stack dari kill/assist membuat Kui tetap relevan di mid-late via HP scaling.'
+          ]
+        },
+
+        draftValues: {
+          mobility: 'medium',
+          frontline: 'high',
+          sustain: 'low',
+
+          engage: 'high',
+          disengage: 'low',
+          peel: 'medium',
+
+          cc: 'high',
+          pickPotential: 'high',
+
+          burst: 'medium',
+          dps: 'low'
+        },
+
+        crowdControl: [
+          {
+            source: 'skill1.innerZone',
+            effect: 'slow',
+            delivery: 'aoe_self',
+            reliability: 'medium',
+            durationSec: 1.5,
+            notes: ['Slow 15-30% hanya zona dalam (tepat di sekeliling Kui). Butuh masuk dekat.']
+          },
+          {
+            source: 'skill1.outerZone',
+            effect: 'slow',
+            delivery: 'aoe_self',
+            reliability: 'high',
+            durationSec: 1.5,
+            notes: ['Slow 15-30% zona luar — lebih mudah kena, damage lebih rendah.']
+          },
+          {
+            source: 'skill2',
+            effect: 'pull',
+            delivery: 'targeted_hook_pull',
+            reliability: 'medium',
+            durationSec: 0,
+            notes: ['Hook menarik musuh pertama yang kena ke hadapan Kui. Skillshot — bisa meleset.']
+          },
+          {
+            source: 'skill3',
+            effect: 'stun',
+            delivery: 'targeted_multi',
+            reliability: 'high',
+            duration: 'continuous_during_channel',
+            notes: [
+              'Stun terus-menerus selama channel Ultimate — hanya pada target dengan Mark Into the Void.',
+              'Tanpa Mark: tidak ada Stun.'
+            ]
+          }
+        ],
+
+        mobilityProfile: {
+          level: 'medium',
+          uses: ['engage'],
+          notes: [
+            'Move speed 370 di atas rata-rata roamer.',
+            'Tidak punya dash/blink — engage mengandalkan move speed + S2 hook range.',
+            'Setelah commit Ultimate, Kui tidak bisa disengage — all-in hero.'
+          ]
+        },
+
+        teamNeeds: {
+          needs: [
+            'Butuh follow-up damage dari tim setelah Kui engage dan apply Stun via Ultimate.',
+            'Butuh vision untuk memastikan S2 hook connect ke target yang tepat.',
+            'Lebih efektif dengan carry yang punya burst tinggi untuk memanfaatkan window Stun Ultimate.'
+          ]
+        },
+
+        counterplay: {
+          counteredBy: [
+            'Disengage/dash keluar sebelum Ultimate selesai channel — memutus combo Stun.',
+            'Cleanse/CC immunity yang menghapus Mark atau memblok Stun dari Ultimate.',
+            'Poke dari jarak jauh sebelum Kui bisa engage — Kui tidak punya escape setelah commit.'
+          ]
+        },
+
+        needsValidation: {
+          questions: [
+            'Pasif burst BISA dipicu oleh serangan turret (confirmed by user) — catat sebagai fakta.',
+            'Apakah death explosion bisa dipicu meski Kui di-execute (instant kill)?',
+            'Radius AoE pasif dan S1 berapa unit?',
+            'Apakah S2 hook bisa di-interrupt oleh hard CC saat casting?',
+            'Apakah Ultimate bisa di-interrupt setelah channel dimulai?',
+            'Apakah target bisa kabur dari Ultimate jika tidak di-Stun (tanpa Mark)?'
+          ]
+        },
+
+        synergy: {
+          source: {
+            name: 'hok_official',
+            metric: 'compatibility',
+            notes: ['Nilai adalah kompatibilitas resmi HoK (bukan win rate/pick rate).']
+          },
+          duo: [
+            { heroId: 'daji', compatibilityPct: 2.51 },
+            { heroId: 'wukong', compatibilityPct: 2.35 },
+            { heroId: 'angela', compatibilityPct: 2.27 },
+            { externalName: 'Lian Po', compatibilityPct: 2.12 },
+            { heroId: 'li_xin', compatibilityPct: 2.0 }
+          ],
+          trio: [
+            { heroIds: ['daji', 'arthur'], compatibilityPct: 5.50 },
+            { externalNames: ['Mi Yue', 'Angela'], compatibilityPct: 5.46 },
+            { heroIds: ['wukong', 'li_xin'], compatibilityPct: 4.33 },
+            { externalNames: ['Shouyue', 'Li Xin'], compatibilityPct: 4.18 },
+            { externalNames: ['Angela', 'Consort Yu'], compatibilityPct: 4.15 },
+            { externalNames: ['Luban No.7', 'Angela'], compatibilityPct: 4.05 },
+            { externalNames: ['Luban No.7', 'Arke'], compatibilityPct: 3.95 },
+            { externalNames: ['Daji', 'Wuyan'], compatibilityPct: 3.93 },
+            { heroIds: ['angela', 'wukong'], compatibilityPct: 3.88 },
+            { externalNames: ['Daji', 'Yang Jian'], compatibilityPct: 3.56 },
+            { externalNames: ['Shouyue', 'Charlotte'], compatibilityPct: 3.28 }
           ]
         }
       }
